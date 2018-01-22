@@ -30,7 +30,8 @@ int readIndex = 0;              // the index of the current reading
 int total = 0;                  // the running total
 int average = 0;                // the average
 
-int inputPin = A0;
+//int inputPin = A0;
+int inputPin = 0;
 
 void setup() {
   // initialize serial communication with computer:
