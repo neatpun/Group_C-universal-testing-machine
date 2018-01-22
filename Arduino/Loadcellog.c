@@ -7,6 +7,7 @@ int timeBetweenReadings = 200; // We want a reading every 200 ms;
 
 void setup() {
   Serial.begin(9600);
+  analogValueAverage=analogRead(0);
 }
 
 void loop() {
