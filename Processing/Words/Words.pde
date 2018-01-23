@@ -25,18 +25,18 @@ void setup() {
   size(640, 360);
   
   // Create the font
-  printArray(PFont.list());
+  //printArray(PFont.list());
   f = createFont("SourceCodePro-Regular.ttf", 24);
   textFont(f);
-    //String portName = Serial.list()[0];
- // myPort = new Serial(this, portName, 9600);
+    String portName = Serial.list()[0];
+ myPort = new Serial(this, portName, 9600);
 }
 
 void draw() {
   
-  //if ( myPort.available() > 0) {  // If data is available,
-    //val = myPort.readStringUntil('\n');         // read it and store it in val
-  //}
+  if ( myPort.available() > 0) {  // If data is available,
+    val = myPort.readStringUntil('\n');         // read it and store it in val
+  }
 println(val); //print it out in the console
 
   background(102);
@@ -44,7 +44,7 @@ println(val); //print it out in the console
   fill(0);
   text(val, width*0.75, 95);
   
-  //myPort.clear();
-  //delay(300);
+  myPort.clear();
+  delay(300);
   
 }

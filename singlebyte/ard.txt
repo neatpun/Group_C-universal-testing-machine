@@ -1,0 +1,2 @@
+delay to 10
+any , just convert println to write while divinding all analog reads by 4
