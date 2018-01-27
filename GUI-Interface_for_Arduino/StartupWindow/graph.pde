@@ -42,8 +42,8 @@ void plot(float prev_x,float prev_y,float curr_x,float curr_y){
 }
 
 
-float data(){
-if(myPort.available()>0){
+//float data(){
+//if(myPort.available()>0){
 
-}
-}
+//}
+//}
