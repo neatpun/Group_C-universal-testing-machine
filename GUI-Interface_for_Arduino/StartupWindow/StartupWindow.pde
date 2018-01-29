@@ -34,7 +34,7 @@ void setup() {
 
   gui = new ControlP5(this); // gui controller which will add buttons, sliders etc
 
-  createButton( (int) btnX, (int) btnY, (int) btnHeight, (int) btnWidth, gui);
+  createButton("Start", (int) btnX, (int) btnY, (int) btnHeight, (int) btnWidth, gui);
 
   createInput("Speed", (int) inpX, (int) inpY, (int) inpH, (int) inpW, (int) colorCode, gui);
 

@@ -1,8 +1,8 @@
 // For Creating GUI Controllers
 
 // for creating a button
-void createButton(int btnX, int btnY, int btnHeight, int btnWidth, ControlP5 gui) {
-	gui.addButton("Start")
+void createButton(String name , int btnX, int btnY, int btnHeight, int btnWidth, ControlP5 gui) {
+	gui.addButton(name)
 	.setValue(1)
 	.setPosition(btnX, btnY)
 	.setSize(btnWidth, btnHeight)
