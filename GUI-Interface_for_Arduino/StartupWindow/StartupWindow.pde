@@ -6,10 +6,9 @@ import controlP5.*; // using ControlP5 library for building the gui
 ControlP5 gui; // variable for controlling gui components
 float atWidth; // at which a line will appear
 float btnX, btnY, btnHeight, btnWidth; // button parameters
-float inpX, inpY, inpH, inpW; // input parameters
+float inpX, inpY, inpH, inpW, colorCode; // input parameters
 
 void setup() {
-
 
   createGraph1();
   noLoop();
@@ -29,15 +28,23 @@ void setup() {
   // set input parameters for input 1 : i.e. speed
   inpX = 0.80 * width;
   inpY = 0.20 * height;
-  inpH = 0.15 * height;
+  inpH = 0.06 * height;
   inpW = 0.15 * width;
-
+  colorCode = 255;
 
   gui = new ControlP5(this); // gui controller which will add buttons, sliders etc
 
   createButton( (int) btnX, (int) btnY, (int) btnHeight, (int) btnWidth, gui);
 
-  createInput("Speed", (int) inpX, (int) inpY, (int) inpH, (int) inpW, gui);
+  createInput("Speed", (int) inpX, (int) inpY, (int) inpH, (int) inpW, (int) colorCode, gui);
+
+  inpY = 0.31 * height;
+
+  createInput("Length", (int) inpX, (int) inpY, (int) inpH, (int) inpW, (int) colorCode, gui);
+
+  inpY = 0.42 * height;
+
+  createInput("Breadth", (int) inpX, (int) inpY, (int) inpH, (int) inpW, (int) colorCode, gui);
 }
 
 void draw() {
