@@ -1,0 +1,1 @@
+Usually component diagrams are supposed to be high level however our project software did not involve many high level components(most are low level), so I've created a comparatively lower level component diagram.
