@@ -18,7 +18,7 @@ int myColor = color(255);
 int c1,c2;
 
 float n,n1;
-
+int time;
 
 
 void setup() {
@@ -52,7 +52,7 @@ hide_controls();
 
 
      
-     
+     time=millis();
      
 
 }
@@ -60,13 +60,9 @@ hide_controls();
 
 void draw() {
   background(0,0,0);
-  myColor = lerpColor(c1,c2,n);
-  n += (1-n)* 0.1; 
-  
-  
-  fill(255);
+if((millis()-time)>5000)
+{lock_all();}
 
-  //text(0, 360,180);
 }
 void choose_mode(int n) {
 
@@ -267,6 +263,28 @@ void add_inputs()
        cp5.get(Textfield.class,"no_of_cycles").setInputFilter(ControlP5.FLOAT);
      cp5.get(Textfield.class,"initial_distance").setInputFilter(ControlP5.FLOAT);
      
+     
+     
        
   
+}
+
+void lock_all()
+{cp5.get(Textfield.class,"width").lock();
+cp5.get(Textfield.class,"length").lock();
+cp5.get(Textfield.class,"thickness").lock();
+cp5.get(Textfield.class,"speed").lock();
+cp5.get(Textfield.class,"no_of_cycles").lock();
+cp5.get(Textfield.class,"initial_distance").lock();
+
+}
+
+void unlock_all()
+{cp5.get(Textfield.class,"width").unlock();
+cp5.get(Textfield.class,"length").unlock();
+cp5.get(Textfield.class,"thickness").unlock();
+cp5.get(Textfield.class,"speed").unlock();
+cp5.get(Textfield.class,"no_of_cycles").unlock();
+cp5.get(Textfield.class,"initial_distance").unlock();
+
 }
