@@ -19,11 +19,19 @@ int c1,c2;
 
 float n,n1;
 
-
+//float f1,f2;
 
 void setup() {
+  //displayWidth  displayHeight 
+  //f1=displayWidth/1024.0/2;
+  
+  //f2=displayHeight/768.0/2;
+
+  
   
   size(800,600);
+  //surface.setResizable(true);
+  //surface.setSize(int(800*f1),int(600*f2));
   noStroke();
   
   println(Arduino.list());
@@ -38,6 +46,7 @@ void setup() {
  add_controls();
      
      add_inputs();
+     add_live_panel();
 
 
 
@@ -95,6 +104,102 @@ public void fix_input() {
 
 
 //HELPER FUNCTIONS
+void add_live_panel()
+{
+  
+  //https://forum.processing.org/two/discussion/24244/controlp5-textfield-background-colour
+  
+     cp5.addTextfield("distance")
+     .setPosition(600,350)
+     .setSize(50,20)
+     .setFont(createFont("arial",15))
+     .setAutoClear(false)
+     .setCaptionLabel("Distance:")
+     .getCaptionLabel()
+     .toUpperCase(false)
+     .align(ControlP5.LEFT_OUTSIDE, CENTER)
+  
+     .setFont(createFont("arial",15))
+     .getStyle().setPaddingLeft(-10);
+     
+     
+     
+     cp5.addTextfield("load")
+     .setPosition(725,350)
+     .setSize(50,20)
+     .setFont(createFont("arial",15))
+     .setAutoClear(false)
+     .setCaptionLabel("Load:")
+     .getCaptionLabel()
+     .toUpperCase(false)
+     .align(ControlP5.LEFT_OUTSIDE, CENTER)
+  
+     .setFont(createFont("arial",15))
+     .getStyle().setPaddingLeft(-10);
+     
+     
+     
+      cp5.addTextfield("strain")
+     .setPosition(600,400)
+     .setSize(50,20)
+     .setFont(createFont("arial",15))
+     .setAutoClear(false)
+     .setCaptionLabel("Strain:")
+     .getCaptionLabel()
+     .toUpperCase(false)
+     .align(ControlP5.LEFT_OUTSIDE, CENTER)
+  
+     .setFont(createFont("arial",15))
+     .getStyle().setPaddingLeft(-10);
+     
+     
+     
+     cp5.addTextfield("stress")
+     .setPosition(725,400)
+     .setSize(50,20)
+     .setFont(createFont("arial",15))
+     .setAutoClear(false)
+     .setCaptionLabel("Stress:")
+     .getCaptionLabel()
+     .toUpperCase(false)
+     .align(ControlP5.LEFT_OUTSIDE, CENTER)
+  
+     .setFont(createFont("arial",15))
+     .getStyle().setPaddingLeft(10);
+     
+     
+     
+     
+     
+     cp5.get(Textfield.class,"distance").lock();
+cp5.get(Textfield.class,"load").lock();
+cp5.get(Textfield.class,"strain").lock();
+cp5.get(Textfield.class,"stress").lock();
+
+
+
+
+     cp5.get(Textfield.class,"distance").setColorBackground(0xfffaddff);// 0xff followed by hex value of color
+cp5.get(Textfield.class,"load").setColorBackground(0xfffaddff);
+cp5.get(Textfield.class,"strain").setColorBackground(0xfffaddff);
+cp5.get(Textfield.class,"stress").setColorBackground(0xfffaddff);
+
+
+  cp5.get(Textfield.class,"distance").setColorValue(0xff000000);// 0xff followed by hex value of color
+cp5.get(Textfield.class,"load").setColorValue(0xff000000);
+cp5.get(Textfield.class,"strain").setColorValue(0xff000000);
+cp5.get(Textfield.class,"stress").setColorValue(0xff000000);
+
+
+     cp5.get(Textfield.class,"distance").setValue(String.valueOf(0.0));
+cp5.get(Textfield.class,"load").setValue(String.valueOf(0.0));
+cp5.get(Textfield.class,"strain").setValue(String.valueOf(0.0));
+cp5.get(Textfield.class,"stress").setValue(String.valueOf(0.0));
+
+
+  
+}
+
 
 void hide_controls()
 
@@ -108,8 +213,10 @@ cp5.getController("pause_cycles").hide();}
 void add_controls()
 { // Top controls
    cp5.addBang("reset")
+     //.setPosition(500*f1,20*f2)
+     //.setSize(int(60*f1),int(19*f2))
      .setPosition(500,20)
-     .setSize(60,19)
+     .setSize(int(60),int(19))
      .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
 
      ;
