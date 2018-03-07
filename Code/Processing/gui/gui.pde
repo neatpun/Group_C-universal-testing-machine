@@ -18,7 +18,7 @@ int myColor = color(255);
 int c1,c2;
 
 float n,n1;
-int time;
+
 
 
 void setup() {
@@ -51,19 +51,22 @@ hide_controls();
                  
 
 
-     
-     time=millis();
-     
+
 
 }
 
 
 void draw() {
   background(0,0,0);
-if((millis()-time)>5000)
-{lock_all();}
+
 
 }
+
+
+
+
+//CONTROL EVENTS
+
 void choose_mode(int n) {
 
   hide_controls();
@@ -73,45 +76,25 @@ cp5.getController("pause").show();
 cp5.getController("down").show();}
   else if(n==1)
   {cp5.getController("run").show();
-cp5.getController("pause cycles").show();}
+cp5.getController("pause_cycles").show();}
 
 
   
 }
 
-public void run() {
-  cp5.get(Textfield.class,"cycles_input").clear();
-}
-
-// function colorA will receive changes from 
-// controller with name colorA
-public void resume() {
-  println("a button event from colorA: ");
-  c1 = c2;
-  c2 = color(0,160,100);
-  delay(1000);
-}
-
-// function colorB will receive changes from 
-// controller with name colorB
-public void pause() {
-  println("a button event from colorB: ");
-  c1 = c2;
-  c2 = color(150,0,0);
-}
-
-// function colorC will receive changes from 
-// controller with name colorC
-public void change_direction() {
-  println("a button event from colorC: ");
-  c1 = c2;
-  c2 = color(255,255,0);
+public void fix_input() {
+  lock_all();
 }
 
 
 
 
 
+
+
+
+
+//HELPER FUNCTIONS
 
 void hide_controls()
 
@@ -120,7 +103,7 @@ cp5.getController("down").hide();
 cp5.getController("pause").hide();
 
 cp5.getController("run").hide();
-cp5.getController("pause cycles").hide();}
+cp5.getController("pause_cycles").hide();}
 
 void add_controls()
 { // Top controls
@@ -177,14 +160,29 @@ void add_controls()
      ;
   
 
-  cp5.addBang("pause cycles")
+  cp5.addBang("pause_cycles")
 
      .setPosition(500,120)
      .setSize(200,19)
      .setCaptionLabel("Pause")
      .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
      //.toUpperCase(false)
-     ;}
+     ;
+   
+ 
+ //BOTTOM controls
+ 
+  cp5.addBang("fix_input")
+     .setPosition(160,500)
+     .setSize(95,20)
+     .setCaptionLabel("Fix Input")
+     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+
+     ;
+ 
+ 
+ 
+ }
      
 void add_inputs()
 {
