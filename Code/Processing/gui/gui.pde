@@ -37,26 +37,20 @@ void setup() {
   
  add_controls();
      
+     add_inputs();
 
-     
-       //PFont font = createFont("arial",20);
 
-  
-
-                 
-  //cp5.addTextfield("cycles_input")
-  //   .setPosition(20,170)
-  //   .setSize(200,40)
-  //   .setFont(createFont("arial",20))
-  //   .setAutoClear(false)
-  //   ;
-       
 
   
 
 hide_controls();
      
-  //textFont(font);
+     
+  
+
+                 
+
+
      
      
      
@@ -65,7 +59,7 @@ hide_controls();
 
 
 void draw() {
-  background(250,180,220);
+  background(0,0,0);
   myColor = lerpColor(c1,c2,n);
   n += (1-n)* 0.1; 
   
@@ -195,3 +189,41 @@ void add_controls()
      .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
      //.toUpperCase(false)
      ;}
+     
+void add_inputs()
+{
+  
+    cp5.addTextfield("width")
+     .setPosition(20,350)
+     .setSize(75,20)
+     .setFont(createFont("arial",20))
+     .setAutoClear(false)
+     .setCaptionLabel("Width")
+     .getCaptionLabel()
+     .toUpperCase(false)
+     .setFont(createFont("arial",15))
+     ;
+     cp5.addTextfield("length")
+ .setPosition(170,350)
+    .setSize(75,20)
+     .setFont(createFont("arial",20))
+     .setAutoClear(false)
+     .setCaptionLabel("Length")
+     .getCaptionLabel()
+     .toUpperCase(false)
+     .setFont(createFont("arial",15))
+     ;
+     cp5.addTextfield("thickness")
+ .setPosition(320,350)
+      .setSize(75,20)
+     .setFont(createFont("arial",20))
+     .setAutoClear(false)
+     .setCaptionLabel("Thickness")
+     .getCaptionLabel()
+     .toUpperCase(false)
+     .setFont(createFont("arial",15))
+     ;
+     
+       
+  
+}
