@@ -68,7 +68,7 @@ void draw() {
 
   //text(0, 360,180);
 }
-void dropdown(int n) {
+void choose_mode(int n) {
 
   hide_controls();
   if(n==0)
@@ -138,7 +138,7 @@ void add_controls()
      
        List l = Arrays.asList("Manual", "Cycles");
 
-  cp5.addScrollableList("dropdown")
+  cp5.addScrollableList("choose_mode")
      .setPosition(590, 20)
      .setSize(200, 100)
      .setBarHeight(20)
@@ -224,6 +224,37 @@ void add_inputs()
      .setFont(createFont("arial",15))
      ;
      
+     
+        cp5.addTextfield("speed")
+     .setPosition(20,420)
+     .setSize(75,20)
+     .setFont(createFont("arial",20))
+     .setAutoClear(false)
+     .setCaptionLabel("Speed")
+     .getCaptionLabel()
+     .toUpperCase(false)
+     .setFont(createFont("arial",15))
+     ;
+     cp5.addTextfield("no_of_cycles")
+ .setPosition(170,420)
+    .setSize(75,20)
+     .setFont(createFont("arial",20))
+     .setAutoClear(false)
+     .setCaptionLabel("No. of cycles")
+     .getCaptionLabel()
+     .toUpperCase(false)
+     .setFont(createFont("arial",15))
+     ;
+     cp5.addTextfield("initial_distance")
+ .setPosition(320,420)
+      .setSize(75,20)
+     .setFont(createFont("arial",20))
+     .setAutoClear(false)
+     .setCaptionLabel("Initial distance (stretch)")
+     .getCaptionLabel()
+     .toUpperCase(false)
+     .setFont(createFont("arial",15))
+     ;
        
   
 }
