@@ -85,7 +85,9 @@ cp5.getController("pause").show();
 cp5.getController("down").show();}
   else if(n==1)
   {cp5.getController("run").show();
-cp5.getController("pause_cycles").show();}
+cp5.getController("pause_cycles").show();
+cp5.getController("cycle_length").show();
+}
 
 
   
@@ -93,8 +95,11 @@ cp5.getController("pause_cycles").show();}
 
 public void fix_input() {
   lock_all();
-}
 
+
+}
+public void reset()
+{unlock_all();}
 
 
 
@@ -208,7 +213,8 @@ cp5.getController("down").hide();
 cp5.getController("pause").hide();
 
 cp5.getController("run").hide();
-cp5.getController("pause_cycles").hide();}
+cp5.getController("pause_cycles").hide();
+cp5.getController("cycle_length").hide();}
 
 void add_controls()
 { // Top controls
@@ -259,9 +265,22 @@ void add_controls()
      
      //Cycle Controls
      
+     cp5.addTextfield("cycle_length")
+     .setPosition(600,80)
+     .setSize(50,20)
+     .setFont(createFont("arial",15))
+     .setAutoClear(false)
+     .setCaptionLabel("Cycle length:")
+     .getCaptionLabel()
+     .toUpperCase(false)
+     .align(ControlP5.LEFT_OUTSIDE, CENTER)
+  
+     .setFont(createFont("arial",15))
+     .getStyle().setPaddingLeft(-10);
+     
        cp5.addBang("run")
 
-     .setPosition(500,100)
+     .setPosition(500,120)
      .setSize(200,19)
      .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
      ;
@@ -269,7 +288,7 @@ void add_controls()
 
   cp5.addBang("pause_cycles")
 
-     .setPosition(500,120)
+     .setPosition(500,140)
      .setSize(200,19)
      .setCaptionLabel("Pause")
      .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
@@ -380,21 +399,56 @@ void add_inputs()
 }
 
 void lock_all()
-{cp5.get(Textfield.class,"width").lock();
+{  
+  cp5.get(Textfield.class,"width").lock();
 cp5.get(Textfield.class,"length").lock();
 cp5.get(Textfield.class,"thickness").lock();
 cp5.get(Textfield.class,"speed").lock();
 cp5.get(Textfield.class,"no_of_cycles").lock();
 cp5.get(Textfield.class,"initial_distance").lock();
 
+
+  cp5.get(Textfield.class,"width").setColorBackground(0xff1381d6);
+cp5.get(Textfield.class,"length").setColorBackground(0xff1381d6);
+cp5.get(Textfield.class,"thickness").setColorBackground(0xff1381d6);
+cp5.get(Textfield.class,"speed").setColorBackground(0xff1381d6);
+cp5.get(Textfield.class,"no_of_cycles").setColorBackground(0xff1381d6);
+cp5.get(Textfield.class,"initial_distance").setColorBackground(0xff1381d6);
+
+
+
+  cp5.get(Textfield.class,"width").setColorValue(0xff000000);
+cp5.get(Textfield.class,"length").setColorValue(0xff000000);
+cp5.get(Textfield.class,"thickness").setColorValue(0xff000000);
+cp5.get(Textfield.class,"speed").setColorValue(0xff000000);
+cp5.get(Textfield.class,"no_of_cycles").setColorValue(0xff000000);
+cp5.get(Textfield.class,"initial_distance").setColorValue(0xff000000);
+
 }
 
 void unlock_all()
-{cp5.get(Textfield.class,"width").unlock();
+{
+  cp5.get(Textfield.class,"width").unlock();
 cp5.get(Textfield.class,"length").unlock();
 cp5.get(Textfield.class,"thickness").unlock();
 cp5.get(Textfield.class,"speed").unlock();
 cp5.get(Textfield.class,"no_of_cycles").unlock();
 cp5.get(Textfield.class,"initial_distance").unlock();
+
+  cp5.get(Textfield.class,"width").setColorBackground(0xff002D5A);
+cp5.get(Textfield.class,"length").setColorBackground(0xff002D5A);
+cp5.get(Textfield.class,"thickness").setColorBackground(0xff002D5A);
+cp5.get(Textfield.class,"speed").setColorBackground(0xff002D5A);
+cp5.get(Textfield.class,"no_of_cycles").setColorBackground(0xff002D5A);
+cp5.get(Textfield.class,"initial_distance").setColorBackground(0xff002D5A);
+
+
+
+  cp5.get(Textfield.class,"width").setColorValue(0xffffffff);
+cp5.get(Textfield.class,"length").setColorValue(0xffffffff);
+cp5.get(Textfield.class,"thickness").setColorValue(0xffffffff);
+cp5.get(Textfield.class,"speed").setColorValue(0xffffffff);
+cp5.get(Textfield.class,"no_of_cycles").setColorValue(0xffffffff);
+cp5.get(Textfield.class,"initial_distance").setColorValue(0xffffffff);
 
 }
