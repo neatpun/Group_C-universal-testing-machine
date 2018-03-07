@@ -203,6 +203,9 @@ void add_inputs()
      .toUpperCase(false)
      .setFont(createFont("arial",15))
      ;
+     
+    
+     
      cp5.addTextfield("length")
  .setPosition(170,350)
     .setSize(75,20)
@@ -213,6 +216,8 @@ void add_inputs()
      .toUpperCase(false)
      .setFont(createFont("arial",15))
      ;
+    
+     
      cp5.addTextfield("thickness")
  .setPosition(320,350)
       .setSize(75,20)
@@ -255,6 +260,13 @@ void add_inputs()
      .toUpperCase(false)
      .setFont(createFont("arial",15))
      ;
+       cp5.get(Textfield.class,"width").setInputFilter(ControlP5.FLOAT);
+     cp5.get(Textfield.class,"length").setInputFilter(ControlP5.FLOAT);
+       cp5.get(Textfield.class,"thickness").setInputFilter(ControlP5.FLOAT);
+     cp5.get(Textfield.class,"speed").setInputFilter(ControlP5.FLOAT);
+       cp5.get(Textfield.class,"no_of_cycles").setInputFilter(ControlP5.FLOAT);
+     cp5.get(Textfield.class,"initial_distance").setInputFilter(ControlP5.FLOAT);
+     
        
   
 }
