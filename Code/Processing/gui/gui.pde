@@ -165,7 +165,7 @@ void add_live_panel()
      .align(ControlP5.LEFT_OUTSIDE, CENTER)
   
      .setFont(createFont("arial",15))
-     .getStyle().setPaddingLeft(10);
+     .getStyle().setPaddingLeft(-10);
      
      
      
@@ -297,7 +297,7 @@ void add_inputs()
     cp5.addTextfield("width")
      .setPosition(20,350)
      .setSize(75,20)
-     .setFont(createFont("arial",20))
+     .setFont(createFont("arial",15))
      .setAutoClear(false)
      .setCaptionLabel("Width")
      .getCaptionLabel()
@@ -310,7 +310,7 @@ void add_inputs()
      cp5.addTextfield("length")
  .setPosition(170,350)
     .setSize(75,20)
-     .setFont(createFont("arial",20))
+     .setFont(createFont("arial",15))
      .setAutoClear(false)
      .setCaptionLabel("Length")
      .getCaptionLabel()
@@ -322,7 +322,7 @@ void add_inputs()
      cp5.addTextfield("thickness")
  .setPosition(320,350)
       .setSize(75,20)
-     .setFont(createFont("arial",20))
+     .setFont(createFont("arial",15))
      .setAutoClear(false)
      .setCaptionLabel("Thickness")
      .getCaptionLabel()
@@ -334,7 +334,7 @@ void add_inputs()
         cp5.addTextfield("speed")
      .setPosition(20,420)
      .setSize(75,20)
-     .setFont(createFont("arial",20))
+     .setFont(createFont("arial",15))
      .setAutoClear(false)
      .setCaptionLabel("Speed")
      .getCaptionLabel()
@@ -344,7 +344,7 @@ void add_inputs()
      cp5.addTextfield("no_of_cycles")
  .setPosition(170,420)
     .setSize(75,20)
-     .setFont(createFont("arial",20))
+     .setFont(createFont("arial",15))
      .setAutoClear(false)
      .setCaptionLabel("No. of cycles")
      .getCaptionLabel()
@@ -354,12 +354,13 @@ void add_inputs()
      cp5.addTextfield("initial_distance")
  .setPosition(320,420)
       .setSize(75,20)
-     .setFont(createFont("arial",20))
+     .setFont(createFont("arial",15))
      .setAutoClear(false)
      .setCaptionLabel("Initial distance (stretch)")
      .getCaptionLabel()
      .toUpperCase(false)
      .setFont(createFont("arial",15))
+     
      ;
        cp5.get(Textfield.class,"width").setInputFilter(ControlP5.FLOAT);
      cp5.get(Textfield.class,"length").setInputFilter(ControlP5.FLOAT);
@@ -367,6 +368,10 @@ void add_inputs()
      cp5.get(Textfield.class,"speed").setInputFilter(ControlP5.FLOAT);
        cp5.get(Textfield.class,"no_of_cycles").setInputFilter(ControlP5.FLOAT);
      cp5.get(Textfield.class,"initial_distance").setInputFilter(ControlP5.FLOAT);
+     
+     
+     
+      cp5.get(Textfield.class,"initial_distance").setValue(String.valueOf(0.0));
      
      
      
