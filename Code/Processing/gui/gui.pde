@@ -35,7 +35,7 @@ void setup() {
   noStroke();
   
   println(Arduino.list());
-  arduino = new Arduino(this, Arduino.list()[0], 57600);
+  //arduino = new Arduino(this, Arduino.list()[0], 57600);
   // arduino.analogWrite(9, constrain(mouseX / 2, 0, 255));
   //arduino.pinMode(i, Arduino.OUTPUT);
   //    arduino.pinMode(i, Arduino.INPUT);
@@ -284,6 +284,8 @@ void add_controls()
      .setSize(200,19)
      .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
      ;
+     
+     cp5.get(Textfield.class,"cycle_length").setInputFilter(ControlP5.FLOAT);
   
 
   cp5.addBang("pause_cycles")
