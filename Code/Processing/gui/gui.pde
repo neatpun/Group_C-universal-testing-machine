@@ -6,8 +6,18 @@
 import cc.arduino.*;
 
 Arduino arduino;
+//--VARIABLES
+//ASSUMPTION: speed between 0 to 255    ; You start from the bottom with distance =0 ; DISTANCE scaling remaining
+
+int speed_slider;
+String mode="initial";
+int event_time;
+float distance=0;
+float velocity;
 
 
+
+//VARIABLES--
 import controlP5.*;
 import java.util.*;
 
@@ -41,6 +51,10 @@ void setup() {
   //    arduino.pinMode(i, Arduino.INPUT);
   //arduino.analogRead(i)
   // arduino.digitalWrite(pin, Arduino.HIGH);
+  
+   //for (int i = 0; i <= 13; i++)
+ //arduino.pinMode(i, Arduino.OUTPUT);
+ 
   cp5 = new ControlP5(this);
   
  add_controls();
@@ -79,14 +93,23 @@ void draw() {
 void choose_mode(int n) {
 
   hide_controls();
+  distance=0;
+    cp5.get(ScrollableList.class,"choose_mode").hide(); // LOCK NOT WORKING , why??
+      cp5.get(ScrollableList.class,"choose_mode").setColorBackground(0xff1381d6);
+  cp5.get(ScrollableList.class,"choose_mode").setColorValue(0xff000000);
   if(n==0)
   {cp5.getController("up").show();
 cp5.getController("pause").show();
-cp5.getController("down").show();}
+cp5.getController("down").show();
+mode="manual_begin";
+
+}
   else if(n==1)
   {cp5.getController("run").show();
 cp5.getController("pause_cycles").show();
 cp5.getController("cycle_length").show();
+mode="cycle_begin";
+
 }
 
 
@@ -95,11 +118,44 @@ cp5.getController("cycle_length").show();
 
 public void fix_input() {
   lock_all();
+  
+  //cp5.get(Textfield.class,"speed").getText();
 
 
 }
 public void reset()
-{unlock_all();}
+{unlock_all();
+  cp5.get(ScrollableList.class,"choose_mode").show();
+  
+  cp5.get(Textfield.class,"width").setColorBackground(0xff002D5A);
+  cp5.get(Textfield.class,"width").setColorValue(0xffffffff);
+}
+
+
+//FUNCTIONALITY
+
+public void up()
+{
+if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual"; //arduino.analogWrite(10, speed_slider);
+}
+else if ( mode.equals("cycle_begin")  ) {event_time=millis(); mode="cycle"; //arduino.analogWrite(10, speed_slider);
+}
+else {distance+=velocity*(millis()-event_time);}
+
+//motor control
+ if(mode.equals("manual_pause")) {//arduino.analogWrite(10, speed_slider);
+ mode="manual";}
+ 
+ //arduino.digitalWrite(8, 1);
+ //arduino.digitalWrite(7, 0);
+ 
+event_time=millis();
+cp5.get(Textlabel.class,"debug").setText(Integer.toString(speed_slider));
+
+velocity=speed_slider;
+
+}
+
 
 
 
@@ -113,6 +169,13 @@ void add_live_panel()
 {
   
   //https://forum.processing.org/two/discussion/24244/controlp5-textfield-background-colour
+  
+  cp5.addTextlabel("debug")
+                    .setText("This will show stuff")
+                    .setPosition(20,300)
+                    .setColorValue(0xffffff00)
+                    .setFont(createFont("Georgia",15))
+                    ;
   
      cp5.addTextfield("distance")
      .setPosition(600,350)
@@ -352,16 +415,26 @@ void add_inputs()
      ;
      
      
-        cp5.addTextfield("speed")
-     .setPosition(20,420)
-     .setSize(75,20)
-     .setFont(createFont("arial",15))
-     .setAutoClear(false)
-     .setCaptionLabel("Speed")
-     .getCaptionLabel()
-     .toUpperCase(false)
-     .setFont(createFont("arial",15))
-     ;
+     //   cp5.addTextfield("speed")
+     //.setPosition(20,420)
+     //.setSize(75,20)
+     //.setFont(createFont("arial",15))
+     //.setAutoClear(false)
+     //.setCaptionLabel("Speed")
+     //.getCaptionLabel()
+     //.toUpperCase(false)
+     //.setFont(createFont("arial",15))
+     //;
+     
+      cp5.addSlider("speed_slider")
+       .setPosition(20,421)
+     .setRange(0,255)
+     .setSize(100,20)
+      .getCaptionLabel()
+      .toUpperCase(false)
+      .setFont(createFont("arial",15))
+      .align(ControlP5.LEFT, ControlP5.BOTTOM_OUTSIDE);
+      
      cp5.addTextfield("no_of_cycles")
  .setPosition(170,420)
     .setSize(75,20)
@@ -386,7 +459,7 @@ void add_inputs()
        cp5.get(Textfield.class,"width").setInputFilter(ControlP5.FLOAT);
      cp5.get(Textfield.class,"length").setInputFilter(ControlP5.FLOAT);
        cp5.get(Textfield.class,"thickness").setInputFilter(ControlP5.FLOAT);
-     cp5.get(Textfield.class,"speed").setInputFilter(ControlP5.FLOAT);
+     //cp5.get(Textfield.class,"speed").setInputFilter(ControlP5.FLOAT);
        cp5.get(Textfield.class,"no_of_cycles").setInputFilter(ControlP5.FLOAT);
      cp5.get(Textfield.class,"initial_distance").setInputFilter(ControlP5.FLOAT);
      
@@ -405,7 +478,7 @@ void lock_all()
   cp5.get(Textfield.class,"width").lock();
 cp5.get(Textfield.class,"length").lock();
 cp5.get(Textfield.class,"thickness").lock();
-cp5.get(Textfield.class,"speed").lock();
+cp5.get(Slider.class,"speed_slider").lock();
 cp5.get(Textfield.class,"no_of_cycles").lock();
 cp5.get(Textfield.class,"initial_distance").lock();
 
@@ -413,7 +486,7 @@ cp5.get(Textfield.class,"initial_distance").lock();
   cp5.get(Textfield.class,"width").setColorBackground(0xff1381d6);
 cp5.get(Textfield.class,"length").setColorBackground(0xff1381d6);
 cp5.get(Textfield.class,"thickness").setColorBackground(0xff1381d6);
-cp5.get(Textfield.class,"speed").setColorBackground(0xff1381d6);
+cp5.get(Slider.class,"speed_slider").setColorBackground(0xff1381d6);
 cp5.get(Textfield.class,"no_of_cycles").setColorBackground(0xff1381d6);
 cp5.get(Textfield.class,"initial_distance").setColorBackground(0xff1381d6);
 
@@ -422,7 +495,7 @@ cp5.get(Textfield.class,"initial_distance").setColorBackground(0xff1381d6);
   cp5.get(Textfield.class,"width").setColorValue(0xff000000);
 cp5.get(Textfield.class,"length").setColorValue(0xff000000);
 cp5.get(Textfield.class,"thickness").setColorValue(0xff000000);
-cp5.get(Textfield.class,"speed").setColorValue(0xff000000);
+cp5.get(Slider.class,"speed_slider").setColorValue(0xff000000);
 cp5.get(Textfield.class,"no_of_cycles").setColorValue(0xff000000);
 cp5.get(Textfield.class,"initial_distance").setColorValue(0xff000000);
 
@@ -433,14 +506,14 @@ void unlock_all()
   cp5.get(Textfield.class,"width").unlock();
 cp5.get(Textfield.class,"length").unlock();
 cp5.get(Textfield.class,"thickness").unlock();
-cp5.get(Textfield.class,"speed").unlock();
+cp5.get(Slider.class,"speed_slider").unlock();
 cp5.get(Textfield.class,"no_of_cycles").unlock();
 cp5.get(Textfield.class,"initial_distance").unlock();
 
   cp5.get(Textfield.class,"width").setColorBackground(0xff002D5A);
 cp5.get(Textfield.class,"length").setColorBackground(0xff002D5A);
 cp5.get(Textfield.class,"thickness").setColorBackground(0xff002D5A);
-cp5.get(Textfield.class,"speed").setColorBackground(0xff002D5A);
+cp5.get(Slider.class,"speed_slider").setColorBackground(0xff002D5A);
 cp5.get(Textfield.class,"no_of_cycles").setColorBackground(0xff002D5A);
 cp5.get(Textfield.class,"initial_distance").setColorBackground(0xff002D5A);
 
@@ -449,7 +522,7 @@ cp5.get(Textfield.class,"initial_distance").setColorBackground(0xff002D5A);
   cp5.get(Textfield.class,"width").setColorValue(0xffffffff);
 cp5.get(Textfield.class,"length").setColorValue(0xffffffff);
 cp5.get(Textfield.class,"thickness").setColorValue(0xffffffff);
-cp5.get(Textfield.class,"speed").setColorValue(0xffffffff);
+cp5.get(Slider.class,"speed_slider").setColorValue(0xffffffff);
 cp5.get(Textfield.class,"no_of_cycles").setColorValue(0xffffffff);
 cp5.get(Textfield.class,"initial_distance").setColorValue(0xffffffff);
 
