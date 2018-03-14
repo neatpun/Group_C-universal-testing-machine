@@ -12,10 +12,11 @@ Arduino arduino;
 int speed_slider;
 String mode="initial";
 int event_time;
-float distance=0;
-float velocity;
+double distance=0;
+double velocity;
 String current_direction;
-
+double MAX_UP;
+double MIN_DOWN;
 
 
 //VARIABLES--
@@ -113,6 +114,15 @@ mode="cycle_begin";
 
 }
 
+else if(n==2)
+  {cp5.getController("up3").show();
+cp5.getController("pause3").show();
+cp5.getController("down3").show();
+cp5.getController("set_natural").show();
+mode="3pointcycle_begin";
+
+}
+
 
   
 }
@@ -159,8 +169,8 @@ current_direction="up";
 
 
 velocity=speed_slider;
-cp5.get(Textlabel.class,"debug").setText("dist:"+Float.toString(distance )+ " mode:" + mode 
-+ " dir:"+ current_direction + " vel:"+ Float.toString(velocity) + " event_time:" + event_time);
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(distance )+ " mode:" + mode 
++ " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
 }
 
 public void pause ()
@@ -182,8 +192,8 @@ event_time=millis();
 //When_resumed=current_direction //probs unneccesary 
 
 velocity=0;
-cp5.get(Textlabel.class,"debug").setText("dist:"+Float.toString(distance )+ " mode:" + mode 
-+ " dir:"+ current_direction + " vel:"+ Float.toString(velocity) + " event_time:" + event_time);
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(distance )+ " mode:" + mode 
++ " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
 }
 
 
@@ -212,10 +222,127 @@ current_direction="down";
 
 
 velocity=-speed_slider;
-cp5.get(Textlabel.class,"debug").setText("dist:"+Float.toString(distance )+ " mode:" + mode 
-+ " dir:"+ current_direction + " vel:"+ Float.toString(velocity) + " event_time:" + event_time);
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(distance )+ " mode:" + mode 
++ " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
 }
 
+
+
+
+
+
+
+//3POINTCYCLE
+
+
+public void up3()
+{
+if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle"; //arduino.analogWrite(10, speed_slider);
+}
+
+else {distance+=velocity*(millis()-event_time)/1000;}
+
+
+ 
+ //arduino.digitalWrite(8, 1);
+ //arduino.digitalWrite(7, 0);
+ 
+event_time=millis();
+
+
+
+
+current_direction="up";
+
+
+velocity=speed_slider;
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(distance )+ " mode:" + mode 
++ " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
+}
+
+public void pause3 ()
+{
+  
+distance+=velocity*(millis()-event_time)/1000;
+
+
+//arduino.analogWrite(10, 0); //motor pause control
+//better yet
+//arduino.digitalWrite(8, 0);
+ //arduino.digitalWrite(7, 0);
+ 
+
+mode="manual_pause";
+
+event_time=millis();
+
+//When_resumed=current_direction //probs unneccesary 
+
+velocity=0;
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(distance )+ " mode:" + mode 
++ " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
+}
+
+
+
+public void down3()
+{
+if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="manual"; //arduino.analogWrite(10, speed_slider);
+}
+else if ( mode.equals("cycle_begin")  ) {event_time=millis(); mode="cycle"; //arduino.analogWrite(10, speed_slider);
+}
+else {distance+=velocity*(millis()-event_time)/1000;}
+
+//motor control
+ if(mode.equals("manual_pause")) {//arduino.analogWrite(10, speed_slider); MAY NOT BE NECCESARRY
+ mode="manual";}
+ 
+ //arduino.digitalWrite(8, 0);
+ //arduino.digitalWrite(7, 1);
+ 
+event_time=millis();
+
+
+
+
+current_direction="down";
+
+
+velocity=-speed_slider;
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(distance )+ " mode:" + mode 
++ " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
+}
+
+
+public void set_natural()
+{
+distance=0;
+
+cp5.getController("set_natural").hide();
+cp5.getController("set_up").show();
+}
+public void set_up()
+{
+MAX_UP=distance;
+
+cp5.getController("set_up").hide();
+cp5.getController("set_down").show();
+}
+public void set_down()
+{
+MIN_DOWN=distance;
+
+
+cp5.getController("set_down").hide();
+cp5.getController("up3").hide();
+cp5.getController("down3").hide();
+cp5.getController("pause3").hide();
+
+mode="MAIN_CYCLE_BEGIN";
+cp5.getController("run3").show();
+cp5.getController("pause_cycles3").show();
+
+}
 
 
 
@@ -333,7 +460,19 @@ cp5.getController("pause").hide();
 
 cp5.getController("run").hide();
 cp5.getController("pause_cycles").hide();
-cp5.getController("cycle_length").hide();}
+cp5.getController("cycle_length").hide();
+
+cp5.getController("up3").hide();
+cp5.getController("down3").hide();
+cp5.getController("pause3").hide();
+cp5.getController("set_up").hide();
+cp5.getController("set_natural").hide();
+cp5.getController("set_down").hide();
+cp5.getController("run3").hide();
+cp5.getController("pause_cycles3").hide();
+
+
+}
 
 void add_controls()
 { // Top controls
@@ -347,7 +486,7 @@ void add_controls()
      ;
      
      
-       List l = Arrays.asList("Manual", "Cycles");
+       List l = Arrays.asList("Manual", "Cycles","3pointcycle");
 
   cp5.addScrollableList("choose_mode")
      .setPosition(590, 20)
@@ -415,8 +554,79 @@ void add_controls()
      .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
      //.toUpperCase(false)
      ;
+   //3POINTCYCLE
    
+    cp5.addBang("up3")
+
+     .setPosition(500,100)
+     .setSize(200,19)
+     .setCaptionLabel("UP")
+     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+     ;
+  
+  cp5.addBang("pause3")
+
+     .setPosition(500,120)
+     .setSize(200,19)
+     .setCaptionLabel("PAUSE")
+     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+     ;
+     
+  cp5.addBang("down3")
+     .setPosition(500,140)
+     .setSize(200,19)
+     .setCaptionLabel("DOWN")
+     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+
+     ;
+     
+     cp5.addBang("set_natural")
+
+     .setPosition(500,60)
+     .setSize(200,19)
+     .setCaptionLabel("Set natural point")
+     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+     ;
+     
+     cp5.addBang("set_up")
+
+     .setPosition(500,60)
+     .setSize(200,19)
+     .setCaptionLabel("Set uppermost point")
+     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+     ;
  
+ 
+ cp5.addBang("set_down")
+
+     .setPosition(500,60)
+     .setSize(200,19)
+     .setCaptionLabel("Set lowermost point")
+     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+     ;
+ 
+ 
+ cp5.addBang("run3")
+
+     .setPosition(500,120)
+     .setSize(200,19)
+     .setCaptionLabel("run")
+     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+     ;
+
+  
+
+  cp5.addBang("pause_cycles3")
+
+     .setPosition(500,140)
+     .setSize(200,19)
+     .setCaptionLabel("Pause")
+     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+     //.toUpperCase(false)
+     ;
+     
+     
+     
  //BOTTOM controls
  
   cp5.addBang("fix_input")
