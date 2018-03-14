@@ -14,6 +14,7 @@ String mode="initial";
 int event_time;
 float distance=0;
 float velocity;
+String current_direction;
 
 
 
@@ -143,22 +144,77 @@ else if ( mode.equals("cycle_begin")  ) {event_time=millis(); mode="cycle"; //ar
 else {distance+=velocity*(millis()-event_time);}
 
 //motor control
- if(mode.equals("manual_pause")) {//arduino.analogWrite(10, speed_slider);
+ if(mode.equals("manual_pause")) {//arduino.analogWrite(10, speed_slider); MAY NOT BE NECCESARRY
  mode="manual";}
  
  //arduino.digitalWrite(8, 1);
  //arduino.digitalWrite(7, 0);
  
 event_time=millis();
-cp5.get(Textlabel.class,"debug").setText(Integer.toString(speed_slider));
+
+
+
+
+current_direction="up";
+
 
 velocity=speed_slider;
+cp5.get(Textlabel.class,"debug").setText("dist:"+Float.toString(distance )+ " mode:" + mode 
++ " dir:"+ current_direction + " vel:"+ Float.toString(velocity) + " event_time:" + event_time);
+}
 
+public void pause ()
+{
+  
+distance+=velocity*(millis()-event_time);
+
+
+//arduino.analogWrite(10, 0); //motor pause control
+//better yet
+//arduino.digitalWrite(8, 0);
+ //arduino.digitalWrite(7, 0);
+ 
+
+mode="manual_pause";
+
+event_time=millis();
+
+//When_resumed=current_direction //probs unneccesary 
+
+velocity=0;
+cp5.get(Textlabel.class,"debug").setText("dist:"+Float.toString(distance )+ " mode:" + mode 
++ " dir:"+ current_direction + " vel:"+ Float.toString(velocity) + " event_time:" + event_time);
 }
 
 
 
+public void down()
+{
+if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual"; //arduino.analogWrite(10, speed_slider);
+}
+else if ( mode.equals("cycle_begin")  ) {event_time=millis(); mode="cycle"; //arduino.analogWrite(10, speed_slider);
+}
+else {distance+=velocity*(millis()-event_time);}
 
+//motor control
+ if(mode.equals("manual_pause")) {//arduino.analogWrite(10, speed_slider); MAY NOT BE NECCESARRY
+ mode="manual";}
+ 
+ //arduino.digitalWrite(8, 0);
+ //arduino.digitalWrite(7, 1);
+ 
+event_time=millis();
+
+
+
+
+current_direction="down";
+
+
+velocity=-speed_slider;
+cp5.get(Textlabel.class,"debug").setText("dist:"+Float.toString(distance )+ " mode:" + mode 
++ " dir:"+ current_direction + " vel:"+ Float.toString(velocity) + " event_time:" + event_time);
+}
 
 
 
