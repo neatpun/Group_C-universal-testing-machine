@@ -17,6 +17,9 @@ double velocity;
 String current_direction;
 double MAX_UP;
 double MIN_DOWN;
+int current_cycle;
+int cycles_needed;
+double loadcell_value;
 
 
 //VARIABLES--
@@ -83,6 +86,22 @@ hide_controls();
 
 void draw() {
   background(0,0,0);
+  
+  if(mode=="MAIN_CYCLE_RUNNING")
+  {
+  cycle_control();
+  
+  
+  //loadread
+  loadcell_value=random(10);
+  distance+=velocity*(millis()-event_time);
+  
+  
+  
+  
+  
+  
+  }
 
 
 }
@@ -272,7 +291,7 @@ distance+=velocity*(millis()-event_time)/1000;
  //arduino.digitalWrite(7, 0);
  
 
-mode="manual_pause";
+mode="3pointcycle_pause";
 
 event_time=millis();
 
@@ -287,15 +306,13 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(distance )+ " m
 
 public void down3()
 {
-if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="manual"; //arduino.analogWrite(10, speed_slider);
+if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle"; //arduino.analogWrite(10, speed_slider);
 }
-else if ( mode.equals("cycle_begin")  ) {event_time=millis(); mode="cycle"; //arduino.analogWrite(10, speed_slider);
-}
+
 else {distance+=velocity*(millis()-event_time)/1000;}
 
 //motor control
- if(mode.equals("manual_pause")) {//arduino.analogWrite(10, speed_slider); MAY NOT BE NECCESARRY
- mode="manual";}
+
  
  //arduino.digitalWrite(8, 0);
  //arduino.digitalWrite(7, 1);
@@ -316,13 +333,18 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(distance )+ " m
 
 public void set_natural()
 {
-distance=0;
+  
+  distance=0;
+  pause3 ();
+
+
 
 cp5.getController("set_natural").hide();
 cp5.getController("set_up").show();
 }
 public void set_up()
 {
+  pause3 ();
 MAX_UP=distance;
 
 cp5.getController("set_up").hide();
@@ -330,6 +352,7 @@ cp5.getController("set_down").show();
 }
 public void set_down()
 {
+  pause3 ();
 MIN_DOWN=distance;
 
 
@@ -345,6 +368,179 @@ cp5.getController("pause_cycles3").show();
 }
 
 
+
+
+public void cycle_control()
+{
+  if(mode=="MAIN_CYCLE_RUNNING")
+  {
+    distance+=velocity*(millis()-event_time)/1000;
+    
+    if(current_cycle > cycles_needed)
+    {
+      
+      mode="MAIN_CYCLE_DONE";
+      arduino.analogWrite(10, 0);
+      arduino.digitalWrite(8, 0);
+      arduino.digitalWrite(7, 0);
+      
+      
+    }
+    
+  else if(distance< 0.95*MIN_DOWN)
+  {
+  distance+=velocity*(millis()-event_time)/1000;
+
+//up
+ //arduino.digitalWrite(8, 1);
+ //arduino.digitalWrite(7, 0);
+ 
+event_time=millis();
+current_direction="up";
+
+
+velocity=speed_slider;
+
+current_cycle++;
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(distance )+ " mode:" + mode 
++ " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time + " current_cycle:"+ Double.toString(current_cycle/2) );
+  
+  
+  
+  }
+  else if(distance> 0.95*MAX_UP)
+  {
+    
+    distance+=velocity*(millis()-event_time)/1000;
+
+//down
+ //arduino.digitalWrite(8, 0);
+ //arduino.digitalWrite(7, 1);
+ 
+event_time=millis();
+current_direction="down";
+
+
+velocity=-speed_slider;
+current_cycle++;
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(distance )+ " mode:" + mode 
++ " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time + " current_cycle:"+ Double.toString(current_cycle/2) );
+  
+
+  
+  }
+  
+  
+  }
+}
+
+public void run3()
+{
+  
+  if(mode=="MAIN_CYCLE_BEGIN")
+  {
+    
+    
+      //distance right now is MIN_DOWN
+
+//up
+ //arduino.digitalWrite(8, 1);
+ //arduino.digitalWrite(7, 0);
+ 
+event_time=millis();
+current_direction="up";
+current_cycle=0;
+
+velocity=speed_slider;
+
+
+  
+  mode="MAIN_CYCLE_RUNNING";
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(distance )+ " mode:" + mode 
++ " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
+
+  
+  }
+  
+  else if(mode=="MAIN_CYCLE_PAUSE")
+  {
+    
+    if(current_direction=="up")
+    {
+      
+    distance+=velocity*(millis()-event_time)/1000;
+
+//up
+ //arduino.digitalWrite(8, 1);
+ //arduino.digitalWrite(7, 0);
+ 
+event_time=millis();
+current_direction="up";
+
+
+velocity=speed_slider;
+
+
+  
+  mode="MAIN_CYCLE_RUNNING";
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(distance )+ " mode:" + mode 
++ " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
+  
+
+    }
+    
+    else if(current_direction=="down")
+    {
+      
+
+        distance+=velocity*(millis()-event_time)/1000;
+
+//down
+ //arduino.digitalWrite(8, 0);
+ //arduino.digitalWrite(7, 1);
+ 
+event_time=millis();
+current_direction="down";
+
+
+velocity=-speed_slider;
+
+  
+  mode="MAIN_CYCLE_RUNNING";
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(distance )+ " mode:" + mode 
++ " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
+
+
+    }
+  
+  
+  }
+  
+  
+
+}
+public void pause_cycles3()
+{
+ distance+=velocity*(millis()-event_time)/1000;
+
+
+
+//arduino.digitalWrite(8, 0);
+ //arduino.digitalWrite(7, 0);
+ 
+
+mode="MAIN_CYCLE_PAUSE";
+
+event_time=millis();
+
+
+
+velocity=0;
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(distance )+ " mode:" + mode 
++ " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
+  
+
+}
 
 
 //HELPER FUNCTIONS
