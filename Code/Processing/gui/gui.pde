@@ -1058,7 +1058,7 @@ void add_inputs()
      
      
       cp5.get(Textfield.class,"initial_distance").setValue(String.valueOf(0.0));
-       cp5.get(Textfield.class,"no_of_cycles").setValue(String.valueOf(10));
+       cp5.get(Textfield.class,"no_of_cycles").setValue(String.valueOf(3));
      
      
            cp5.get(Textfield.class,"initial_distance").hide();//HIDING SEEMS USELESS
