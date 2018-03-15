@@ -152,7 +152,7 @@ void draw() {
 //CONTROL EVENTS
 
 void choose_mode(int n) {
-
+fix_input();
   hide_controls();
   real_distance=0;
     cp5.get(ScrollableList.class,"choose_mode").hide(); // LOCK NOT WORKING , why??
@@ -164,21 +164,30 @@ cp5.getController("pause").show();
 cp5.getController("down").show();
 mode="manual_begin";
 
-}
-  else if(n==1)
-  {cp5.getController("run").show();
-cp5.getController("pause_cycles").show();
-cp5.getController("cycle_length").show();
-mode="cycle_begin";
+
+cp5.get(Textarea.class,"tutorial").setText("In manual mode , when you click 'UP' the motor moves in one direction , when you click 'PAUSE' it stops and when you click 'DOWN' it moves in opposite direction"
+                    );
 
 }
+//  else if(n==1)
+//  {cp5.getController("run").show();
+//cp5.getController("pause_cycles").show();
+//cp5.getController("cycle_length").show();
+//mode="cycle_begin";
 
-else if(n==2)
+//}
+
+else if(n==1)//2
   {cp5.getController("up3").show();
 cp5.getController("pause3").show();
 cp5.getController("down3").show();
 cp5.getController("set_natural").show();
 mode="3pointcycle_begin";
+
+
+
+cp5.get(Textarea.class,"tutorial").setText("Use the controls and when you arrive at natural point of material (0 compression and 0 streching ) click 'SET NATURAL POINT'. Then that point will act as origin (distance 0)."
+                    );
 
 }
 
@@ -197,9 +206,16 @@ public void reset()
 {unlock_all();
 hide_controls();
   cp5.get(ScrollableList.class,"choose_mode").show();
+  cp5.get(ScrollableList.class,"choose_mode").open();
+  cp5.get(ScrollableList.class,"choose_mode").setCaptionLabel("choose_mode");
   
   cp5.get(Textfield.class,"width").setColorBackground(0xff002D5A);
   cp5.get(Textfield.class,"width").setColorValue(0xffffffff);
+  
+  
+  cp5.get(Textarea.class,"tutorial").setText("Please input speed and number of cycles. Then choose a mode. Either (1.) Manual or (2.) CYCLE : Automatic cycle control"
+                      +"\n"+"                                                                  Inputs: (Length , width , thickness)  and Outputs: (stress , load , strain)  are not yet implemented. Please ignore them."
+                    );
 }
 
 
@@ -383,6 +399,12 @@ public void set_natural()
 
 cp5.getController("set_natural").hide();
 cp5.getController("set_up").show();
+cp5.getController("down3").hide();
+
+
+
+cp5.get(Textarea.class,"tutorial").setText("Use the controls and when you arrive at uppermost point of your desired cycle (maximum compression  ) click 'SET UPPERMOST POINT'. Then that point will be the topmost point of cycle."
+                    );
 }
 public void set_up()
 {
@@ -392,6 +414,12 @@ MAX_UP=fake_distance;
 
 cp5.getController("set_up").hide();
 cp5.getController("set_down").show();
+cp5.getController("down3").show();
+cp5.getController("up3").hide();
+
+
+cp5.get(Textarea.class,"tutorial").setText("Use the controls and when you arrive at lowermost point of your desired cycle (maximum streching  ) click 'SET LOWERMOST POINT'. Then that point will be the lowest point of cycle."
+                    );
 }
 public void set_down()
 {
@@ -410,7 +438,8 @@ cp5.getController("run3").show();
 cp5.getController("pause_cycles3").show();
 
 
-
+cp5.get(Textarea.class,"tutorial").setText("Click 'RUN' to start automatic cycle control. You can 'PAUSE' whenever you wantand then 'RUN' again. After the cycles are finished the motor will stop and a new file will be exported to the data folder with all collected data."
+                    );
 
 }
 
@@ -436,6 +465,12 @@ public void cycle_control()
       //arduino.digitalWrite(8, 0);
       //arduino.digitalWrite(7, 0);
       
+      
+      
+cp5.get(Textlabel.class,"debug").setText("Cycles are finished. File 'new.csv' has been exported to 'data/new.csv'"
+                    );
+                    
+                
       
     }
     
@@ -751,7 +786,7 @@ void add_controls()
      ;
      
      
-       List l = Arrays.asList("Manual", "Cycles","3pointcycle");
+       List l = Arrays.asList("Manual", " CYCLE ");//removed cycle from middle 
 
   cp5.addScrollableList("choose_mode")
      .setPosition(590, 20)
@@ -915,7 +950,20 @@ void add_controls()
      
      ;
  
+ // TUTORIAL
  
+  cp5.addTextarea("tutorial")
+                  .setPosition(200,100)
+                  .setSize(300,200)
+                  .setFont(createFont("arial",15))
+                  .setLineHeight(14)
+                  .setColor(color(255))
+                  .setColorBackground(color(255,0))
+                  .setColorForeground(color(0,100));
+                  ;
+  cp5.get(Textarea.class,"tutorial").setText("Please input speed and number of cycles. Then choose a mode. Either (1.) Manual or (2.) CYCLE : Automatic cycle control"
+                      +"\n"+"                                                                  Inputs: (Length , width , thickness)  and Outputs: (stress , load , strain)  are not yet implemented. Please ignore them."
+                    );
  
  }
      
@@ -1012,6 +1060,11 @@ void add_inputs()
       cp5.get(Textfield.class,"initial_distance").setValue(String.valueOf(0.0));
        cp5.get(Textfield.class,"no_of_cycles").setValue(String.valueOf(10));
      
+     
+           cp5.get(Textfield.class,"initial_distance").hide();//HIDING SEEMS USELESS
+           
+            cp5.get(Slider.class,"speed_slider").setValue(200);
+
      
      
        
