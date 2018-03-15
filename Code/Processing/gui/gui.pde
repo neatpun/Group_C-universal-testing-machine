@@ -142,7 +142,7 @@ void draw() {
     fake_distance=real_distance + velocity*(millis()-event_time)/1000;
      cp5.get(Slider.class,"motor_simulate").setValue((float)fake_distance);
    cp5.get(Textfield.class,"distance").setValue(df.format(fake_distance));
-   cp5.get(Textfield.class,"PANEL_cycle").setValue(df.format(current_cycle/2.0));
+   cp5.get(Textfield.class,"PANEL_cycle").setValue(df.format(0));
   }
 }
 
