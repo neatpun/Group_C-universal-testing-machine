@@ -54,15 +54,17 @@ void setup() {
   noStroke();
   
   println(Arduino.list());
-  //arduino = new Arduino(this, Arduino.list()[0], 57600);
+  //arduino = new Arduino(this, Arduino.list()[0], 57600); //ENABLE
   // arduino.analogWrite(9, constrain(mouseX / 2, 0, 255));
   //arduino.pinMode(i, Arduino.OUTPUT);
   //    arduino.pinMode(i, Arduino.INPUT);
   //arduino.analogRead(i)
   // arduino.digitalWrite(pin, Arduino.HIGH);
   
-   //for (int i = 0; i <= 13; i++)
- //arduino.pinMode(i, Arduino.OUTPUT);
+  
+  
+   //for (int i = 0; i <= 13; i++)//ENABLE
+ //arduino.pinMode(i, Arduino.OUTPUT);//ENABLE
  
   cp5 = new ControlP5(this);
   
@@ -118,6 +120,9 @@ void draw() {
   
   newRow.setDouble("distance", fake_distance);
   newRow.setDouble("loadcell_value", loadcell_value);
+  
+  
+  //GRAPH the new value here maybe create and use prev variables to store previous value
   
   newRow.setDouble("current_cycle", current_cycle/2.0);
   newRow.setString("current_direction", current_direction);
@@ -199,6 +204,7 @@ public void fix_input() {
   lock_all();
   
   cycles_needed=2*Integer.parseInt(cp5.get(Textfield.class,"no_of_cycles").getText());
+  
 
 
 }
@@ -233,8 +239,8 @@ else {real_distance+=velocity*(millis()-event_time)/1000;}
  if(mode.equals("manual_pause")) {//arduino.analogWrite(10, speed_slider); MAY NOT BE NECCESARRY
  mode="manual";}
  
- //arduino.digitalWrite(8, 1);
- //arduino.digitalWrite(7, 0);
+ //arduino.digitalWrite(8, 1);//ENABLE
+ //arduino.digitalWrite(7, 0);//ENABLE
  
 event_time=millis();
 
@@ -257,8 +263,10 @@ real_distance+=velocity*(millis()-event_time)/1000;
 
 //arduino.analogWrite(10, 0); //motor pause control
 //better yet
-//arduino.digitalWrite(8, 0);
- //arduino.digitalWrite(7, 0);
+
+
+//arduino.digitalWrite(8, 0);//ENABLE
+ //arduino.digitalWrite(7, 0);//ENABLE
  
 
 mode="manual_pause";
@@ -286,8 +294,8 @@ else {real_distance+=velocity*(millis()-event_time)/1000;}
  if(mode.equals("manual_pause")) {//arduino.analogWrite(10, speed_slider); MAY NOT BE NECCESARRY
  mode="manual";}
  
- //arduino.digitalWrite(8, 0);
- //arduino.digitalWrite(7, 1);
+ //arduino.digitalWrite(8, 0);//ENABLE
+ //arduino.digitalWrite(7, 1);//ENABLE
  
 event_time=millis();
 
@@ -320,8 +328,8 @@ else {real_distance+=velocity*(millis()-event_time)/1000;}
 
 
  
- //arduino.digitalWrite(8, 1);
- //arduino.digitalWrite(7, 0);
+ //arduino.digitalWrite(8, 1);//ENABLE
+ //arduino.digitalWrite(7, 0);//ENABLE
  
 event_time=millis();
 
@@ -344,8 +352,10 @@ real_distance+=velocity*(millis()-event_time)/1000;
 
 //arduino.analogWrite(10, 0); //motor pause control
 //better yet
-//arduino.digitalWrite(8, 0);
- //arduino.digitalWrite(7, 0);
+
+
+//arduino.digitalWrite(8, 0);//ENABLE
+ //arduino.digitalWrite(7, 0);//ENABLE
  
 
 mode="3pointcycle_pause";
@@ -371,8 +381,8 @@ else {real_distance+=velocity*(millis()-event_time)/1000;}
 //motor control
 
  
- //arduino.digitalWrite(8, 0);
- //arduino.digitalWrite(7, 1);
+ //arduino.digitalWrite(8, 0);//ENABLE
+ //arduino.digitalWrite(7, 1);//ENABLE
  
 event_time=millis();
 
@@ -458,12 +468,12 @@ public void cycle_control()
     if(current_cycle > cycles_needed)
     {
       velocity=0;
-      speed_slider=0;
+      //speed_slider=0;
       
       mode="MAIN_CYCLE_DONE";
-      //arduino.analogWrite(10, 0);
-      //arduino.digitalWrite(8, 0);
-      //arduino.digitalWrite(7, 0);
+      //arduino.analogWrite(10, 0);//ENABLE
+      //arduino.digitalWrite(8, 0);//ENABLE
+      //arduino.digitalWrite(7, 0);//ENABLE
       
       
       
@@ -479,8 +489,8 @@ cp5.get(Textlabel.class,"debug").setText("Cycles are finished. File 'new.csv' ha
   real_distance+=velocity*(millis()-event_time)/1000;
 
 //up
- //arduino.digitalWrite(8, 1);
- //arduino.digitalWrite(7, 0);
+ //arduino.digitalWrite(8, 1);//ENABLE
+ //arduino.digitalWrite(7, 0);//ENABLE
  
 event_time=millis();
 current_direction="up";
@@ -503,8 +513,8 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
     real_distance+=velocity*(millis()-event_time)/1000;
 
 //down
- //arduino.digitalWrite(8, 0);
- //arduino.digitalWrite(7, 1);
+ //arduino.digitalWrite(8, 0);//ENABLE
+ //arduino.digitalWrite(7, 1);//ENABLE
  
 event_time=millis();
 current_direction="down";
@@ -534,8 +544,8 @@ public void run3()
 
 real_distance+=velocity*(millis()-event_time)/1000;
 //up
- //arduino.digitalWrite(8, 1);
- //arduino.digitalWrite(7, 0);
+ //arduino.digitalWrite(8, 1);//ENABLE
+ //arduino.digitalWrite(7, 0);//ENABLE
  
 event_time=millis();
 current_direction="up";
@@ -561,8 +571,8 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
     real_distance+=velocity*(millis()-event_time)/1000;
 
 //up
- //arduino.digitalWrite(8, 1);
- //arduino.digitalWrite(7, 0);
+ //arduino.digitalWrite(8, 1);//ENABLE
+ //arduino.digitalWrite(7, 0);//ENABLE
  
 event_time=millis();
 current_direction="up";
@@ -586,8 +596,8 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
         real_distance+=velocity*(millis()-event_time)/1000;
 
 //down
- //arduino.digitalWrite(8, 0);
- //arduino.digitalWrite(7, 1);
+ //arduino.digitalWrite(8, 0);//ENABLE
+ //arduino.digitalWrite(7, 1);//ENABLE
  
 event_time=millis();
 current_direction="down";
@@ -615,8 +625,8 @@ public void pause_cycles3()
 
 
 
-//arduino.digitalWrite(8, 0);
- //arduino.digitalWrite(7, 0);
+//arduino.digitalWrite(8, 0);//ENABLE
+ //arduino.digitalWrite(7, 0);//ENABLE
  
 
 mode="MAIN_CYCLE_PAUSE";
@@ -943,7 +953,7 @@ void add_controls()
      //MOTOR SIMULATE
      
      cp5.addSlider("motor_simulate")
-     .setPosition(100,25)
+     .setPosition(20,25)
      .setSize(20,250)
      .setRange(-1500,1500)
      .lock()
@@ -964,6 +974,13 @@ void add_controls()
   cp5.get(Textarea.class,"tutorial").setText("Please input speed and number of cycles. Then choose a mode. Either (1.) Manual or (2.) CYCLE : Automatic cycle control"
                       +"\n"+"                                                                  Inputs: (Length , width , thickness)  and Outputs: (stress , load , strain)  are not yet implemented. Please ignore them."
                     );
+                    
+                    
+                    
+                    
+                    
+                    
+                    cp5.get(Textarea.class,"tutorial").hide();//REMOVE IF YOU WANT TUTORIAL
  
  }
      
