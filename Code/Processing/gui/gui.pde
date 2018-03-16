@@ -55,11 +55,7 @@ void setup() {
   
   println(Arduino.list());
   //arduino = new Arduino(this, Arduino.list()[0], 57600); //ENABLE
-  // arduino.analogWrite(9, constrain(mouseX / 2, 0, 255));
-  //arduino.pinMode(i, Arduino.OUTPUT);
-  //    arduino.pinMode(i, Arduino.INPUT);
-  //arduino.analogRead(i)
-  // arduino.digitalWrite(pin, Arduino.HIGH);
+
   
   
   
@@ -229,14 +225,14 @@ hide_controls();
 
 public void up()
 {
-if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual"; //arduino.analogWrite(10, speed_slider);
+if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual"; //arduino.analogWrite(10, speed_slider);//ENABLE
 }
-else if ( mode.equals("cycle_begin")  ) {event_time=millis(); mode="cycle"; //arduino.analogWrite(10, speed_slider);
+else if ( mode.equals("cycle_begin")  ) {event_time=millis(); mode="cycle"; //arduino.analogWrite(10, speed_slider);//ENABLE
 }
 else {real_distance+=velocity*(millis()-event_time)/1000;}
 
 //motor control
- if(mode.equals("manual_pause")) {//arduino.analogWrite(10, speed_slider); MAY NOT BE NECCESARRY
+ if(mode.equals("manual_pause")) {//arduino.analogWrite(10, speed_slider); NOT NECCESARRY
  mode="manual";}
  
  //arduino.digitalWrite(8, 1);//ENABLE
@@ -261,8 +257,7 @@ public void pause ()
 real_distance+=velocity*(millis()-event_time)/1000;
 
 
-//arduino.analogWrite(10, 0); //motor pause control
-//better yet
+
 
 
 //arduino.digitalWrite(8, 0);//ENABLE
@@ -284,14 +279,14 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
 
 public void down()
 {
-if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual"; //arduino.analogWrite(10, speed_slider);
+if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual"; //arduino.analogWrite(10, speed_slider);//ENABLE
 }
-else if ( mode.equals("cycle_begin")  ) {event_time=millis(); mode="cycle"; //arduino.analogWrite(10, speed_slider);
+else if ( mode.equals("cycle_begin")  ) {event_time=millis(); mode="cycle"; //arduino.analogWrite(10, speed_slider);//ENABLE
 }
 else {real_distance+=velocity*(millis()-event_time)/1000;}
 
 //motor control
- if(mode.equals("manual_pause")) {//arduino.analogWrite(10, speed_slider); MAY NOT BE NECCESARRY
+ if(mode.equals("manual_pause")) {//arduino.analogWrite(10, speed_slider); NOT NECCESARRY
  mode="manual";}
  
  //arduino.digitalWrite(8, 0);//ENABLE
@@ -321,7 +316,7 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
 
 public void up3()
 {
-if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle"; //arduino.analogWrite(10, speed_slider);
+if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle"; //arduino.analogWrite(10, speed_slider);//ENABLE
 }
 
 else {real_distance+=velocity*(millis()-event_time)/1000;}
@@ -350,8 +345,7 @@ public void pause3 ()
 real_distance+=velocity*(millis()-event_time)/1000;
 
 
-//arduino.analogWrite(10, 0); //motor pause control
-//better yet
+
 
 
 //arduino.digitalWrite(8, 0);//ENABLE
@@ -468,7 +462,7 @@ public void cycle_control()
     if(current_cycle > cycles_needed)
     {
       velocity=0;
-      //speed_slider=0;
+      //speed_slider=0; NO
       
       mode="MAIN_CYCLE_DONE";
       //arduino.analogWrite(10, 0);//ENABLE
