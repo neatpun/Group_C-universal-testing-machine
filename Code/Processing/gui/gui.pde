@@ -26,6 +26,7 @@ String next_turn="undefined";
 DecimalFormat df = new DecimalFormat(".##");
   
 Table table;
+TableRow newRow;
 //VARIABLES--
 import controlP5.*;
 import java.util.*;
@@ -70,27 +71,9 @@ void setup() {
      add_live_panel();
 
 
-
-  
-
 hide_controls();
-     
-     
-  
-table = new Table();
-  
-  table.addColumn("id");
-  
-  table.addColumn("distance");
-  table.addColumn("loadcell_value");
-  
-  table.addColumn("current_cycle");
-  table.addColumn("current_direction");
-  table.addColumn("current_time");
                  
-
-
-
+      table = createTable();
 
 }
 
@@ -111,21 +94,8 @@ void draw() {
   cp5.get(Textfield.class,"distance").setValue(df.format(fake_distance));
   cp5.get(Textfield.class,"PANEL_cycle").setValue(df.format(current_cycle/2.0));
   
-  TableRow newRow = table.addRow();
-  newRow.setInt("id", table.lastRowIndex());
-  
-  newRow.setDouble("distance", fake_distance);
-  newRow.setDouble("loadcell_value", loadcell_value);
-  
-  
-  //GRAPH the new value here maybe create and use prev variables to store previous value
-  
-  newRow.setDouble("current_cycle", current_cycle/2.0);
-  newRow.setString("current_direction", current_direction);
-   newRow.setInt("current_time", millis());
-  
-  
-  
+    newRow = addRow(table);
+    setRowData(newRow);  
   
   
   delay(100);
@@ -134,7 +104,7 @@ void draw() {
   else if(mode=="MAIN_CYCLE_DONE")
   {
   println("donezo");
-  saveTable(table, "data/new1.csv");
+  saveTable(table, "data/new.csv");
   mode="initial";
   reset();
   }
@@ -941,7 +911,11 @@ void add_controls()
 
      ;
      
-     
+  cp5.addBang("export_table")
+     .setPosition(500, 500)
+     .setSize(95, 20)
+     .setCaptionLabel("Export Table")
+     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
      
      
      //MOTOR SIMULATE
