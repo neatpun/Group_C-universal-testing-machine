@@ -1,3 +1,4 @@
+
 int counter=0;
  
  
@@ -38,8 +39,11 @@ int myColor = color(255);
 int c1,c2;
 
 float n,n1;
-
 //float f1,f2;
+
+int i=25;
+int j=90;
+
 
 void setup() {
   //displayWidth  displayHeight 
@@ -80,6 +84,7 @@ hide_controls();
 
 void draw() {
   background(0,0,0);
+  show_graph();
   
   if(mode=="MAIN_CYCLE_RUNNING")
   {
@@ -951,6 +956,33 @@ void add_controls()
                     cp5.get(Textarea.class,"tutorial").hide();//REMOVE IF YOU WANT TUTORIAL
  
  }
+ 
+void show_graph()
+{
+ rect(90,25,400,250);
+  for(i=25;i<275;i=i+25)
+ {
+    line(90,i,490,i);
+    stroke(230);
+    if(250-i!=0)
+    {
+      text((250-i)/5,78,i+30);
+    }
+ }
+ for(j=90;j<490;j=j+25)
+ {
+    line(j,25,j,275);
+    stroke(230);
+    if(j-90!=0)
+    {
+      text((j-90)/5,j,290);
+    }
+ }
+ textAlign(CENTER);
+ text("STRESS",290,20);
+
+} 
+ 
      
 void add_inputs()
 {
