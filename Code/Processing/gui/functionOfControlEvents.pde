@@ -1,6 +1,7 @@
 // file for defining control events
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import static javax.swing.JOptionPane.*;
 
 void export_table() {
   String path = sketchPath();
@@ -26,4 +27,11 @@ String[] listFileNames(String dir) {
     // If it's not a directory
     return null;
   }
+}
+
+public void tut(){
+showMessageDialog(null,  "Please input speed and number of cycles. Then choose a mode. Either (1.) Manual or (2.) CYCLE : Automatic cycle control"
+    +"\n"+" Inputs: (Length , width , thickness)  and Outputs: (stress , load , strain)  are not yet implemented. Please ignore them.", 
+    "Info", INFORMATION_MESSAGE);
+
 }
