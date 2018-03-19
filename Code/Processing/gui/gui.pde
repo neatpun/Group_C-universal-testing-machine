@@ -134,7 +134,7 @@ void draw() {
   else if(mode=="MAIN_CYCLE_DONE")
   {
   println("donezo");
-  saveTable(table, "data/new.csv");
+  saveTable(table, "data/new1.csv");
   mode="initial";
   reset();
   }
