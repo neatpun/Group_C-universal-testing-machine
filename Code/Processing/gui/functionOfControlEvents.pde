@@ -28,10 +28,3 @@ String[] listFileNames(String dir) {
     return null;
   }
 }
-
-public void tut(){
-showMessageDialog(null,  "Please input speed and number of cycles. Then choose a mode. Either (1.) Manual or (2.) CYCLE : Automatic cycle control"
-    +"\n"+" Inputs: (Length , width , thickness)  and Outputs: (stress , load , strain)  are not yet implemented. Please ignore them.", 
-    "Info", INFORMATION_MESSAGE);
-
-}
