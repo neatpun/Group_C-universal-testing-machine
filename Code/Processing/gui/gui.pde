@@ -915,11 +915,7 @@ void add_controls()
 
   // TUTORIAL
   
-  cp5.addBang("tut")
-  .setPosition(660,250)
-  .setSize(95,20)
-  .setCaptionLabel("Tutorial")
-  .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
+ 
 
   cp5.addTextarea("tutorial")
     .setPosition(200, 100)
