@@ -154,6 +154,7 @@ void choose_mode(int n) {
     cp5.get(Textarea.class, "tutorial").setText("In manual mode , when you click 'UP' the motor moves in one direction , when you click 'PAUSE' it stops and when you click 'DOWN' it moves in opposite direction"
       );
   }
+  else
   //  else if(n==1)
   //  {cp5.getController("run").show();
   //cp5.getController("pause_cycles").show();
@@ -1018,6 +1019,7 @@ void add_inputs()
   cp5.addSlider("speed_slider")
     .setPosition(20, 521)
     .setRange(0, 255)
+    .setValue(120)
     .setSize(100, 20)
     .getCaptionLabel()
     .toUpperCase(false)
