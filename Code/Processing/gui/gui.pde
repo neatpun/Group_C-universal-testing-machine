@@ -229,9 +229,9 @@ else {real_distance+=velocity*(millis()-event_time)/1000;}
 //motor control
  if(mode.equals("manual_pause")) {
   
- if(arduino_enable) {
-    arduino.analogWrite(10, speed_slider); // NOT NECCESARRY
-  }
+ //if(arduino_enable) {
+ //   arduino.analogWrite(10, speed_slider); // NOT NECCESARRY
+ // }
  
  mode="manual";
 
