@@ -948,7 +948,7 @@ void show_graph()
     stroke(230);
     if (250-i!=0)
     {
-      text((250-i)/5, 78, i+30);
+      text((250-i)/5,85, i+30);
     }
   }
   for (j=90; j<490; j=j+25)
@@ -957,7 +957,7 @@ void show_graph()
     stroke(230);
     if (j-90!=0)
     {
-      text((j-90)/5, j, 290);
+      text((j-90)/5, j+5, 290);
     }
   }
   textAlign(CENTER);
