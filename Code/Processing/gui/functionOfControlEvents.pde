@@ -1,6 +1,7 @@
 // file for defining control events
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import static javax.swing.JOptionPane.*;
 
 void export_table() {
   String path = sketchPath();
