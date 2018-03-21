@@ -25,6 +25,7 @@ int cycles_needed;
 double loadcell_value;
 String next_turn="undefined";
 DecimalFormat df = new DecimalFormat(".##");
+boolean arduino_enable = false;
   
 Table table;
 TableRow newRow;
@@ -58,14 +59,23 @@ void setup() {
   //surface.setSize(int(800*f1),int(600*f2));
   noStroke();
   
-  println(Arduino.list());
-  //arduino = new Arduino(this, Arduino.list()[0], 57600); //ENABLE
+  try {
+    
+    println(Arduino.list());
+    arduino = new Arduino(this, Arduino.list()[0], 57600); //ENABLE
+    arduino_enable = true;
+    cp5.get(Textfield.class, "enable_arduino").lock();
+
+  } catch(Exception e) {
+    println("Arduino is not connected");
+  }
 
   
   
-  
-   //for (int i = 0; i <= 13; i++)//ENABLE
- //arduino.pinMode(i, Arduino.OUTPUT);//ENABLE
+  if(arduino_enable) {
+    for (int i = 0; i <= 13; i++)//ENABLE
+    arduino.pinMode(i, Arduino.OUTPUT);//ENABLE
+  }
  
   cp5 = new ControlP5(this);
   
@@ -200,18 +210,37 @@ hide_controls();
 
 public void up()
 {
-if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual"; //arduino.analogWrite(10, speed_slider);//ENABLE
+if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual"; 
+  
+  if(arduino_enable) {
+    arduino.analogWrite(10, speed_slider);//ENABLE
+  }
+
 }
-else if ( mode.equals("cycle_begin")  ) {event_time=millis(); mode="cycle"; //arduino.analogWrite(10, speed_slider);//ENABLE
+else if ( mode.equals("cycle_begin")  ) {event_time=millis(); mode="cycle"; 
+
+  if(arduino_enable) {
+    arduino.analogWrite(10, speed_slider);//ENABLE
+  }
+
 }
 else {real_distance+=velocity*(millis()-event_time)/1000;}
 
 //motor control
- if(mode.equals("manual_pause")) {//arduino.analogWrite(10, speed_slider); NOT NECCESARRY
- mode="manual";}
+ if(mode.equals("manual_pause")) {
+  
+ if(arduino_enable) {
+    arduino.analogWrite(10, speed_slider); // NOT NECCESARRY
+  }
  
- //arduino.digitalWrite(8, 1);//ENABLE
- //arduino.digitalWrite(7, 0);//ENABLE
+ mode="manual";
+
+}
+ 
+ if(arduino_enable) {
+    arduino.digitalWrite(8, 1);//ENABLE
+    arduino.digitalWrite(7, 0);//ENABLE
+ }
  
 event_time=millis();
 
@@ -234,9 +263,10 @@ real_distance+=velocity*(millis()-event_time)/1000;
 
 
 
-
-//arduino.digitalWrite(8, 0);//ENABLE
- //arduino.digitalWrite(7, 0);//ENABLE
+  if(arduino_enable) {
+    arduino.digitalWrite(8, 0);//ENABLE
+    arduino.digitalWrite(7, 0);//ENABLE
+  }
  
 
 mode="manual_pause";
@@ -254,18 +284,36 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
 
 public void down()
 {
-if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual"; //arduino.analogWrite(10, speed_slider);//ENABLE
+if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual"; 
+  
+  if(arduino_enable) {
+    arduino.analogWrite(10, speed_slider);//ENABLE
+  }
+
 }
-else if ( mode.equals("cycle_begin")  ) {event_time=millis(); mode="cycle"; //arduino.analogWrite(10, speed_slider);//ENABLE
+else if ( mode.equals("cycle_begin")  ) {event_time=millis(); mode="cycle"; 
+  
+  if(arduino_enable) {
+    arduino.analogWrite(10, speed_slider);//ENABLE
+  }
+
 }
 else {real_distance+=velocity*(millis()-event_time)/1000;}
 
 //motor control
- if(mode.equals("manual_pause")) {//arduino.analogWrite(10, speed_slider); NOT NECCESARRY
- mode="manual";}
+ if(mode.equals("manual_pause")) {
+  
+  if(arduino_enable) {
+    arduino.analogWrite(10, speed_slider); // NOT NECCESARRY
+  }
  
- //arduino.digitalWrite(8, 0);//ENABLE
- //arduino.digitalWrite(7, 1);//ENABLE
+  mode="manual";
+ }
+  
+  if(arduino_enable) {
+   arduino.digitalWrite(8, 0);//ENABLE
+   arduino.digitalWrite(7, 1);//ENABLE
+  }
  
 event_time=millis();
 
@@ -291,15 +339,20 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
 
 public void up3()
 {
-if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle"; //arduino.analogWrite(10, speed_slider);//ENABLE
+if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle"; 
+  if(arduino_enable) {
+    arduino.analogWrite(10, speed_slider);//ENABLE
+  }
+
 }
 
 else {real_distance+=velocity*(millis()-event_time)/1000;}
 
 
- 
- //arduino.digitalWrite(8, 1);//ENABLE
- //arduino.digitalWrite(7, 0);//ENABLE
+ if(arduino_enable) {
+  arduino.digitalWrite(8, 1);//ENABLE
+  arduino.digitalWrite(7, 0);//ENABLE
+ }
  
 event_time=millis();
 
@@ -322,9 +375,10 @@ real_distance+=velocity*(millis()-event_time)/1000;
 
 
 
-
-//arduino.digitalWrite(8, 0);//ENABLE
- //arduino.digitalWrite(7, 0);//ENABLE
+if(arduino_enable) {
+  arduino.digitalWrite(8, 0);//ENABLE
+  arduino.digitalWrite(7, 0);//ENABLE
+}
  
 
 mode="3pointcycle_pause";
@@ -342,16 +396,21 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
 
 public void down3()
 {
-if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle"; //arduino.analogWrite(10, speed_slider);
+if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle"; 
+  if(arduino_enable) {
+    arduino.analogWrite(10, speed_slider);
+  }
+
 }
 
 else {real_distance+=velocity*(millis()-event_time)/1000;}
 
 //motor control
 
- 
- //arduino.digitalWrite(8, 0);//ENABLE
- //arduino.digitalWrite(7, 1);//ENABLE
+  if(arduino_enable) {
+     arduino.digitalWrite(8, 0);//ENABLE
+     arduino.digitalWrite(7, 1);//ENABLE
+  }
  
 event_time=millis();
 
@@ -440,9 +499,11 @@ public void cycle_control()
       //speed_slider=0; NO
       
       mode="MAIN_CYCLE_DONE";
-      //arduino.analogWrite(10, 0);//ENABLE
-      //arduino.digitalWrite(8, 0);//ENABLE
-      //arduino.digitalWrite(7, 0);//ENABLE
+      if(arduino_enable) {
+        arduino.analogWrite(10, 0);//ENABLE
+        arduino.digitalWrite(8, 0);//ENABLE
+        arduino.digitalWrite(7, 0);//ENABLE
+      }
       
       
       
@@ -457,10 +518,12 @@ cp5.get(Textlabel.class,"debug").setText("Cycles are finished. File 'new.csv' ha
   {
   real_distance+=velocity*(millis()-event_time)/1000;
 
-//up
- //arduino.digitalWrite(8, 1);//ENABLE
- //arduino.digitalWrite(7, 0);//ENABLE
- 
+    if(arduino_enable) {
+      //up
+      arduino.digitalWrite(8, 1);//ENABLE
+      arduino.digitalWrite(7, 0);//ENABLE
+    }
+
 event_time=millis();
 current_direction="up";
 
@@ -481,10 +544,12 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
     
     real_distance+=velocity*(millis()-event_time)/1000;
 
-//down
- //arduino.digitalWrite(8, 0);//ENABLE
- //arduino.digitalWrite(7, 1);//ENABLE
- 
+    if(arduino_enable) {
+      // down
+      arduino.digitalWrite(8, 0);//ENABLE
+      arduino.digitalWrite(7, 1);//ENABLE
+    }
+
 event_time=millis();
 current_direction="down";
 
@@ -512,9 +577,12 @@ public void run3()
       //distance right now is MIN_DOWN
 
 real_distance+=velocity*(millis()-event_time)/1000;
-//up
- //arduino.digitalWrite(8, 1);//ENABLE
- //arduino.digitalWrite(7, 0);//ENABLE
+
+if(arduino_enable) {
+  //up
+  arduino.digitalWrite(8, 1);//ENABLE
+  arduino.digitalWrite(7, 0);//ENABLE
+}
  
 event_time=millis();
 current_direction="up";
@@ -539,9 +607,11 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
       
     real_distance+=velocity*(millis()-event_time)/1000;
 
-//up
- //arduino.digitalWrite(8, 1);//ENABLE
- //arduino.digitalWrite(7, 0);//ENABLE
+    if(arduino_enable) {
+      //up
+      arduino.digitalWrite(8, 1);//ENABLE
+      arduino.digitalWrite(7, 0);//ENABLE
+    }
  
 event_time=millis();
 current_direction="up";
@@ -564,9 +634,11 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
 
         real_distance+=velocity*(millis()-event_time)/1000;
 
-//down
- //arduino.digitalWrite(8, 0);//ENABLE
- //arduino.digitalWrite(7, 1);//ENABLE
+      if(arduino_enable) {
+        //down
+        arduino.digitalWrite(8, 0);//ENABLE
+        arduino.digitalWrite(7, 1);//ENABLE
+      }
  
 event_time=millis();
 current_direction="down";
@@ -593,9 +665,10 @@ public void pause_cycles3()
  real_distance+=velocity*(millis()-event_time)/1000;
 
 
-
-//arduino.digitalWrite(8, 0);//ENABLE
- //arduino.digitalWrite(7, 0);//ENABLE
+ if(arduino_enable) {
+  arduino.digitalWrite(8, 0);//ENABLE
+  arduino.digitalWrite(7, 0);//ENABLE
+  }
  
 
 mode="MAIN_CYCLE_PAUSE";
@@ -920,6 +993,12 @@ void add_controls()
      .setPosition(500, 500)
      .setSize(95, 20)
      .setCaptionLabel("Export Table")
+     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
+
+  cp5.addBang("enable_arduino")
+     .setPosition(600, 500)
+     .setSize(95, 20)
+     .setCaptionLabel("Reconnect Arduino")
      .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
      
      

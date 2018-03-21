@@ -27,3 +27,23 @@ String[] listFileNames(String dir) {
     return null;
   }
 }
+
+void enable_arduino() {
+
+  try {
+
+    println(Arduino.list());
+    arduino = new Arduino(this, Arduino.list()[0], 57600); //ENABLE
+    arduino_enable = true; 
+    cp5.get(Textfield.class, "enable_arduino").lock();
+    
+    if(arduino_enable) {
+      for (int i = 0; i <= 13; i++)//ENABLE
+      arduino.pinMode(i, Arduino.OUTPUT);//ENABLE
+    }
+
+  } catch(Exception e) {
+    println("Arduino is not connected");
+  }
+
+}
