@@ -37,6 +37,7 @@ void enable_arduino() {
     arduino = new Arduino(this, Arduino.list()[0], 57600); //ENABLE
     arduino_enable = true; 
     cp5.get(Textfield.class, "enable_arduino").lock();
+    cp5.getController("enable_arduino").hide();
     
     if(arduino_enable) {
       for (int i = 0; i <= 13; i++)//ENABLE
@@ -45,6 +46,7 @@ void enable_arduino() {
 
   } catch(Exception e) {
     println("Arduino is not connected");
+    cp5.getController("enable_arduino").setColorForeground(color(246,29,29));
   }
 
 }

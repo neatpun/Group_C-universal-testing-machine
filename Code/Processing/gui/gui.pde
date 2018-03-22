@@ -73,25 +73,6 @@ void setup() {
   //surface.setResizable(true);
   //surface.setSize(int(800*f1),int(600*f2));
   noStroke();
-  
-  try {
-    
-    println(Arduino.list());
-    arduino = new Arduino(this, Arduino.list()[0], 57600); //ENABLE
-    arduino_enable = true;
-    cp5.get(Textfield.class, "enable_arduino").lock();
-
-  } catch(Exception e) {
-    println("Arduino is not connected");
-  }
-
-  
-  
-  if(arduino_enable) {
-    for (int i = 0; i <= 13; i++)//ENABLE
-    arduino.pinMode(i, Arduino.OUTPUT);//ENABLE
-  }
- 
   cp5 = new ControlP5(this);
   
  add_controls();
@@ -101,6 +82,29 @@ void setup() {
 
 
 hide_controls();
+  
+  try {
+    
+    println(Arduino.list());
+    arduino = new Arduino(this, Arduino.list()[0], 57600); //ENABLE
+    arduino_enable = true;
+    cp5.get(Textfield.class, "enable_arduino").lock();
+    cp5.getController("enable_arduino").hide();
+
+  } catch(Exception e) {
+    println("Arduino is not connected");
+    cp5.getController("enable_arduino").setColorForeground(color(246,29,29));
+    
+  }
+
+  
+  
+  if(arduino_enable) {
+    for (int i = 0; i <= 13; i++)//ENABLE
+    arduino.pinMode(i, Arduino.OUTPUT);//ENABLE
+  }
+ 
+  
                  
       table = createTable();
 
@@ -1002,13 +1006,14 @@ void add_controls()
 
   cp5.addBang("export_table")
     .setPosition(665, 220)
-    .setSize(95, 20)
+    .setSize(95, 19)
     .setCaptionLabel("Export Table")
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
 
   cp5.addBang("enable_arduino")
      .setPosition(665, 240)
      .setSize(95, 20)
+     
      .setCaptionLabel("Reconnect Arduino")
      .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
 
