@@ -7,7 +7,7 @@ int max_val=200;    // divisible by 10
 int max_dist=100;   // divisible by 20
 //graph variable ends
 
- 
+
  import processing.serial.*;
 
 import java.text.DecimalFormat;
@@ -32,7 +32,7 @@ double loadcell_value;
 String next_turn="undefined";
 DecimalFormat df = new DecimalFormat(".##");
 boolean arduino_enable = false;
-  
+
 Table table;
 TableRow newRow;
 //VARIABLES--
@@ -53,13 +53,13 @@ int j=90;
 
 
 void setup() {
-  //displayWidth  displayHeight 
+  //displayWidth  displayHeight
   //f1=displayWidth/1024.0/2;
-  
+
   //f2=displayHeight/768.0/2;
 
-  
-  
+
+
   size(800,600);
 
   pg = createGraphics(600, 400); //graph
@@ -73,9 +73,9 @@ void setup() {
   //surface.setResizable(true);
   //surface.setSize(int(800*f1),int(600*f2));
   noStroke();
-  
+
   try {
-    
+
     println(Arduino.list());
     arduino = new Arduino(this, Arduino.list()[0], 57600); //ENABLE
     arduino_enable = true;
@@ -85,23 +85,23 @@ void setup() {
     println("Arduino is not connected");
   }
 
-  
-  
+
+
   if(arduino_enable) {
     for (int i = 0; i <= 13; i++)//ENABLE
     arduino.pinMode(i, Arduino.OUTPUT);//ENABLE
   }
- 
+
   cp5 = new ControlP5(this);
-  
+
  add_controls();
-     
+
      add_inputs();
      add_live_panel();
 
 
 hide_controls();
-                 
+
       table = createTable();
 
 }
@@ -109,29 +109,30 @@ hide_controls();
 
 void draw() {
   background(0,0,0);
+
   // show_graph();
   image(pg, 10, 30);         // this will show the graph
-  
+
   if(mode=="MAIN_CYCLE_RUNNING")
   {
   cycle_control();
-  
-  
+
+
   //loadread
   loadcell_value=random(10);
   fake_distance=real_distance + velocity*(millis()-event_time)/1000;
-  
+
   cp5.get(Slider.class,"motor_simulate").setValue((float)fake_distance);
   cp5.get(Textfield.class,"distance").setValue(df.format(fake_distance));
   cp5.get(Textfield.class,"PANEL_cycle").setValue(df.format(current_cycle/2.0));
-  
+
     newRow = addRow(table);
-    setRowData(newRow);  
-  
-  
+    setRowData(newRow);
+
+
   delay(100);
   }
-  
+
   else if(mode=="MAIN_CYCLE_DONE")
   {
   println("donezo");
@@ -141,6 +142,7 @@ void draw() {
   }
   else
   {
+    println("real_dist : " + real_distance + "  vel: " + velocity + "  eventT: " + event_time+"  fak: " + fake_distance);
     fake_distance=real_distance + velocity*(millis()-event_time)/1000;
      cp5.get(Slider.class,"motor_simulate").setValue((float)fake_distance);
    cp5.get(Textfield.class,"distance").setValue(df.format(fake_distance));
@@ -194,31 +196,43 @@ cp5.get(Textarea.class,"tutorial").setText("Use the controls and when you arrive
 }
 
 
-  
+
 }
 
 public void fix_input() {
   lock_all();
-  
+
   cycles_needed=2*Integer.parseInt(cp5.get(Textfield.class,"no_of_cycles").getText());
-  
+
 
 
 }
 public void reset()
-{unlock_all();
+{
+  mode = "initial";
+  unlock_all();
 hide_controls();
   cp5.get(ScrollableList.class,"choose_mode").show();
   cp5.get(ScrollableList.class,"choose_mode").open();
   cp5.get(ScrollableList.class,"choose_mode").setCaptionLabel("choose_mode");
-  
+
   cp5.get(Textfield.class,"width").setColorBackground(0xff002D5A);
   cp5.get(Textfield.class,"width").setColorValue(0xffffffff);
-  
-  
+
+
   cp5.get(Textarea.class,"tutorial").setText("Please input speed and number of cycles. Then choose a mode. Either (1.) Manual or (2.) CYCLE : Automatic cycle control"
                       +"\n"+"                                                                  Inputs: (Length , width , thickness)  and Outputs: (stress , load , strain)  are not yet implemented. Please ignore them."
                     );
+
+  fake_distance = 0;
+
+  event_time = 0;
+
+  velocity = 0;
+
+  real_distance = 0;
+
+  cp5.getController("motor_simulate").setValue(0);
 }
 
 
@@ -226,14 +240,14 @@ hide_controls();
 
 public void up()
 {
-if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual"; 
-  
+if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual";
+
   if(arduino_enable) {
     arduino.analogWrite(10, speed_slider);//ENABLE
   }
 
 }
-else if ( mode.equals("cycle_begin")  ) {event_time=millis(); mode="cycle"; 
+else if ( mode.equals("cycle_begin")  ) {event_time=millis(); mode="cycle";
 
   if(arduino_enable) {
     arduino.analogWrite(10, speed_slider);//ENABLE
@@ -244,20 +258,20 @@ else {real_distance+=velocity*(millis()-event_time)/1000;}
 
 //motor control
  if(mode.equals("manual_pause")) {
-  
+
  if(arduino_enable) {
     arduino.analogWrite(10, speed_slider); // NOT NECCESARRY
   }
- 
+
  mode="manual";
 
 }
- 
+
  if(arduino_enable) {
     arduino.digitalWrite(8, 1);//ENABLE
     arduino.digitalWrite(7, 0);//ENABLE
  }
- 
+
 event_time=millis();
 
 
@@ -267,13 +281,13 @@ current_direction="up";
 
 
 velocity=speed_slider;
-cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode 
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
 + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
 }
 
 public void pause ()
 {
-  
+
 real_distance+=velocity*(millis()-event_time)/1000;
 
 
@@ -283,16 +297,16 @@ real_distance+=velocity*(millis()-event_time)/1000;
     arduino.digitalWrite(8, 0);//ENABLE
     arduino.digitalWrite(7, 0);//ENABLE
   }
- 
+
 
 mode="manual_pause";
 
 event_time=millis();
 
-//When_resumed=current_direction //probs unneccesary 
+//When_resumed=current_direction //probs unneccesary
 
 velocity=0;
-cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode 
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
 + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
 }
 
@@ -300,15 +314,15 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
 
 public void down()
 {
-if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual"; 
-  
+if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual";
+
   if(arduino_enable) {
     arduino.analogWrite(10, speed_slider);//ENABLE
   }
 
 }
-else if ( mode.equals("cycle_begin")  ) {event_time=millis(); mode="cycle"; 
-  
+else if ( mode.equals("cycle_begin")  ) {event_time=millis(); mode="cycle";
+
   if(arduino_enable) {
     arduino.analogWrite(10, speed_slider);//ENABLE
   }
@@ -318,19 +332,19 @@ else {real_distance+=velocity*(millis()-event_time)/1000;}
 
 //motor control
  if(mode.equals("manual_pause")) {
-  
+
   if(arduino_enable) {
     arduino.analogWrite(10, speed_slider); // NOT NECCESARRY
   }
- 
+
   mode="manual";
  }
-  
+
   if(arduino_enable) {
    arduino.digitalWrite(8, 0);//ENABLE
    arduino.digitalWrite(7, 1);//ENABLE
   }
- 
+
 event_time=millis();
 
 
@@ -340,7 +354,7 @@ current_direction="down";
 
 
 velocity=-speed_slider;
-cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode 
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
 + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
 }
 
@@ -355,7 +369,7 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
 
 public void up3()
 {
-if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle"; 
+if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle";
   if(arduino_enable) {
     arduino.analogWrite(10, speed_slider);//ENABLE
   }
@@ -369,7 +383,7 @@ else {real_distance+=velocity*(millis()-event_time)/1000;}
   arduino.digitalWrite(8, 1);//ENABLE
   arduino.digitalWrite(7, 0);//ENABLE
  }
- 
+
 event_time=millis();
 
 
@@ -379,13 +393,13 @@ current_direction="up";
 
 
 velocity=speed_slider;
-cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode 
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
 + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
 }
 
 public void pause3 ()
 {
-  
+
 real_distance+=velocity*(millis()-event_time)/1000;
 
 
@@ -395,16 +409,16 @@ if(arduino_enable) {
   arduino.digitalWrite(8, 0);//ENABLE
   arduino.digitalWrite(7, 0);//ENABLE
 }
- 
+
 
 mode="3pointcycle_pause";
 
 event_time=millis();
 
-//When_resumed=current_direction //probs unneccesary 
+//When_resumed=current_direction //probs unneccesary
 
 velocity=0;
-cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode 
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
 + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
 }
 
@@ -412,7 +426,7 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
 
 public void down3()
 {
-if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle"; 
+if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle";
   if(arduino_enable) {
     arduino.analogWrite(10, speed_slider);
   }
@@ -427,7 +441,7 @@ else {real_distance+=velocity*(millis()-event_time)/1000;}
      arduino.digitalWrite(8, 0);//ENABLE
      arduino.digitalWrite(7, 1);//ENABLE
   }
- 
+
 event_time=millis();
 
 
@@ -437,7 +451,7 @@ current_direction="down";
 
 
 velocity=-speed_slider;
-cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode 
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
 + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
 }
 
@@ -447,7 +461,7 @@ public void set_natural()
   pause3 ();
   real_distance=0;
   event_time=millis();
-  
+
 
 
 
@@ -504,32 +518,32 @@ public void cycle_control()
 {
   if(mode=="MAIN_CYCLE_RUNNING")
   {
-    
+
     println(counter++);
-    
+
    fake_distance=real_distance + velocity*(millis()-event_time)/1000;
-    
+
     if(current_cycle > cycles_needed)
     {
       velocity=0;
       //speed_slider=0; NO
-      
+
       mode="MAIN_CYCLE_DONE";
       if(arduino_enable) {
         arduino.analogWrite(10, 0);//ENABLE
         arduino.digitalWrite(8, 0);//ENABLE
         arduino.digitalWrite(7, 0);//ENABLE
       }
-      
-      
-      
+
+
+
 cp5.get(Textlabel.class,"debug").setText("Cycles are finished. File 'new.csv' has been exported to 'data/new.csv'"
                     );
-                    
-                
-      
+
+
+
     }
-    
+
   else if((fake_distance< 0.95*MIN_DOWN ) && (current_direction=="down"))
   {
   real_distance+=velocity*(millis()-event_time)/1000;
@@ -549,15 +563,15 @@ velocity=speed_slider;
 current_cycle++;
 
 
-cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode 
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
 + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time + " current_cycle:"+ Double.toString(current_cycle/2) );
-  
-  
-  
+
+
+
   }
   else if((fake_distance> 0.95*MAX_UP)  && (current_direction=="up"))
   {
-    
+
     real_distance+=velocity*(millis()-event_time)/1000;
 
     if(arduino_enable) {
@@ -572,24 +586,24 @@ current_direction="down";
 
 velocity=-speed_slider;
 current_cycle++;
-cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode 
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
 + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time + " current_cycle:"+ Double.toString(current_cycle/2) );
-  
 
-  
+
+
   }
-  
-  
+
+
   }
 }
 
 public void run3()
 {
-  
+
   if(mode=="MAIN_CYCLE_BEGIN")
   {
-    
-    
+
+
       //distance right now is MIN_DOWN
 
 real_distance+=velocity*(millis()-event_time)/1000;
@@ -599,7 +613,7 @@ if(arduino_enable) {
   arduino.digitalWrite(8, 1);//ENABLE
   arduino.digitalWrite(7, 0);//ENABLE
 }
- 
+
 event_time=millis();
 current_direction="up";
 current_cycle=0;
@@ -607,20 +621,20 @@ current_cycle=0;
 velocity=speed_slider;
 
 
-  
+
   mode="MAIN_CYCLE_RUNNING";
-cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode 
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
 + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
 
-  
+
   }
-  
+
   else if(mode=="MAIN_CYCLE_PAUSE")
   {
-    
+
     if(current_direction=="up")
     {
-      
+
     real_distance+=velocity*(millis()-event_time)/1000;
 
     if(arduino_enable) {
@@ -628,7 +642,7 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
       arduino.digitalWrite(8, 1);//ENABLE
       arduino.digitalWrite(7, 0);//ENABLE
     }
- 
+
 event_time=millis();
 current_direction="up";
 
@@ -636,17 +650,17 @@ current_direction="up";
 velocity=speed_slider;
 
 
-  
+
   mode="MAIN_CYCLE_RUNNING";
-cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode 
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
 + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
-  
+
 
     }
-    
+
     else if(current_direction=="down")
     {
-      
+
 
         real_distance+=velocity*(millis()-event_time)/1000;
 
@@ -655,25 +669,25 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
         arduino.digitalWrite(8, 0);//ENABLE
         arduino.digitalWrite(7, 1);//ENABLE
       }
- 
+
 event_time=millis();
 current_direction="down";
 
 
 velocity=-speed_slider;
 
-  
+
   mode="MAIN_CYCLE_RUNNING";
-cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode 
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
 + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
 
 
     }
-  
-  
+
+
   }
-  
-  
+
+
 
 }
 public void pause_cycles3()
@@ -685,7 +699,7 @@ public void pause_cycles3()
   arduino.digitalWrite(8, 0);//ENABLE
   arduino.digitalWrite(7, 0);//ENABLE
   }
- 
+
 
 mode="MAIN_CYCLE_PAUSE";
 
@@ -694,9 +708,9 @@ event_time=millis();
 
 
 velocity=0;
-cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode 
+cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
 + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
-  
+
 
 }
 
@@ -849,7 +863,7 @@ void add_controls()
 
 
 
-  List l = Arrays.asList("Manual", " CYCLE ");//removed cycle from middle 
+  List l = Arrays.asList("Manual", " CYCLE ");//removed cycle from middle
 
    cp5.addScrollableList("choose_mode")
     .setPosition(620, 20)
@@ -1024,8 +1038,8 @@ void add_controls()
     ;
 
   // TUTORIAL
-  
- 
+
+
 
   cp5.addTextarea("tutorial")
     .setPosition(200, 100)
@@ -1071,7 +1085,7 @@ void show_graph()
   }
   textAlign(CENTER);
   text("STRESS", 290, 20);
-} 
+}
 
 
 void add_inputs()
@@ -1170,7 +1184,7 @@ void add_inputs()
 }
 
 void lock_all()
-{  
+{
   cp5.get(Textfield.class, "width").lock();
   cp5.get(Textfield.class, "length").lock();
   cp5.get(Textfield.class, "thickness").lock();
@@ -1234,12 +1248,12 @@ void create_graph_outline() {
   pg.line(20, 0, 20, 400);
   pg.line(0, 380, 600, 380);
   int j=max_val/10;
-  for (int i=380-38; i>=0; i-=0.1*380) {                       
+  for (int i=380-38; i>=0; i-=0.1*380) {
     pg.stroke(200);
     pg.line(20, i, 600, i);
     pg.stroke(0);
     pg.fill(0);
-    pg.text(j, 0, i); 
+    pg.text(j, 0, i);
     j+=max_val/10;
   }
   int k=max_dist/20;
