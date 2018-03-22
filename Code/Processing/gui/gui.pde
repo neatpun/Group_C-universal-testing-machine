@@ -1,6 +1,12 @@
 
 int counter=0;
- 
+
+//graph variables start
+PGraphics pg;
+int max_val=200;    // divisible by 10
+int max_dist=100;   // divisible by 20
+//graph variable ends
+
  
  import processing.serial.*;
 
@@ -55,6 +61,15 @@ void setup() {
   
   
   size(800,600);
+
+  pg = createGraphics(600, 400); //graph
+
+  pg.beginDraw();
+  pg.background(255);
+  create_graph_outline();
+  pg.stroke(30);
+  pg.endDraw();    // end graph
+
   //surface.setResizable(true);
   //surface.setSize(int(800*f1),int(600*f2));
   noStroke();
@@ -94,7 +109,8 @@ hide_controls();
 
 void draw() {
   background(0,0,0);
-  show_graph();
+  // show_graph();
+  image(pg, 10, 30);         // this will show the graph
   
   if(mode=="MAIN_CYCLE_RUNNING")
   {
@@ -685,539 +701,559 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
 }
 
 
-//HELPER FUNCTIONS
 void add_live_panel()
 {
-  
+
   //https://forum.processing.org/two/discussion/24244/controlp5-textfield-background-colour
-  
+
   cp5.addTextlabel("debug")
-                    .setText("This will show stuff")
-                    .setPosition(20,300)
-                    .setColorValue(0xffffff00)
-                    .setFont(createFont("Georgia",15))
-                    ;
-  
-     cp5.addTextfield("distance")
-     .setPosition(550,350)
-     .setSize(100,20)
-     .setFont(createFont("arial",15))
-     .setAutoClear(false)
-     .setCaptionLabel("Distance:")
-     .getCaptionLabel()
-     .toUpperCase(false)
-     .align(ControlP5.LEFT_OUTSIDE, CENTER)
-  
-     .setFont(createFont("arial",15))
-     .getStyle().setPaddingLeft(-10);
-     
-      cp5.addTextfield("PANEL_cycle")
-     .setPosition(550,375)
-     .setSize(100,20)
-     .setFont(createFont("arial",15))
-     .setAutoClear(false)
-     .setCaptionLabel("Current cycle:")
-     .getCaptionLabel()
-     .toUpperCase(false)
-     .align(ControlP5.LEFT_OUTSIDE, CENTER)
-  
-     .setFont(createFont("arial",15))
-     .getStyle().setPaddingLeft(-10);
-     
-     
-     cp5.addTextfield("load")
-     .setPosition(725,350)
-     .setSize(50,20)
-     .setFont(createFont("arial",15))
-     .setAutoClear(false)
-     .setCaptionLabel("Load:")
-     .getCaptionLabel()
-     .toUpperCase(false)
-     .align(ControlP5.LEFT_OUTSIDE, CENTER)
-  
-     .setFont(createFont("arial",15))
-     .getStyle().setPaddingLeft(-10);
-     
-     
-     
-      cp5.addTextfield("strain")
-     .setPosition(600,400)
-     .setSize(50,20)
-     .setFont(createFont("arial",15))
-     .setAutoClear(false)
-     .setCaptionLabel("Strain:")
-     .getCaptionLabel()
-     .toUpperCase(false)
-     .align(ControlP5.LEFT_OUTSIDE, CENTER)
-  
-     .setFont(createFont("arial",15))
-     .getStyle().setPaddingLeft(-10);
-     
-     
-     
-     cp5.addTextfield("stress")
-     .setPosition(725,400)
-     .setSize(50,20)
-     .setFont(createFont("arial",15))
-     .setAutoClear(false)
-     .setCaptionLabel("Stress:")
-     .getCaptionLabel()
-     .toUpperCase(false)
-     .align(ControlP5.LEFT_OUTSIDE, CENTER)
-  
-     .setFont(createFont("arial",15))
-     .getStyle().setPaddingLeft(-10);
-     
-     
-     
-     
-     
-     cp5.get(Textfield.class,"distance").lock();
-cp5.get(Textfield.class,"load").lock();
-cp5.get(Textfield.class,"strain").lock();
-cp5.get(Textfield.class,"stress").lock();
-cp5.get(Textfield.class,"PANEL_cycle").lock();
+    .setText("This will show stuff")
+    .setPosition(20, 300)
+    .setColorValue(0xffffff00)
+    .setFont(createFont("Georgia", 15))
+    ;
+
+  cp5.addTextfield("distance")
+    .setPosition(550, 500)
+    .setSize(100, 20)
+    .setFont(createFont("arial", 15))
+    .setAutoClear(false)
+    .setCaptionLabel("Distance:")
+    .getCaptionLabel()
+    .toUpperCase(false)
+    .align(ControlP5.LEFT_OUTSIDE, CENTER)
+
+    .setFont(createFont("arial", 15))
+    .getStyle().setPaddingLeft(-10);
+
+  cp5.addTextfield("PANEL_cycle")
+    .setPosition(550, 525)
+    .setSize(100, 20)
+    .setFont(createFont("arial", 15))
+    .setAutoClear(false)
+    .setCaptionLabel("Current cycle:")
+    .getCaptionLabel()
+    .toUpperCase(false)
+    .align(ControlP5.LEFT_OUTSIDE, CENTER)
+
+    .setFont(createFont("arial", 15))
+    .getStyle().setPaddingLeft(-10);
+
+
+  cp5.addTextfield("load")
+    .setPosition(725, 500)
+    .setSize(50, 20)
+    .setFont(createFont("arial", 15))
+    .setAutoClear(false)
+    .setCaptionLabel("Load:")
+    .getCaptionLabel()
+    .toUpperCase(false)
+    .align(ControlP5.LEFT_OUTSIDE, CENTER)
+
+    .setFont(createFont("arial", 15))
+    .getStyle().setPaddingLeft(-10);
 
 
 
-     cp5.get(Textfield.class,"distance").setColorBackground(0xfffaddff);// 0xff followed by hex value of color
-cp5.get(Textfield.class,"load").setColorBackground(0xfffaddff);
-cp5.get(Textfield.class,"strain").setColorBackground(0xfffaddff);
-cp5.get(Textfield.class,"stress").setColorBackground(0xfffaddff);
-cp5.get(Textfield.class,"PANEL_cycle").setColorBackground(0xfffaddff);
+  cp5.addTextfield("strain")
+    .setPosition(600, 550)
+    .setSize(50, 20)
+    .setFont(createFont("arial", 15))
+    .setAutoClear(false)
+    .setCaptionLabel("Strain:")
+    .getCaptionLabel()
+    .toUpperCase(false)
+    .align(ControlP5.LEFT_OUTSIDE, CENTER)
 
-  cp5.get(Textfield.class,"distance").setColorValue(0xff000000);// 0xff followed by hex value of color
-cp5.get(Textfield.class,"load").setColorValue(0xff000000);
-cp5.get(Textfield.class,"strain").setColorValue(0xff000000);
-cp5.get(Textfield.class,"stress").setColorValue(0xff000000);
-cp5.get(Textfield.class,"PANEL_cycle").setColorValue(0xff000000);
-
-
-     cp5.get(Textfield.class,"distance").setValue(String.valueOf(0.0));
-cp5.get(Textfield.class,"load").setValue(String.valueOf(0.0));
-cp5.get(Textfield.class,"strain").setValue(String.valueOf(0.0));
-cp5.get(Textfield.class,"stress").setValue(String.valueOf(0.0));
-cp5.get(Textfield.class,"PANEL_cycle").setValue(String.valueOf(0.0));
+    .setFont(createFont("arial", 15))
+    .getStyle().setPaddingLeft(-10);
 
 
-  
+
+  cp5.addTextfield("stress")
+    .setPosition(725, 550)
+    .setSize(50, 20)
+    .setFont(createFont("arial", 15))
+    .setAutoClear(false)
+    .setCaptionLabel("Stress:")
+    .getCaptionLabel()
+    .toUpperCase(false)
+    .align(ControlP5.LEFT_OUTSIDE, CENTER)
+
+    .setFont(createFont("arial", 15))
+    .getStyle().setPaddingLeft(-10);
+
+
+
+
+
+  cp5.get(Textfield.class, "distance").lock();
+  cp5.get(Textfield.class, "load").lock();
+  cp5.get(Textfield.class, "strain").lock();
+  cp5.get(Textfield.class, "stress").lock();
+  cp5.get(Textfield.class, "PANEL_cycle").lock();
+
+
+
+  cp5.get(Textfield.class, "distance").setColorBackground(0xfffaddff);// 0xff followed by hex value of color
+  cp5.get(Textfield.class, "load").setColorBackground(0xfffaddff);
+  cp5.get(Textfield.class, "strain").setColorBackground(0xfffaddff);
+  cp5.get(Textfield.class, "stress").setColorBackground(0xfffaddff);
+  cp5.get(Textfield.class, "PANEL_cycle").setColorBackground(0xfffaddff);
+
+  cp5.get(Textfield.class, "distance").setColorValue(0xff000000);// 0xff followed by hex value of color
+  cp5.get(Textfield.class, "load").setColorValue(0xff000000);
+  cp5.get(Textfield.class, "strain").setColorValue(0xff000000);
+  cp5.get(Textfield.class, "stress").setColorValue(0xff000000);
+  cp5.get(Textfield.class, "PANEL_cycle").setColorValue(0xff000000);
+
+
+  cp5.get(Textfield.class, "distance").setValue(String.valueOf(0.0));
+  cp5.get(Textfield.class, "load").setValue(String.valueOf(0.0));
+  cp5.get(Textfield.class, "strain").setValue(String.valueOf(0.0));
+  cp5.get(Textfield.class, "stress").setValue(String.valueOf(0.0));
+  cp5.get(Textfield.class, "PANEL_cycle").setValue(String.valueOf(0.0));
 }
-
 
 void hide_controls()
 
-{cp5.getController("up").hide();
-cp5.getController("down").hide();
-cp5.getController("pause").hide();
+{
+  cp5.getController("up").hide();
+  cp5.getController("down").hide();
+  cp5.getController("pause").hide();
 
-cp5.getController("run").hide();
-cp5.getController("pause_cycles").hide();
-cp5.getController("cycle_length").hide();
+  cp5.getController("run").hide();
+  cp5.getController("pause_cycles").hide();
+  cp5.getController("cycle_length").hide();
 
-cp5.getController("up3").hide();
-cp5.getController("down3").hide();
-cp5.getController("pause3").hide();
-cp5.getController("set_up").hide();
-cp5.getController("set_natural").hide();
-cp5.getController("set_down").hide();
-cp5.getController("run3").hide();
-cp5.getController("pause_cycles3").hide();
-
-
+  cp5.getController("up3").hide();
+  cp5.getController("down3").hide();
+  cp5.getController("pause3").hide();
+  cp5.getController("set_up").hide();
+  cp5.getController("set_natural").hide();
+  cp5.getController("set_down").hide();
+  cp5.getController("run3").hide();
+  cp5.getController("pause_cycles3").hide();
 }
 
 void add_controls()
 { // Top controls
-   cp5.addBang("reset")
-     //.setPosition(500*f1,20*f2)
-     //.setSize(int(60*f1),int(19*f2))
-     .setPosition(500,20)
-     .setSize(int(60),int(19))
-     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+  cp5.addBang("reset")
+    //.setPosition(500*f1,20*f2)
+    //.setSize(int(60*f1),int(19*f2))
+    .setPosition(700, 200)
+    .setSize(int(60), int(19))
+    .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
 
-     ;
-     
-     
-       List l = Arrays.asList("Manual", " CYCLE ");//removed cycle from middle 
+    ;
 
-  cp5.addScrollableList("choose_mode")
-     .setPosition(590, 20)
-     .setSize(200, 100)
-     .setBarHeight(20)
-     .setItemHeight(20)
-     .addItems(l)
-     // .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
-     ;
-  
-  
-  
+
+
+  List l = Arrays.asList("Manual", " CYCLE ");//removed cycle from middle 
+
+   cp5.addScrollableList("choose_mode")
+    .setPosition(620, 20)
+    .setSize(160, 100)
+    .setBarHeight(20)
+    .setItemHeight(20)
+    .addItems(l)
+    // .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
+    ;
+
+
+
   //Manual controls
   cp5.addBang("up")
 
-     .setPosition(500,100)
-     .setSize(200,19)
-     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
-     ;
-  
+    .setPosition(620, 100)
+    .setSize(160, 19)
+    .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+    ;
+
   cp5.addBang("pause")
 
-     .setPosition(500,120)
-     .setSize(200,19)
-     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
-     ;
-     
+    .setPosition(620, 120)
+    .setSize(160, 19)
+    .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+    ;
+
   cp5.addBang("down")
-     .setPosition(500,140)
-     .setSize(200,19)
-     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+    .setPosition(620, 140)
+    .setSize(160, 19)
+    .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
 
-     ;
-     
-     //Cycle Controls
-     
-     cp5.addTextfield("cycle_length")
-     .setPosition(600,80)
-     .setSize(50,20)
-     .setFont(createFont("arial",15))
-     .setAutoClear(false)
-     .setCaptionLabel("Cycle length:")
-     .getCaptionLabel()
-     .toUpperCase(false)
-     .align(ControlP5.LEFT_OUTSIDE, CENTER)
-  
-     .setFont(createFont("arial",15))
-     .getStyle().setPaddingLeft(-10);
-     
-       cp5.addBang("run")
+    ;
 
-     .setPosition(500,120)
-     .setSize(200,19)
-     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
-     ;
-     
-     cp5.get(Textfield.class,"cycle_length").setInputFilter(ControlP5.FLOAT);
-  
+  //Cycle Controls
+
+  cp5.addTextfield("cycle_length")
+    .setPosition(720, 80)
+    .setSize(50, 20)
+    .setFont(createFont("arial", 15))
+    .setAutoClear(false)
+    .setCaptionLabel("Cycle length:")
+    .getCaptionLabel()
+    .toUpperCase(false)
+    .align(ControlP5.LEFT_OUTSIDE, CENTER)
+
+    .setFont(createFont("arial", 15))
+    .getStyle().setPaddingLeft(-10);
+
+  cp5.addBang("run")
+
+    .setPosition(620, 120)
+    .setSize(160, 19)
+    .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+    ;
+
+  cp5.get(Textfield.class, "cycle_length").setInputFilter(ControlP5.FLOAT);
+
 
   cp5.addBang("pause_cycles")
 
-     .setPosition(500,140)
-     .setSize(200,19)
-     .setCaptionLabel("Pause")
-     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
-     //.toUpperCase(false)
-     ;
-   //3POINTCYCLE
-   
-    cp5.addBang("up3")
+    .setPosition(620, 140)
+    .setSize(160, 19)
+    .setCaptionLabel("Pause")
+    .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+    //.toUpperCase(false)
+    ;
+  //3POINTCYCLE
 
-     .setPosition(500,100)
-     .setSize(200,19)
-     .setCaptionLabel("UP")
-     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
-     ;
-  
+  cp5.addBang("up3")
+
+    .setPosition(620, 100)
+    .setSize(160, 19)
+    .setCaptionLabel("UP")
+    .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+    ;
+
   cp5.addBang("pause3")
 
-     .setPosition(500,120)
-     .setSize(200,19)
-     .setCaptionLabel("PAUSE")
-     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
-     ;
-     
+    .setPosition(620, 120)
+    .setSize(160, 19)
+    .setCaptionLabel("PAUSE")
+    .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+    ;
+
   cp5.addBang("down3")
-     .setPosition(500,140)
-     .setSize(200,19)
-     .setCaptionLabel("DOWN")
-     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+    .setPosition(620, 140)
+    .setSize(160, 19)
+    .setCaptionLabel("DOWN")
+    .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
 
-     ;
-     
-     cp5.addBang("set_natural")
+    ;
 
-     .setPosition(500,60)
-     .setSize(200,19)
-     .setCaptionLabel("Set natural point")
-     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
-     ;
-     
-     cp5.addBang("set_up")
+  cp5.addBang("set_natural")
 
-     .setPosition(500,60)
-     .setSize(200,19)
-     .setCaptionLabel("Set uppermost point")
-     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
-     ;
- 
- 
- cp5.addBang("set_down")
+    .setPosition(620, 60)
+    .setSize(160, 19)
+    .setCaptionLabel("Set natural point")
+    .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+    ;
 
-     .setPosition(500,60)
-     .setSize(200,19)
-     .setCaptionLabel("Set lowermost point")
-     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
-     ;
- 
- 
- cp5.addBang("run3")
+  cp5.addBang("set_up")
 
-     .setPosition(500,120)
-     .setSize(200,19)
-     .setCaptionLabel("run")
-     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
-     ;
+    .setPosition(620, 60)
+    .setSize(160, 19)
+    .setCaptionLabel("Set uppermost point")
+    .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+    ;
 
-  
+
+  cp5.addBang("set_down")
+
+    .setPosition(620, 60)
+    .setSize(160, 19)
+    .setCaptionLabel("Set lowermost point")
+    .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+    ;
+
+
+  cp5.addBang("run3")
+
+    .setPosition(620, 120)
+    .setSize(160, 19)
+    .setCaptionLabel("run")
+    .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+    ;
+
+
 
   cp5.addBang("pause_cycles3")
 
-     .setPosition(500,140)
-     .setSize(200,19)
-     .setCaptionLabel("Pause")
-     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
-     //.toUpperCase(false)
-     ;
-     
-     
-     
- //BOTTOM controls
- 
-  cp5.addBang("fix_input")
-     .setPosition(160,500)
-     .setSize(95,20)
-     .setCaptionLabel("Fix Input")
-     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+    .setPosition(620, 140)
+    .setSize(160, 19)
+    .setCaptionLabel("Pause")
+    .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+    //.toUpperCase(false)
+    ;
 
-     ;
-     
+
+
+  //BOTTOM controls
+
+ cp5.addBang("fix_input")
+    .setPosition(160, 570)
+    .setSize(95, 20)
+    .setCaptionLabel("Fix Input")
+    .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+
+    ;
+
   cp5.addBang("export_table")
-     .setPosition(500, 500)
-     .setSize(95, 20)
-     .setCaptionLabel("Export Table")
-     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
+    .setPosition(665, 220)
+    .setSize(95, 20)
+    .setCaptionLabel("Export Table")
+    .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
 
   cp5.addBang("enable_arduino")
-     .setPosition(600, 500)
+     .setPosition(665, 240)
      .setSize(95, 20)
      .setCaptionLabel("Reconnect Arduino")
      .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
-     
-     
-     //MOTOR SIMULATE
-     
-     cp5.addSlider("motor_simulate")
-     .setPosition(20,25)
-     .setSize(20,250)
-     .setRange(-1500,1500)
-     .lock()
-     
-     ;
+
+
+  //MOTOR SIMULATE
+
+  cp5.addSlider("motor_simulate")
+    .setPosition(620, 200)
+    .setSize(20, 250)
+    .setRange(-1500, 1500)
+    .lock()
+
+    ;
+
+  // TUTORIAL
+  
  
- // TUTORIAL
- 
+
   cp5.addTextarea("tutorial")
-                  .setPosition(200,100)
-                  .setSize(300,200)
-                  .setFont(createFont("arial",15))
-                  .setLineHeight(14)
-                  .setColor(color(255))
-                  .setColorBackground(color(255,0))
-                  .setColorForeground(color(0,100));
-                  ;
-  cp5.get(Textarea.class,"tutorial").setText("Please input speed and number of cycles. Then choose a mode. Either (1.) Manual or (2.) CYCLE : Automatic cycle control"
-                      +"\n"+"                                                                  Inputs: (Length , width , thickness)  and Outputs: (stress , load , strain)  are not yet implemented. Please ignore them."
-                    );
-                    
-                    
-                    
-                    
-                    
-                    
-                    cp5.get(Textarea.class,"tutorial").hide();//REMOVE IF YOU WANT TUTORIAL
- 
- }
- 
+    .setPosition(200, 100)
+    .setSize(300, 200)
+    .setFont(createFont("arial", 15))
+    .setLineHeight(14)
+    .setColor(color(255))
+    .setColorBackground(color(255, 0))
+    .setColorForeground(color(0, 100));
+  ;
+  cp5.get(Textarea.class, "tutorial").setText("Please input speed and number of cycles. Then choose a mode. Either (1.) Manual or (2.) CYCLE : Automatic cycle control"
+    +"\n"+"                                                                  Inputs: (Length , width , thickness)  and Outputs: (stress , load , strain)  are not yet implemented. Please ignore them."
+    );
+
+
+
+
+
+
+  cp5.get(Textarea.class, "tutorial").hide();//REMOVE IF YOU WANT TUTORIAL
+}
+
 void show_graph()
 {
- rect(90,25,400,250);
-  for(i=25;i<275;i=i+25)
- {
-    line(90,i,490,i);
+  rect(90, 25, 400, 250);
+  for (i=25; i<275; i=i+25)
+  {
+    line(90, i, 490, i);
     stroke(230);
-    if(250-i!=0)
+    if (250-i!=0)
     {
-      text((250-i)/5,78,i+30);
+      text((250-i)/5,85, i+30);
     }
- }
- for(j=90;j<490;j=j+25)
- {
-    line(j,25,j,275);
+  }
+  for (j=90; j<490; j=j+25)
+  {
+    line(j, 25, j, 275);
     stroke(230);
-    if(j-90!=0)
+    if (j-90!=0)
     {
-      text((j-90)/5,j,290);
+      text((j-90)/5, j+5, 290);
     }
- }
- textAlign(CENTER);
- text("STRESS",290,20);
-
+  }
+  textAlign(CENTER);
+  text("STRESS", 290, 20);
 } 
- 
-     
+
+
 void add_inputs()
 {
-  
-    cp5.addTextfield("width")
-     .setPosition(20,350)
-     .setSize(75,20)
-     .setFont(createFont("arial",15))
-     .setAutoClear(false)
-     .setCaptionLabel("Width")
-     .getCaptionLabel()
-     .toUpperCase(false)
-     .setFont(createFont("arial",15))
-     ;
-     
-    
-     
-     cp5.addTextfield("length")
- .setPosition(170,350)
-    .setSize(75,20)
-     .setFont(createFont("arial",15))
-     .setAutoClear(false)
-     .setCaptionLabel("Length")
-     .getCaptionLabel()
-     .toUpperCase(false)
-     .setFont(createFont("arial",15))
-     ;
-    
-     
-     cp5.addTextfield("thickness")
- .setPosition(320,350)
-      .setSize(75,20)
-     .setFont(createFont("arial",15))
-     .setAutoClear(false)
-     .setCaptionLabel("Thickness")
-     .getCaptionLabel()
-     .toUpperCase(false)
-     .setFont(createFont("arial",15))
-     ;
-     
-     
-     //   cp5.addTextfield("speed")
-     //.setPosition(20,420)
-     //.setSize(75,20)
-     //.setFont(createFont("arial",15))
-     //.setAutoClear(false)
-     //.setCaptionLabel("Speed")
-     //.getCaptionLabel()
-     //.toUpperCase(false)
-     //.setFont(createFont("arial",15))
-     //;
-     
-      cp5.addSlider("speed_slider")
-       .setPosition(20,421)
-     .setRange(0,255)
-     .setSize(100,20)
-      .getCaptionLabel()
-      .toUpperCase(false)
-      .setFont(createFont("arial",15))
-      .align(ControlP5.LEFT, ControlP5.BOTTOM_OUTSIDE);
-      
-     cp5.addTextfield("no_of_cycles")
- .setPosition(170,420)
-    .setSize(75,20)
-     .setFont(createFont("arial",15))
-     .setAutoClear(false)
-     .setCaptionLabel("No. of cycles")
-     .getCaptionLabel()
-     .toUpperCase(false)
-     .setFont(createFont("arial",15))
-     ;
-     cp5.addTextfield("initial_distance")
- .setPosition(320,420)
-      .setSize(75,20)
-     .setFont(createFont("arial",15))
-     .setAutoClear(false)
-     .setCaptionLabel("Initial distance (stretch)")
-     .getCaptionLabel()
-     .toUpperCase(false)
-     .setFont(createFont("arial",15))
-     
-     ;
-       cp5.get(Textfield.class,"width").setInputFilter(ControlP5.FLOAT);
-     cp5.get(Textfield.class,"length").setInputFilter(ControlP5.FLOAT);
-       cp5.get(Textfield.class,"thickness").setInputFilter(ControlP5.FLOAT);
-     //cp5.get(Textfield.class,"speed").setInputFilter(ControlP5.FLOAT);
-       cp5.get(Textfield.class,"no_of_cycles").setInputFilter(ControlP5.INTEGER);
-     cp5.get(Textfield.class,"initial_distance").setInputFilter(ControlP5.FLOAT);
-     
-     
-     
-      cp5.get(Textfield.class,"initial_distance").setValue(String.valueOf(0.0));
-       cp5.get(Textfield.class,"no_of_cycles").setValue(String.valueOf(3));
-     
-     
-           cp5.get(Textfield.class,"initial_distance").hide();//HIDING SEEMS USELESS
-           
-            cp5.get(Slider.class,"speed_slider").setValue(200);
 
-     
-     
-       
-  
+  cp5.addTextfield("width")
+    .setPosition(20, 450)
+    .setSize(75, 20)
+    .setFont(createFont("arial", 15))
+    .setAutoClear(false)
+    .setCaptionLabel("Width")
+    .getCaptionLabel()
+    .toUpperCase(false)
+    .setFont(createFont("arial", 15))
+    ;
+
+
+
+  cp5.addTextfield("length")
+    .setPosition(170, 450)
+    .setSize(75, 20)
+    .setFont(createFont("arial", 15))
+    .setAutoClear(false)
+    .setCaptionLabel("Length")
+    .getCaptionLabel()
+    .toUpperCase(false)
+    .setFont(createFont("arial", 15))
+    ;
+
+
+  cp5.addTextfield("thickness")
+    .setPosition(320, 450)
+    .setSize(75, 20)
+    .setFont(createFont("arial", 15))
+    .setAutoClear(false)
+    .setCaptionLabel("Thickness")
+    .getCaptionLabel()
+    .toUpperCase(false)
+    .setFont(createFont("arial", 15))
+    ;
+
+
+  //   cp5.addTextfield("speed")
+  //.setPosition(20,420)
+  //.setSize(75,20)
+  //.setFont(createFont("arial",15))
+  //.setAutoClear(false)
+  //.setCaptionLabel("Speed")
+  //.getCaptionLabel()
+  //.toUpperCase(false)
+  //.setFont(createFont("arial",15))
+  //;
+
+  cp5.addSlider("speed_slider")
+    .setPosition(20, 521)
+    .setRange(0, 255)
+    .setValue(120)
+    .setSize(100, 20)
+    .getCaptionLabel()
+    .toUpperCase(false)
+    .setFont(createFont("arial", 15))
+    .align(ControlP5.LEFT, ControlP5.BOTTOM_OUTSIDE);
+
+  cp5.addTextfield("no_of_cycles")
+    .setPosition(170, 520)
+    .setSize(75, 20)
+    .setFont(createFont("arial", 15))
+    .setAutoClear(false)
+    .setCaptionLabel("No. of cycles")
+    .getCaptionLabel()
+    .toUpperCase(false)
+    .setFont(createFont("arial", 15))
+    ;
+  cp5.addTextfield("initial_distance")
+    .setPosition(320, 520)
+    .setSize(75, 20)
+    .setFont(createFont("arial", 15))
+    .setAutoClear(false)
+    .setCaptionLabel("Initial distance (stretch)")
+    .getCaptionLabel()
+    .toUpperCase(false)
+    .setFont(createFont("arial", 15))
+
+    ;
+  cp5.get(Textfield.class, "width").setInputFilter(ControlP5.FLOAT);
+  cp5.get(Textfield.class, "length").setInputFilter(ControlP5.FLOAT);
+  cp5.get(Textfield.class, "thickness").setInputFilter(ControlP5.FLOAT);
+  //cp5.get(Textfield.class,"speed").setInputFilter(ControlP5.FLOAT);
+  cp5.get(Textfield.class, "no_of_cycles").setInputFilter(ControlP5.INTEGER);
+  cp5.get(Textfield.class, "initial_distance").setInputFilter(ControlP5.FLOAT);
+
+
+
+  cp5.get(Textfield.class, "initial_distance").setValue(String.valueOf(0.0));
+  cp5.get(Textfield.class, "no_of_cycles").setValue(String.valueOf(10));
 }
 
 void lock_all()
 {  
-  cp5.get(Textfield.class,"width").lock();
-cp5.get(Textfield.class,"length").lock();
-cp5.get(Textfield.class,"thickness").lock();
-cp5.get(Slider.class,"speed_slider").lock();
-cp5.get(Textfield.class,"no_of_cycles").lock();
-cp5.get(Textfield.class,"initial_distance").lock();
+  cp5.get(Textfield.class, "width").lock();
+  cp5.get(Textfield.class, "length").lock();
+  cp5.get(Textfield.class, "thickness").lock();
+  cp5.get(Slider.class, "speed_slider").lock();
+  cp5.get(Textfield.class, "no_of_cycles").lock();
+  cp5.get(Textfield.class, "initial_distance").lock();
 
 
-  cp5.get(Textfield.class,"width").setColorBackground(0xff1381d6);
-cp5.get(Textfield.class,"length").setColorBackground(0xff1381d6);
-cp5.get(Textfield.class,"thickness").setColorBackground(0xff1381d6);
-cp5.get(Slider.class,"speed_slider").setColorBackground(0xff1381d6);
-cp5.get(Textfield.class,"no_of_cycles").setColorBackground(0xff1381d6);
-cp5.get(Textfield.class,"initial_distance").setColorBackground(0xff1381d6);
+  cp5.get(Textfield.class, "width").setColorBackground(0xff1381d6);
+  cp5.get(Textfield.class, "length").setColorBackground(0xff1381d6);
+  cp5.get(Textfield.class, "thickness").setColorBackground(0xff1381d6);
+  cp5.get(Slider.class, "speed_slider").setColorBackground(0xff1381d6);
+  cp5.get(Textfield.class, "no_of_cycles").setColorBackground(0xff1381d6);
+  cp5.get(Textfield.class, "initial_distance").setColorBackground(0xff1381d6);
 
 
 
-  cp5.get(Textfield.class,"width").setColorValue(0xff000000);
-cp5.get(Textfield.class,"length").setColorValue(0xff000000);
-cp5.get(Textfield.class,"thickness").setColorValue(0xff000000);
-cp5.get(Slider.class,"speed_slider").setColorValue(0xff000000);
-cp5.get(Textfield.class,"no_of_cycles").setColorValue(0xff000000);
-cp5.get(Textfield.class,"initial_distance").setColorValue(0xff000000);
-
+  cp5.get(Textfield.class, "width").setColorValue(0xff000000);
+  cp5.get(Textfield.class, "length").setColorValue(0xff000000);
+  cp5.get(Textfield.class, "thickness").setColorValue(0xff000000);
+  cp5.get(Slider.class, "speed_slider").setColorValue(0xff000000);
+  cp5.get(Textfield.class, "no_of_cycles").setColorValue(0xff000000);
+  cp5.get(Textfield.class, "initial_distance").setColorValue(0xff000000);
 }
 
 void unlock_all()
 {
-  cp5.get(Textfield.class,"width").unlock();
-cp5.get(Textfield.class,"length").unlock();
-cp5.get(Textfield.class,"thickness").unlock();
-cp5.get(Slider.class,"speed_slider").unlock();
-cp5.get(Textfield.class,"no_of_cycles").unlock();
-cp5.get(Textfield.class,"initial_distance").unlock();
+  cp5.get(Textfield.class, "width").unlock();
+  cp5.get(Textfield.class, "length").unlock();
+  cp5.get(Textfield.class, "thickness").unlock();
+  cp5.get(Slider.class, "speed_slider").unlock();
+  cp5.get(Textfield.class, "no_of_cycles").unlock();
+  cp5.get(Textfield.class, "initial_distance").unlock();
 
-  cp5.get(Textfield.class,"width").setColorBackground(0xff002D5A);
-cp5.get(Textfield.class,"length").setColorBackground(0xff002D5A);
-cp5.get(Textfield.class,"thickness").setColorBackground(0xff002D5A);
-cp5.get(Slider.class,"speed_slider").setColorBackground(0xff002D5A);
-cp5.get(Textfield.class,"no_of_cycles").setColorBackground(0xff002D5A);
-cp5.get(Textfield.class,"initial_distance").setColorBackground(0xff002D5A);
+  cp5.get(Textfield.class, "width").setColorBackground(0xff002D5A);
+  cp5.get(Textfield.class, "length").setColorBackground(0xff002D5A);
+  cp5.get(Textfield.class, "thickness").setColorBackground(0xff002D5A);
+  cp5.get(Slider.class, "speed_slider").setColorBackground(0xff002D5A);
+  cp5.get(Textfield.class, "no_of_cycles").setColorBackground(0xff002D5A);
+  cp5.get(Textfield.class, "initial_distance").setColorBackground(0xff002D5A);
 
 
 
-  cp5.get(Textfield.class,"width").setColorValue(0xffffffff);
-cp5.get(Textfield.class,"length").setColorValue(0xffffffff);
-cp5.get(Textfield.class,"thickness").setColorValue(0xffffffff);
-cp5.get(Slider.class,"speed_slider").setColorValue(0xffffffff);
-cp5.get(Textfield.class,"no_of_cycles").setColorValue(0xffffffff);
-cp5.get(Textfield.class,"initial_distance").setColorValue(0xffffffff);
+  cp5.get(Textfield.class, "width").setColorValue(0xffffffff);
+  cp5.get(Textfield.class, "length").setColorValue(0xffffffff);
+  cp5.get(Textfield.class, "thickness").setColorValue(0xffffffff);
+  cp5.get(Slider.class, "speed_slider").setColorValue(0xffffffff);
+  cp5.get(Textfield.class, "no_of_cycles").setColorValue(0xffffffff);
+  cp5.get(Textfield.class, "initial_distance").setColorValue(0xffffffff);
+}
 
+
+
+
+
+//-----------------------------------------------------------------
+//                  creating outline of the graph  using pGraphics
+//-----------------------------------------------------------------
+void create_graph_outline() {
+  pg.strokeWeight(1);
+  pg.line(20, 0, 20, 400);
+  pg.line(0, 380, 600, 380);
+  int j=max_val/10;
+  for (int i=380-38; i>=0; i-=0.1*380) {                       
+    pg.stroke(200);
+    pg.line(20, i, 600, i);
+    pg.stroke(0);
+    pg.fill(0);
+    pg.text(j, 0, i); 
+    j+=max_val/10;
+  }
+  int k=max_dist/20;
+  for (int i=49; i<=600; i+=0.05*580) {
+    pg.stroke(200);
+    pg.line(i, 0, i, 380);
+    pg.stroke(0);
+    pg.fill(0);
+    pg.text(k, i, 390);
+    k+=max_dist/20;
+  }
+
+  pg.fill(200, 20, 200);
+  pg.text("displacement", 180, 400);
+  pg.text("stress", 10, 10);
+  // pg.save(day()+"_"+month()+"_"+year()+"__"+hour()+":"+minute()+":"+second()+".png");
 }
