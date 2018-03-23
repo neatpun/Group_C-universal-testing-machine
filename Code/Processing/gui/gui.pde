@@ -129,7 +129,8 @@ void draw() {
   cp5.get(Slider.class,"motor_simulate").setValue((float)fake_distance);
   cp5.get(Textfield.class,"distance").setValue(df.format(fake_distance));
   cp5.get(Textfield.class,"PANEL_cycle").setValue(df.format(current_cycle/2.0));
-  
+
+
   String wid=cp5.get(Textfield.class,"width").getText();
   double breadth=Double.parseDouble(wid);
   String thick =cp5.get(Textfield.class,"thickness").getText();
@@ -163,6 +164,18 @@ void draw() {
      cp5.get(Slider.class,"motor_simulate").setValue((float)fake_distance);
    cp5.get(Textfield.class,"distance").setValue(df.format(fake_distance));
    cp5.get(Textfield.class,"PANEL_cycle").setValue(df.format(0));
+
+   // println(current_direction);
+
+   if(current_direction != null && velocity != 0) {
+
+     if(current_direction.equals("up"))
+        cp5.get(Textfield.class, "uppermost_point").setValue(String.valueOf(fake_distance));
+     else
+        cp5.get(Textfield.class, "lowermost_point").setValue(String.valueOf(fake_distance));
+
+    }
+
   }
 }
 
@@ -179,13 +192,14 @@ fix_input();
       cp5.get(ScrollableList.class,"choose_mode").setColorBackground(0xff1381d6);
   cp5.get(ScrollableList.class,"choose_mode").setColorValue(0xff000000);
   if(n==0)
-  {cp5.getController("up").show();
-cp5.getController("pause").show();
-cp5.getController("down").show();
-mode="manual_begin";
+  {
+    cp5.getController("up").show();
+    cp5.getController("pause").show();
+    cp5.getController("down").show();
+    mode="manual_begin";
 
 
-cp5.get(Textarea.class,"tutorial").setText("In manual mode , when you click 'UP' the motor moves in one direction , when you click 'PAUSE' it stops and when you click 'DOWN' it moves in opposite direction"
+    cp5.get(Textarea.class,"tutorial").setText("In manual mode , when you click 'UP' the motor moves in one direction , when you click 'PAUSE' it stops and when you click 'DOWN' it moves in opposite direction"
                     );
 
 }
@@ -198,24 +212,31 @@ cp5.get(Textarea.class,"tutorial").setText("In manual mode , when you click 'UP'
 //}
 
 else if(n==1)//2
-  {cp5.getController("up3").show();
-cp5.getController("pause3").show();
-cp5.getController("down3").show();
-cp5.getController("set_natural").show();
+  {
+    cp5.getController("up3").show();
+    cp5.getController("pause3").show();
+    cp5.getController("down3").show();
+    cp5.getController("set_natural").show();
 
     cp5.getController("uppermost_point").show();
     cp5.getController("lowermost_point").show();
-    cp5.getController("natural_point").show();
-    
+    // cp5.getController("natural_point").show();
+
+    cp5.get(Textfield.class, "natural_point").setValue(String.valueOf(0.0));
+
+    cp5.get(Textfield.class,"uppermost_point").setValue("0.0");
+
+    cp5.get(Textfield.class,"lowermost_point").setValue("0.0");
+
     cp5.getController("lowermost_point").lock();
     cp5.getController("natural_point").unlock();
     cp5.getController("uppermost_point").lock();
-    
-mode="3pointcycle_begin";
+
+    mode="3pointcycle_begin";
 
 
 
-cp5.get(Textarea.class,"tutorial").setText("Use the controls and when you arrive at natural point of material (0 compression and 0 streching ) click 'SET NATURAL POINT'. Then that point will act as origin (distance 0)."
+    cp5.get(Textarea.class,"tutorial").setText("Use the controls and when you arrive at natural point of material (0 compression and 0 streching ) click 'SET NATURAL POINT'. Then that point will act as origin (distance 0)."
                     );
 
 }
@@ -236,7 +257,7 @@ public void reset()
 {
   mode = "initial";
   unlock_all();
-hide_controls();
+  hide_controls();
   cp5.get(ScrollableList.class,"choose_mode").show();
   cp5.get(ScrollableList.class,"choose_mode").open();
   cp5.get(ScrollableList.class,"choose_mode").setCaptionLabel("choose_mode");
@@ -467,17 +488,17 @@ else {real_distance+=velocity*(millis()-event_time)/1000;}
      arduino.digitalWrite(7, 1);//ENABLE
   }
 
-event_time=millis();
+  event_time=millis();
 
 
 
 
-current_direction="down";
+  current_direction="down";
 
 
-velocity=-speed_slider;
-cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
-+ " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
+  velocity=-speed_slider;
+  cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
+  + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
 }
 
 
@@ -486,10 +507,10 @@ public void set_natural()
   pause3 ();
   real_distance=0;
   event_time=millis();
-  
-cp5.getController("set_natural").hide();
-cp5.getController("set_up").show();
-cp5.getController("down3").hide();
+
+  cp5.getController("set_natural").hide();
+  cp5.getController("set_up").show();
+  cp5.getController("down3").hide();
 
   cp5.getController("lowermost_point").lock();
   cp5.getController("natural_point").lock();
@@ -502,49 +523,57 @@ public void set_up()
 {
   pause3 ();
   fake_distance=real_distance + velocity*(millis()-event_time)/1000;
-  
+
   String uppermost_point=cp5.get(Textfield.class,"uppermost_point").getText();
+
   //println(uppermost_point);
-  MAX_UP=Double.parseDouble(uppermost_point);
+  if(!uppermost_point.equals("0.0"))
+    MAX_UP=Double.parseDouble(uppermost_point);
+  else
+    MAX_UP = fake_distance;
 
   cp5.getController("uppermost_point").lock();
   cp5.getController("lowermost_point").unlock();
   cp5.getController("natural_point").lock();
 
-cp5.getController("set_up").hide();
-cp5.getController("set_down").show();
-cp5.getController("down3").show();
-cp5.getController("up3").hide();
+  cp5.getController("set_up").hide();
+  cp5.getController("set_down").show();
+  cp5.getController("down3").show();
+  cp5.getController("up3").hide();
 
 
-cp5.get(Textarea.class,"tutorial").setText("Use the controls and when you arrive at lowermost point of your desired cycle (maximum streching  ) click 'SET LOWERMOST POINT'. Then that point will be the lowest point of cycle."
+  cp5.get(Textarea.class,"tutorial").setText("Use the controls and when you arrive at lowermost point of your desired cycle (maximum streching  ) click 'SET LOWERMOST POINT'. Then that point will be the lowest point of cycle."
                     );
 }
 public void set_down()
 {
   pause3 ();
   fake_distance=real_distance + velocity*(millis()-event_time)/1000;
-  
-String lowermost_point=cp5.get(Textfield.class,"lowermost_point").getText();
+
+  String lowermost_point=cp5.get(Textfield.class,"lowermost_point").getText();
   //println(lowermost_point);
-  MIN_DOWN=Double.parseDouble(lowermost_point);
 
-cp5.getController("uppermost_point").lock();
-cp5.getController("lowermost_point").unlock();
-cp5.getController("natural_point").lock();
+  if(!lowermost_point.equals("0.0"))
+    MIN_DOWN=Double.parseDouble(lowermost_point);
+  else
+    MIN_DOWN = fake_distance;
 
-
-cp5.getController("set_down").hide();
-cp5.getController("up3").hide();
-cp5.getController("down3").hide();
-cp5.getController("pause3").hide();
-
-mode="MAIN_CYCLE_BEGIN";
-cp5.getController("run3").show();
-cp5.getController("pause_cycles3").show();
+  cp5.getController("uppermost_point").lock();
+  cp5.getController("lowermost_point").unlock();
+  cp5.getController("natural_point").lock();
 
 
-cp5.get(Textarea.class,"tutorial").setText("Click 'RUN' to start automatic cycle control. You can 'PAUSE' whenever you wantand then 'RUN' again. After the cycles are finished the motor will stop and a new file will be ed to the data folder with all collected data."
+  cp5.getController("set_down").hide();
+  cp5.getController("up3").hide();
+  cp5.getController("down3").hide();
+  cp5.getController("pause3").hide();
+
+  mode="MAIN_CYCLE_BEGIN";
+  cp5.getController("run3").show();
+  cp5.getController("pause_cycles3").show();
+
+
+  cp5.get(Textarea.class,"tutorial").setText("Click 'RUN' to start automatic cycle control. You can 'PAUSE' whenever you wantand then 'RUN' again. After the cycles are finished the motor will stop and a new file will be ed to the data folder with all collected data."
                     );
 
 }
@@ -844,10 +873,10 @@ cp5.addTextfield("natural_point")
        .getCaptionLabel()
        .toUpperCase(false)
        .align(ControlP5.LEFT_OUTSIDE, CENTER)
-    
+
        .setFont(createFont("arial",15))
        .getStyle().setPaddingLeft(-10);
-       
+
        cp5.addTextfield("uppermost_point")
        .setPosition(725,221)
        .setSize(40,20)
@@ -857,10 +886,10 @@ cp5.addTextfield("natural_point")
        .getCaptionLabel()
        .toUpperCase(false)
        .align(ControlP5.LEFT_OUTSIDE, CENTER)
-    
+
        .setFont(createFont("arial",15))
        .getStyle().setPaddingLeft(-10);
-       
+
        cp5.addTextfield("lowermost_point")
        .setPosition(725,242)
        .setSize(40,20)
@@ -870,7 +899,7 @@ cp5.addTextfield("natural_point")
        .getCaptionLabel()
        .toUpperCase(false)
        .align(ControlP5.LEFT_OUTSIDE, CENTER)
-    
+
        .setFont(createFont("arial",15))
        .getStyle().setPaddingLeft(-10);
 
@@ -923,7 +952,7 @@ void hide_controls()
   cp5.getController("set_down").hide();
   cp5.getController("run3").hide();
   cp5.getController("pause_cycles3").hide();
-  
+
   cp5.getController("natural_point").hide();
   cp5.getController("uppermost_point").hide();
   cp5.getController("lowermost_point").hide();
