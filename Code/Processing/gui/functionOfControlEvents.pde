@@ -30,13 +30,15 @@ String[] listFileNames(String dir) {
 }
 
 void enable_arduino() {
+  
+  reset();
 
   try {
 
     println(Arduino.list());
     arduino = new Arduino(this, Arduino.list()[0], 57600); //ENABLE
     arduino_enable = true; 
-    cp5.get(Textfield.class, "enable_arduino").lock();
+    //cp5.get(Textfield.class, "enable_arduino").lock();
     cp5.getController("enable_arduino").hide();
     
     if(arduino_enable) {

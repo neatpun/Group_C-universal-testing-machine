@@ -88,7 +88,7 @@ hide_controls();
     println(Arduino.list());
     arduino = new Arduino(this, Arduino.list()[0], 57600); //ENABLE
     arduino_enable = true;
-    cp5.get(Textfield.class, "enable_arduino").lock();
+    //cp5.get(Textfield.class, "enable_arduino").lock();
     cp5.getController("enable_arduino").hide();
 
   } catch(Exception e) {
@@ -258,6 +258,12 @@ hide_controls();
   real_distance = 0;
 
   cp5.getController("motor_simulate").setValue(0);
+  
+    if(arduino_enable) {
+    arduino.digitalWrite(8, 0);//ENABLE
+    arduino.digitalWrite(7, 0);//ENABLE
+  }
+
 }
 
 
