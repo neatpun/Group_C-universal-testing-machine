@@ -1379,3 +1379,17 @@ void create_graph_outline() {
   pg.text("stress", round(width/80),round(height/60));//pg.text("stress", 10, 10);
   // pg.save(day()+"_"+month()+"_"+year()+"__"+hour()+":"+minute()+":"+second()+".png");
 }
+
+void draw_graph(float prev_x,float prev_y,float curr_x,float curr_y){
+   float x=map(prev_x,0,max_dist,width*0.025,width*0.75);
+   float y=map(prev_y,0,max_val,height*19/30,height*2/3);
+   float u=map(curr_x,0,max_dist,width*0.025,width*0.75);
+   float v=map(curr_y,0,max_val,height*19/30,height*2/3);
+
+   pg.beginDraw();
+   pg.line(x,y,u,v);
+   pg.endDraw();
+
+  
+
+}
