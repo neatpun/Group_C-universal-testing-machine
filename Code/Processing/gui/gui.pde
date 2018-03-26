@@ -258,6 +258,13 @@ hide_controls();
   real_distance = 0;
 
   cp5.getController("motor_simulate").setValue(0);
+  pg = createGraphics(round(width*0.75), round(height*2/3));//pg = createGraphics(600, 400); //graph
+
+  pg.beginDraw();
+  pg.background(255);
+  create_graph_outline();
+  pg.stroke(30);
+  pg.endDraw();    // end graph
 }
 
 
