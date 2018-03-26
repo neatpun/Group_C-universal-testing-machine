@@ -62,7 +62,7 @@ void setup() {
 
   size(800,600);
 
-  pg = createGraphics(600, 400); //graph
+  pg = createGraphics(round(width*0.75), round(height*2/3));//pg = createGraphics(600, 400); //graph
 
   pg.beginDraw();
   pg.background(255);
@@ -766,14 +766,14 @@ void add_live_panel()
 
   cp5.addTextlabel("debug")
     .setText("This will show stuff")
-    .setPosition(20, 300)
+    .setPosition(width*0.025, height*0.5)//.setPosition(20, 300)
     .setColorValue(0xffffff00)
     .setFont(createFont("Georgia", 15))
     ;
 
   cp5.addTextfield("distance")
-    .setPosition(550, 500)
-    .setSize(100, 20)
+    .setPosition(width*0.6875, height*5/6)//.setPosition(550,500)
+    .setSize(round(width*0.125), round(height/30))//.setSize(100,20)
     .setFont(createFont("arial", 15))
     .setAutoClear(false)
     .setCaptionLabel("Distance:")
@@ -785,8 +785,8 @@ void add_live_panel()
     .getStyle().setPaddingLeft(-10);
 
   cp5.addTextfield("PANEL_cycle")
-    .setPosition(550, 525)
-    .setSize(100, 20)
+    .setPosition(width*0.6875,height*0.875)//.setPosition(550, 525)
+    .setSize(round(width*0.125), round(height/30))//.setSize(100, 20)
     .setFont(createFont("arial", 15))
     .setAutoClear(false)
     .setCaptionLabel("Current cycle:")
@@ -799,8 +799,8 @@ void add_live_panel()
 
 
   cp5.addTextfield("load")
-    .setPosition(725, 500)
-    .setSize(50, 20)
+    .setPosition(width*0.906,height*5/6)//.setPosition(725, 500)
+    .setSize(round(width*0.0625),round(height/30))//.setSize(50, 20)
     .setFont(createFont("arial", 15))
     .setAutoClear(false)
     .setCaptionLabel("Load:")
@@ -814,8 +814,8 @@ void add_live_panel()
 
 
   cp5.addTextfield("strain")
-    .setPosition(550, 550)
-    .setSize(100, 20)
+    .setPosition(width*0.6875,height*11/12)//.setPosition(550, 550)
+    .setSize(round(width*0.125),round(height/30))//.setSize(100, 20)
     .setFont(createFont("arial", 15))
     .setAutoClear(false)
     .setCaptionLabel("Strain:")
@@ -829,8 +829,8 @@ void add_live_panel()
 
 
   cp5.addTextfield("stress")
-    .setPosition(725, 550)
-    .setSize(50, 20)
+    .setPosition(width*0.906,height*11/12)//.setPosition(725, 550)
+    .setSize(round(width*0.125),round( height/30))//.setSize(50, 20)
     .setFont(createFont("arial", 15))
     .setAutoClear(false)
     .setCaptionLabel("Stress:")
@@ -842,8 +842,8 @@ void add_live_panel()
     .getStyle().setPaddingLeft(-10);
 
 cp5.addTextfield("natural_point")
-       .setPosition(725,200)
-       .setSize(40,20)
+       .setPosition(width*0.90625,height/3)//.setPosition(725,200)
+       .setSize(round(width*0.05),round( height/30))//.setSize(40,20)
        .setFont(createFont("arial",15))
        .setAutoClear(false)
        .setCaptionLabel("N.P:")
@@ -855,8 +855,8 @@ cp5.addTextfield("natural_point")
        .getStyle().setPaddingLeft(-10);
        
        cp5.addTextfield("uppermost_point")
-       .setPosition(725,221)
-       .setSize(40,20)
+       .setPosition(width*0.90625,height*0.368333)//.setPosition(725,221)
+       .setSize(round(width*0.05),round( height/30))//.setSize(40,20)
        .setFont(createFont("arial",15))
        .setAutoClear(false)
        .setCaptionLabel("U.P:")
@@ -868,8 +868,8 @@ cp5.addTextfield("natural_point")
        .getStyle().setPaddingLeft(-10);
        
        cp5.addTextfield("lowermost_point")
-       .setPosition(725,242)
-       .setSize(40,20)
+       .setPosition(width*0.90625,height*0.403333)//.setPosition(725,242)
+       .setSize(round(width*0.05),round( height/30))//.setSize(40,20)
        .setFont(createFont("arial",15))
        .setAutoClear(false)
        .setCaptionLabel("L.P:")
@@ -940,8 +940,8 @@ void add_controls()
   cp5.addBang("reset")
     //.setPosition(500*f1,20*f2)
     //.setSize(int(60*f1),int(19*f2))
-    .setPosition(725, 300)
-    .setSize(int(60), int(19))
+    .setPosition(width*0.90625,height/2)//.setPosition(725, 300)
+    .setSize(round(width*0.075),round(height*0.03166667))//.setSize(int(60), int(19))
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
 
     ;
@@ -951,10 +951,10 @@ void add_controls()
   List l = Arrays.asList("Manual", " CYCLE ");//removed cycle from middle
 
    cp5.addScrollableList("choose_mode")
-    .setPosition(620, 20)
-    .setSize(160, 100)
-    .setBarHeight(20)
-    .setItemHeight(20)
+    .setPosition(width*0.775,height/30)//.setPosition(620, 20)
+    .setSize(round(width*0.2),round(height/6))//.setSize(160, 100)
+    .setBarHeight(round(height/30))//.setBarHeight(20)
+    .setItemHeight(round(height/30))//.setItemHeight(20)
     .addItems(l)
     // .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
     ;
@@ -964,21 +964,21 @@ void add_controls()
   //Manual controls
   cp5.addBang("up")
 
-    .setPosition(620, 100)
-    .setSize(160, 19)
+    .setPosition(width*0.775,height/6)//.setPosition(620, 100)
+    .setSize(round(width*0.2),round(height*0.03166667))//.setSize(160, 19)
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
     ;
 
   cp5.addBang("pause")
 
-    .setPosition(620, 120)
-    .setSize(160, 19)
+    .setPosition(width*0.775,height*0.2)//.setPosition(620, 120)
+    .setSize(round(width*0.2),round(height*0.03166667))//.setSize(160, 19)
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
     ;
 
   cp5.addBang("down")
-    .setPosition(620, 140)
-    .setSize(160, 19)
+    .setPosition(width*0.775,height*7/30)//.setPosition(620, 140)
+    .setSize(round(width*0.2),round(height*0.03166667))//.setSize(160, 19)
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
 
     ;
@@ -986,8 +986,8 @@ void add_controls()
   //Cycle Controls
 
   cp5.addTextfield("cycle_length")
-    .setPosition(720, 80)
-    .setSize(50, 20)
+    .setPosition(width*0.9,height*2/15)//.setPosition(720, 80)
+    .setSize(round(width*0.0625),round(height/30))//.setSize(50, 20)
     .setFont(createFont("arial", 15))
     .setAutoClear(false)
     .setCaptionLabel("Cycle length:")
@@ -1000,8 +1000,8 @@ void add_controls()
 
   cp5.addBang("run")
 
-    .setPosition(620, 120)
-    .setSize(160, 19)
+    .setPosition(width*0.775,height*0.2)//.setPosition(620, 120)
+    .setSize(round(width*0.2),round(height*0.03166667))//.setSize(160, 19)
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
     ;
 
@@ -1010,8 +1010,8 @@ void add_controls()
 
   cp5.addBang("pause_cycles")
 
-    .setPosition(620, 140)
-    .setSize(160, 19)
+    .setPosition(width*0.775,height*7/30)//.setPosition(620, 140)
+    .setSize(round(width*0.2),round(height*0.03166667))//.setSize(160, 19)
     .setCaptionLabel("Pause")
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
     //.toUpperCase(false)
@@ -1020,23 +1020,23 @@ void add_controls()
 
   cp5.addBang("up3")
 
-    .setPosition(620, 100)
-    .setSize(160, 19)
+    .setPosition(width*0.775,height/6)//.setPosition(620, 100)
+    .setSize(round(width*0.2),round(height*0.03166667))//.setSize(160, 19)
     .setCaptionLabel("UP")
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
     ;
 
   cp5.addBang("pause3")
 
-    .setPosition(620, 120)
-    .setSize(160, 19)
+    .setPosition(width*0.775,height*0.2)//.setPosition(620, 120)
+    .setSize(round(width*0.2),round(height*0.03166667))//.setSize(160, 19)
     .setCaptionLabel("PAUSE")
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
     ;
 
   cp5.addBang("down3")
-    .setPosition(620, 140)
-    .setSize(160, 19)
+    .setPosition(width*0.775,height*2/15)//.setPosition(620, 140)
+    .setSize(round(width*0.2),round(height*0.03166667))//.setSize(160, 19)
     .setCaptionLabel("DOWN")
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
 
@@ -1044,16 +1044,16 @@ void add_controls()
 
   cp5.addBang("set_natural")
 
-    .setPosition(620, 60)
-    .setSize(160, 19)
+    .setPosition(width*0.775,height*0.1)//.setPosition(620, 60)
+    .setSize(round(width*0.2),round(height*0.03166667))//.setSize(160, 19)
     .setCaptionLabel("Set natural point")
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
     ;
 
   cp5.addBang("set_up")
 
-    .setPosition(620, 60)
-    .setSize(160, 19)
+    .setPosition(width*0.775,height*0.1)//.setPosition(620, 60)
+    .setSize(round(width*0.2),round(height*0.03166667))//.setSize(160, 19)
     .setCaptionLabel("Set uppermost point")
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
     ;
@@ -1061,8 +1061,8 @@ void add_controls()
 
   cp5.addBang("set_down")
 
-    .setPosition(620, 60)
-    .setSize(160, 19)
+    .setPosition(width*0.775,height*0.1)//.setPosition(620, 60)
+    .setSize(round(width*0.2),round(height*0.03166667))//.setSize(160, 19)
     .setCaptionLabel("Set lowermost point")
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
     ;
@@ -1070,8 +1070,8 @@ void add_controls()
 
   cp5.addBang("run3")
 
-    .setPosition(620, 120)
-    .setSize(160, 19)
+    .setPosition(width*0.775,height*0.2)//.setPosition(620, 120)
+    .setSize(round(width*0.2),round(height*0.03166667))//.setSize(160, 19)
     .setCaptionLabel("run")
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
     ;
@@ -1080,8 +1080,8 @@ void add_controls()
 
   cp5.addBang("pause_cycles3")
 
-    .setPosition(620, 140)
-    .setSize(160, 19)
+    .setPosition(width*0.775,height*2/15)//.setPosition(620, 140)
+    .setSize(round(width*0.2),round(height*0.03166667))//.setSize(160, 19)
     .setCaptionLabel("Pause")
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
     //.toUpperCase(false)
@@ -1092,22 +1092,22 @@ void add_controls()
   //BOTTOM controls
 
  cp5.addBang("fix_input")
-    .setPosition(160, 570)
-    .setSize(95, 20)
+    .setPosition(width*0.2,height*0.95)//.setPosition(160, 570)
+    .setSize(round(width*0.11875),round(height/30))//.setSize(95, 20)
     .setCaptionLabel("Fix Input")
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
 
     ;
 
   cp5.addBang("export_table")
-    .setPosition(690, 320)
-    .setSize(95, 19)
+    .setPosition(width*0.8625,height*8/15)//.setPosition(690, 320)
+    .setSize(round(width*0.11875),round(height*0.03166667))//.setSize(95, 19)
     .setCaptionLabel("Export Table")
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
 
   cp5.addBang("enable_arduino")
-     .setPosition(690, 341)
-     .setSize(95, 20)
+     .setPosition(width*0.8625,height*0.568333)//.setPosition(690, 341)
+     .setSize(round(width*0.11875),round(height/30))//.setSize(95, 20)
 
      .setCaptionLabel("Reconnect Arduino")
      .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
@@ -1116,9 +1116,9 @@ void add_controls()
   //MOTOR SIMULATE
 
   cp5.addSlider("motor_simulate")
-    .setPosition(620, 200)
-    .setSize(20, 250)
-    .setRange(-1500, 1500)
+    .setPosition(width*0.775,height/3)//.setPosition(620, 200)
+    .setSize(round(width*0.025),round(height*5/12))//.setSize(20, 250)
+    .setRange(-1500,1500)
     .lock()
 
     ;
@@ -1128,8 +1128,8 @@ void add_controls()
 
 
   cp5.addTextarea("tutorial")
-    .setPosition(200, 100)
-    .setSize(300, 200)
+    .setPosition(width*0.25,height/6)//.setPosition(200, 100)
+    .setSize(round(width*3/8),round(height/3))//.setSize(300, 200)
     .setFont(createFont("arial", 15))
     .setLineHeight(14)
     .setColor(color(255))
@@ -1178,8 +1178,8 @@ void add_inputs()
 {
 
   cp5.addTextfield("width")
-    .setPosition(20, 450)
-    .setSize(75, 20)
+    .setPosition(width*0.025,height*0.75)//.setPosition(20, 450)
+    .setSize(round(width*0.09375),round(height/30))//.setSize(75, 20)
     .setFont(createFont("arial", 15))
     .setAutoClear(false)
     .setCaptionLabel("Width (in cm)")
@@ -1191,8 +1191,8 @@ void add_inputs()
 
 
   cp5.addTextfield("length")
-    .setPosition(170, 450)
-    .setSize(75, 20)
+    .setPosition(width*0.2125,height*0.75)//.setPosition(170, 450)
+    .setSize(round(width*0.09375),round(height/30))//.setSize(75, 20)
     .setFont(createFont("arial", 15))
     .setAutoClear(false)
     .setCaptionLabel("Length (in cm)")
@@ -1203,8 +1203,8 @@ void add_inputs()
 
 
   cp5.addTextfield("thickness")
-    .setPosition(320, 450)
-    .setSize(75, 20)
+    .setPosition(width*0.4,height*0.75)//.setPosition(320, 450)
+    .setSize(round(width*0.09375),round(height/30))//.setSize(75, 20)
     .setFont(createFont("arial", 15))
     .setAutoClear(false)
     .setCaptionLabel("Thickness (in mm)")
@@ -1226,18 +1226,18 @@ void add_inputs()
   //;
 
   cp5.addSlider("speed_slider")
-    .setPosition(20, 521)
+    .setPosition(width*0.025,height*0.868333)//.setPosition(20, 521)
     .setRange(0, 255)
     .setValue(120)
-    .setSize(100, 20)
+    .setSize(round(width/8),round(height/30))//.setSize(100, 20)
     .getCaptionLabel()
     .toUpperCase(false)
     .setFont(createFont("arial", 15))
     .align(ControlP5.LEFT, ControlP5.BOTTOM_OUTSIDE);
 
   cp5.addTextfield("no_of_cycles")
-    .setPosition(170, 520)
-    .setSize(75, 20)
+    .setPosition(width*0.2125,height*0.868333)//.setPosition(170, 520)
+    .setSize(round(width*0.09375),round(height/30))//.setSize(75, 20)
     .setFont(createFont("arial", 15))
     .setAutoClear(false)
     .setCaptionLabel("No. of cycles")
@@ -1246,8 +1246,8 @@ void add_inputs()
     .setFont(createFont("arial", 15))
     ;
   cp5.addTextfield("initial_distance")
-    .setPosition(320, 520)
-    .setSize(75, 20)
+    .setPosition(width*0.4,height*0.86833)//.setPosition(320, 520)
+    .setSize(round(width*0.09375),round(height/30))//.setSize(75, 20)
     .setFont(createFont("arial", 15))
     .setAutoClear(false)
     .setCaptionLabel("Initial distance (stretch)")
@@ -1350,29 +1350,31 @@ void unlock_all()
 //-----------------------------------------------------------------
 void create_graph_outline() {
   pg.strokeWeight(1);
-  pg.line(20, 0, 20, 400);
-  pg.line(0, 380, 600, 380);
+  pg.line(round(width*0.025), 0, round(width*0.025),round(height*2/3));//pg.line(20, 0, 20, 400);
+  pg.line(0, round(height*19/30), round(width*0.75), round(height*19/30));//pg.line(0, 380, 600, 380);
   int j=max_val/10;
-  for (int i=380-38; i>=0; i-=0.1*380) {
+    for (int i=round(height*19/30)-round(height*19/30)/10; i>=0; i-=0.1*round(height*19/30)) //for (int i=380-38; i>=0; i-=0.1*380) 
+    {
     pg.stroke(200);
-    pg.line(20, i, 600, i);
+    pg.line(round(width*0.025), i,  round(width*0.75), i);//pg.line(20, i, 600, i);
     pg.stroke(0);
     pg.fill(0);
     pg.text(j, 0, i);
     j+=max_val/10;
   }
   int k=max_dist/20;
-  for (int i=49; i<=600; i+=0.05*580) {
+  for (int i=round(height/12); i<=round(width); i+=0.05*round(height*29/30))//for (int i=49; i<=600; i+=0.05*580) 
+  {
     pg.stroke(200);
-    pg.line(i, 0, i, 380);
+    pg.line(i, 0, i, round(height*19/30));//pg.line(i, 0, i, 380);
     pg.stroke(0);
     pg.fill(0);
-    pg.text(k, i, 390);
+    pg.text(k, i, round(height*0.65));//pg.text(k, i, 390);
     k+=max_dist/20;
   }
 
   pg.fill(200, 20, 200);
-  pg.text("displacement", 180, 400);
-  pg.text("stress", 10, 10);
+  pg.text("displacement", round(width*0.225), round(height*2/3));//pg.text("displacement", 180, 400);
+  pg.text("stress", round(width/80),round(height/60));//pg.text("stress", 10, 10);
   // pg.save(day()+"_"+month()+"_"+year()+"__"+hour()+":"+minute()+":"+second()+".png");
 }
