@@ -1036,7 +1036,7 @@ void add_controls()
     ;
 
   cp5.addBang("down3")
-    .setPosition(width*0.775,height*2/15)//.setPosition(620, 140)
+    .setPosition(width*0.775,height*7/30)//.setPosition(620, 140)
     .setSize(round(width*0.2),round(height*0.03166667))//.setSize(160, 19)
     .setCaptionLabel("DOWN")
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
