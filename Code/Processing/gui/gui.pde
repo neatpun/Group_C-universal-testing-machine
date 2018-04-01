@@ -571,6 +571,7 @@ public void set_up()
   String uppermost_point=cp5.get(Textfield.class,"uppermost_point").getText();
   //println(uppermost_point);
   MAX_UP=Double.parseDouble(uppermost_point);
+  if(MAX_UP==0)MAX_UP=real_distance;
 
   //cp5.getController("uppermost_point").lock();
   //cp5.getController("lowermost_point").unlock();
@@ -598,7 +599,7 @@ public void set_down()
 String lowermost_point=cp5.get(Textfield.class,"lowermost_point").getText();
   //println(lowermost_point);
   MIN_DOWN=Double.parseDouble(lowermost_point);
-  
+  if(MIN_DOWN==0)MIN_DOWN=real_distance;
   cp5.getController("uppermost_point").show();
   cp5.getController("lowermost_point").show();
 
