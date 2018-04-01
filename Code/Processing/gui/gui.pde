@@ -1404,15 +1404,15 @@ void create_graph_outline() {
     pg.text(j, 0, i);
     j+=max_val/10;
   }
-  int k=max_dist/20;
+  int k=max_dist/10;
   for (int i=round(height/12); i<=round(width); i+=0.05*round(height*29/30))//for (int i=49; i<=600; i+=0.05*580) 
   {
     pg.stroke(200);
     pg.line(i, 0, i, round(height*19/30));//pg.line(i, 0, i, 380);
     pg.stroke(0);
     pg.fill(0);
-    pg.text(k, i, round(height*0.65));//pg.text(k, i, 390);
-    k+=max_dist/20;
+    pg.text(k-max_dist, i, round(height*0.65));//pg.text(k, i, 390);
+    k+=max_dist/10;
   }
 
   pg.fill(200, 20, 200);
@@ -1422,9 +1422,9 @@ void create_graph_outline() {
 }
 
 void draw_graph(float prev_x,float prev_y,float curr_x,float curr_y){
-   float x=map(prev_x,0,max_dist,width*0.025,width*0.75);
+   float x=map(prev_x,-max_dist,max_dist,width*0.025,width*0.75);
    float y=map(prev_y,0,max_val,height*19/30,height*2/3);
-   float u=map(curr_x,0,max_dist,width*0.025,width*0.75);
+   float u=map(curr_x,-max_dist,max_dist,width*0.025,width*0.75);
    float v=map(curr_y,0,max_val,height*19/30,height*2/3);
 
    pg.beginDraw();
