@@ -136,7 +136,12 @@ void draw() {
   double thickness =Double.parseDouble(thick);
   String len =cp5.get(Textfield.class,"length").getText();
   double vertical_length =Double.parseDouble(len);
-  double stress = (fake_distance-MIN_DOWN)/vertical_length;
+  //double stress = (fake_distance-MIN_DOWN)/vertical_length;
+  double stress;
+  if(fake_distance>0)
+  stress = (fake_distance)/vertical_length;
+  else
+  stress = 0;
   double area= breadth*thickness*0.00001;//converting into metre square
   double strain=loadcell_value/area;
   cp5.get(Textfield.class,"strain").setValue(df.format(strain));
@@ -203,13 +208,17 @@ cp5.getController("pause3").show();
 cp5.getController("down3").show();
 cp5.getController("set_natural").show();
 
-    cp5.getController("uppermost_point").show();
-    cp5.getController("lowermost_point").show();
-    cp5.getController("natural_point").show();
+    //cp5.getController("uppermost_point").show();
+    //cp5.getController("lowermost_point").show();
+    //cp5.getController("natural_point").show();
     
-    cp5.getController("lowermost_point").lock();
-    cp5.getController("natural_point").unlock();
-    cp5.getController("uppermost_point").lock();
+    cp5.getController("natural_point").hide();
+    cp5.getController("uppermost_point").hide();
+    cp5.getController("lowermost_point").hide();
+    
+    //cp5.getController("lowermost_point").lock();
+    //cp5.getController("natural_point").unlock();
+    //cp5.getController("uppermost_point").lock();
     
 mode="3pointcycle_begin";
 
@@ -257,13 +266,28 @@ hide_controls();
 
   real_distance = 0;
 
-  cp5.getController("motor_simulate").setValue(0);
+  
+  cp5.getController("motor_simulate").setValue(0);  
+
   
     if(arduino_enable) {
     arduino.digitalWrite(8, 0);//ENABLE
     arduino.digitalWrite(7, 0);//ENABLE
   }
 
+  cp5.get(Textfield.class, "uppermost_point").setValue(String.valueOf(0));
+  cp5.get(Textfield.class, "lowermost_point").setValue(String.valueOf(0));
+  cp5.get(Textfield.class, "load").setValue(String.valueOf(0.0));
+  cp5.get(Textfield.class, "strain").setValue(String.valueOf(0.0));
+  cp5.get(Textfield.class, "stress").setValue(String.valueOf(0.0));
+  
+  pg = createGraphics(round(width*0.75), round(height*2/3));//pg = createGraphics(600, 400); //graph
+
+  pg.beginDraw();
+  pg.background(255);
+  create_graph_outline();
+  pg.stroke(30);
+  pg.endDraw();    // end graph
 }
 
 
@@ -497,9 +521,14 @@ cp5.getController("set_natural").hide();
 cp5.getController("set_up").show();
 cp5.getController("down3").hide();
 
-  cp5.getController("lowermost_point").lock();
-  cp5.getController("natural_point").lock();
+  //cp5.getController("lowermost_point").lock();
+  //cp5.getController("natural_point").lock();
+  //cp5.getController("uppermost_point").unlock();
   cp5.getController("uppermost_point").unlock();
+  cp5.getController("lowermost_point").lock();
+  
+  cp5.getController("uppermost_point").show();
+  cp5.getController("lowermost_point").hide();
 
 cp5.get(Textarea.class,"tutorial").setText("Use the controls and when you arrive at uppermost point of your desired cycle (maximum compression  ) click 'SET UPPERMOST POINT'. Then that point will be the topmost point of cycle."
                     );
@@ -513,9 +542,14 @@ public void set_up()
   //println(uppermost_point);
   MAX_UP=Double.parseDouble(uppermost_point);
 
+  //cp5.getController("uppermost_point").lock();
+  //cp5.getController("lowermost_point").unlock();
+  //cp5.getController("natural_point").lock();
   cp5.getController("uppermost_point").lock();
   cp5.getController("lowermost_point").unlock();
-  cp5.getController("natural_point").lock();
+  
+  cp5.getController("uppermost_point").hide();
+  cp5.getController("lowermost_point").show();
 
 cp5.getController("set_up").hide();
 cp5.getController("set_down").show();
@@ -534,10 +568,13 @@ public void set_down()
 String lowermost_point=cp5.get(Textfield.class,"lowermost_point").getText();
   //println(lowermost_point);
   MIN_DOWN=Double.parseDouble(lowermost_point);
+  
+  cp5.getController("uppermost_point").show();
+  cp5.getController("lowermost_point").show();
 
 cp5.getController("uppermost_point").lock();
-cp5.getController("lowermost_point").unlock();
-cp5.getController("natural_point").lock();
+cp5.getController("lowermost_point").lock();
+//cp5.getController("natural_point").lock();
 
 
 cp5.getController("set_down").hide();
@@ -908,6 +945,8 @@ cp5.addTextfield("natural_point")
   cp5.get(Textfield.class, "strain").setValue(String.valueOf(0.0));
   cp5.get(Textfield.class, "stress").setValue(String.valueOf(0.0));
   cp5.get(Textfield.class, "PANEL_cycle").setValue(String.valueOf(0.0));
+  cp5.get(Textfield.class, "uppermost_point").setValue(String.valueOf(0));
+  cp5.get(Textfield.class, "lowermost_point").setValue(String.valueOf(0));
 }
 
 void hide_controls()
@@ -1035,7 +1074,7 @@ void add_controls()
     ;
 
   cp5.addBang("down3")
-    .setPosition(width*0.775,height*2/15)//.setPosition(620, 140)
+    .setPosition(width*0.775,height*7/30)//.setPosition(620, 140)
     .setSize(round(width*0.2),round(height*0.03166667))//.setSize(160, 19)
     .setCaptionLabel("DOWN")
     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
@@ -1267,6 +1306,9 @@ void add_inputs()
 
   cp5.get(Textfield.class, "initial_distance").setValue(String.valueOf(0.0));
   cp5.get(Textfield.class, "no_of_cycles").setValue(String.valueOf(10));
+  cp5.get(Textfield.class, "width").setValue(String.valueOf(5));
+  cp5.get(Textfield.class, "length").setValue(String.valueOf(20));
+  cp5.get(Textfield.class, "thickness").setValue(String.valueOf(1));
 }
 
 void lock_all()
@@ -1377,4 +1419,18 @@ void create_graph_outline() {
   pg.text("displacement", round(width*0.225), round(height*2/3));//pg.text("displacement", 180, 400);
   pg.text("stress", round(width/80),round(height/60));//pg.text("stress", 10, 10);
   // pg.save(day()+"_"+month()+"_"+year()+"__"+hour()+":"+minute()+":"+second()+".png");
+}
+
+void draw_graph(float prev_x,float prev_y,float curr_x,float curr_y){
+   float x=map(prev_x,0,max_dist,width*0.025,width*0.75);
+   float y=map(prev_y,0,max_val,height*19/30,height*2/3);
+   float u=map(curr_x,0,max_dist,width*0.025,width*0.75);
+   float v=map(curr_y,0,max_val,height*19/30,height*2/3);
+
+   pg.beginDraw();
+   pg.line(x,y,u,v);
+   pg.endDraw();
+
+  
+
 }
