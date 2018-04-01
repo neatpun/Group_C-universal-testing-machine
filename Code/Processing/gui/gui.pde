@@ -137,13 +137,13 @@ void draw() {
   String len =cp5.get(Textfield.class,"length").getText();
   double vertical_length =Double.parseDouble(len);
   //double stress = (fake_distance-MIN_DOWN)/vertical_length;
-  double stress;
+  double strain;
   if(fake_distance>0)
-  stress = (fake_distance)/vertical_length;
+  strain = (fake_distance)/vertical_length;
   else
-  stress = 0;
+  strain = 0;
   double area= breadth*thickness*0.00001;//converting into metre square
-  double strain=loadcell_value/area;
+  double stress=loadcell_value/area;
   cp5.get(Textfield.class,"strain").setValue(df.format(strain));
   cp5.get(Textfield.class,"load").setValue(df.format(loadcell_value));
   cp5.get(Textfield.class,"stress").setValue(df.format(stress));
@@ -160,6 +160,36 @@ void draw() {
   saveTable(table, "data/new.csv");
   mode="initial";
   reset();
+  }
+  else if(mode=="manual_begin")
+  {
+      //loadread
+  loadcell_value=random(10);
+  fake_distance=real_distance + velocity*(millis()-event_time)/1000;
+
+  cp5.get(Slider.class,"motor_simulate").setValue((float)fake_distance);
+  cp5.get(Textfield.class,"distance").setValue(df.format(fake_distance));
+  cp5.get(Textfield.class,"PANEL_cycle").setValue(df.format(current_cycle/2.0));
+  
+  String wid=cp5.get(Textfield.class,"width").getText();
+  double breadth=Double.parseDouble(wid);
+  String thick =cp5.get(Textfield.class,"thickness").getText();
+  double thickness =Double.parseDouble(thick);
+  String len =cp5.get(Textfield.class,"length").getText();
+  double vertical_length =Double.parseDouble(len);
+  //double stress = (fake_distance-MIN_DOWN)/vertical_length;
+  double strain;
+  if(fake_distance>0)
+  strain = (fake_distance)/vertical_length;
+  else
+  strain = 0;
+  double area= breadth*thickness*0.00001;//converting into metre square
+  double stress=loadcell_value/area;
+  cp5.get(Textfield.class,"strain").setValue(df.format(strain));
+  cp5.get(Textfield.class,"load").setValue(df.format(loadcell_value));
+  cp5.get(Textfield.class,"stress").setValue(df.format(stress));
+    newRow = addRow(table);
+    setRowData(newRow);
   }
   else
   {
