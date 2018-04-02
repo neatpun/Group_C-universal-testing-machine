@@ -4,7 +4,7 @@ int counter=0;
 //graph variables start
 PGraphics pg;
 int max_val=200;    // divisible by 10
-int max_dist=100;   // divisible by 20
+int max_dist=1500;   // divisible by 20
 //graph variable ends
 
 
@@ -16,6 +16,15 @@ import cc.arduino.*;
 Arduino arduino;
 //--VARIABLES
 //ASSUMPTION: speed between 0 to 255    ; You start from the bottom with distance =0 ; DISTANCE scaling remaining
+//------------------------------
+//graph plotting variables
+//--------------------------
+import java.util.Random;
+Random r=new Random();
+float prev_x=0;
+float prev_y=0;
+float curr_y;
+
 
 int speed_slider;
 String mode="initial";
@@ -113,6 +122,15 @@ hide_controls();
 
 void draw() {
   background(0,0,0);
+  
+  if(mode=="manual" || mode=="MAIN_CYCLE_RUNNING"){
+    curr_y=r.nextInt(max_val);
+    draw_graph(prev_x,prev_y,(float)fake_distance,curr_y);
+    prev_x=(float)fake_distance;
+    prev_y=curr_y;
+  }
+  
+  if(fake_distance<=-1500 || fake_distance>=1500)reset();   // reset for now (will add diff func later
 
   // show_graph();
   image(pg, 10, 30);         // this will show the graph
@@ -275,6 +293,8 @@ public void fix_input() {
 }
 public void reset()
 {
+  prev_x=0;
+  prev_y=0;
   mode = "initial";
   unlock_all();
 hide_controls();
@@ -1481,9 +1501,9 @@ void create_graph_outline() {
 
 void draw_graph(float prev_x,float prev_y,float curr_x,float curr_y){
    float x=map(prev_x,-max_dist,max_dist,width*0.025,width*0.75);
-   float y=map(prev_y,0,max_val,height*19/30,height*2/3);
+   float y=map(prev_y,0,max_val,height*19/30,0);
    float u=map(curr_x,-max_dist,max_dist,width*0.025,width*0.75);
-   float v=map(curr_y,0,max_val,height*19/30,height*2/3);
+   float v=map(curr_y,0,max_val,height*19/30,0);
 
    pg.beginDraw();
    pg.line(x,y,u,v);
