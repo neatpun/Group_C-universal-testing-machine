@@ -207,6 +207,8 @@ void draw() {
 //CONTROL EVENTS
 
 void choose_mode(int n) {
+  cp5.getController("enable_arduino").hide();
+  
 fix_input();
   hide_controls();
   real_distance=0;
@@ -318,6 +320,24 @@ hide_controls();
   create_graph_outline();
   pg.stroke(30);
   pg.endDraw();    // end graph
+  
+
+  
+  if (arduino_enable != true){
+    cp5.getController("enable_arduino").show();
+    try {
+
+    println(Arduino.list());
+    arduino = new Arduino(this, Arduino.list()[0], 57600); //ENABLE
+    arduino_enable = true;
+    //cp5.get(Textfield.class, "enable_arduino").lock();
+    cp5.getController("enable_arduino").hide();
+
+  } catch(Exception e) {
+    println("Arduino is not connected");
+    cp5.getController("enable_arduino").setColorForeground(color(246,29,29));
+
+  }}
 }
 
 
