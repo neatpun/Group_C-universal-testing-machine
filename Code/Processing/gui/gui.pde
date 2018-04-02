@@ -572,8 +572,8 @@ public void set_up()
   //println(uppermost_point);
   MAX_UP=Double.parseDouble(uppermost_point);
   if(MAX_UP==0){
-  MAX_UP=real_distance;
-  cp5.get(Textfield.class,"uppermost_point").setValue(df.format(real_distance));
+  MAX_UP=fake_distance;
+  cp5.get(Textfield.class,"uppermost_point").setValue(df.format(fake_distance));
   }
 
   //cp5.getController("uppermost_point").lock();
@@ -603,8 +603,8 @@ String lowermost_point=cp5.get(Textfield.class,"lowermost_point").getText();
   //println(lowermost_point);
   MIN_DOWN=Double.parseDouble(lowermost_point);
   if(MIN_DOWN==0){
-  MIN_DOWN=real_distance
-  cp5.get(Textfield.class,"lowermost_point").setValue(df.format(real_distance));
+  MIN_DOWN=fake_distance;
+  cp5.get(Textfield.class,"lowermost_point").setValue(df.format(fake_distance));
   }
   cp5.getController("uppermost_point").show();
   cp5.getController("lowermost_point").show();
