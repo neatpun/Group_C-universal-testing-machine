@@ -571,7 +571,10 @@ public void set_up()
   String uppermost_point=cp5.get(Textfield.class,"uppermost_point").getText();
   //println(uppermost_point);
   MAX_UP=Double.parseDouble(uppermost_point);
-  if(MAX_UP==0)MAX_UP=real_distance;
+  if(MAX_UP==0){
+  MAX_UP=real_distance;
+  cp5.get(Textfield.class,"uppermost_point").setValue(df.format(real_distance));
+  }
 
   //cp5.getController("uppermost_point").lock();
   //cp5.getController("lowermost_point").unlock();
@@ -599,7 +602,10 @@ public void set_down()
 String lowermost_point=cp5.get(Textfield.class,"lowermost_point").getText();
   //println(lowermost_point);
   MIN_DOWN=Double.parseDouble(lowermost_point);
-  if(MIN_DOWN==0)MIN_DOWN=real_distance;
+  if(MIN_DOWN==0){
+  MIN_DOWN=real_distance
+  cp5.get(Textfield.class,"lowermost_point").setValue(df.format(real_distance));
+  }
   cp5.getController("uppermost_point").show();
   cp5.getController("lowermost_point").show();
 
@@ -924,7 +930,7 @@ cp5.addTextfield("natural_point")
        
        cp5.addTextfield("uppermost_point")
        .setPosition(width*0.90625,height*0.368333)//.setPosition(725,221)
-       .setSize(round(width*0.05),round( height/30))//.setSize(40,20)
+       .setSize(round(width*0.075),round( height/30))//.setSize(40,20)
        .setFont(createFont("arial",15))
        .setAutoClear(false)
        .setCaptionLabel("U.P:")
@@ -937,7 +943,7 @@ cp5.addTextfield("natural_point")
        
        cp5.addTextfield("lowermost_point")
        .setPosition(width*0.90625,height*0.403333)//.setPosition(725,242)
-       .setSize(round(width*0.05),round( height/30))//.setSize(40,20)
+       .setSize(round(width*0.075),round( height/30))//.setSize(40,20)
        .setFont(createFont("arial",15))
        .setAutoClear(false)
        .setCaptionLabel("L.P:")
