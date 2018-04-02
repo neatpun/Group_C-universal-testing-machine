@@ -298,6 +298,7 @@ hide_controls();
 
   real_distance = 0;
 
+  current_cycle = 0;
   
   cp5.getController("motor_simulate").setValue(0);  
 
