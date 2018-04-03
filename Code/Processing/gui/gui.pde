@@ -179,11 +179,12 @@ void draw() {
   mode="initial";
   reset();
   }
-  else if(mode=="manual_begin")
+  else if(mode=="manual")
   {
       //loadread
   loadcell_value=random(10);
   fake_distance=real_distance + velocity*(millis()-event_time)/1000;
+  //println(fake_distance);
 
   cp5.get(Slider.class,"motor_simulate").setValue((float)fake_distance);
   cp5.get(Textfield.class,"distance").setValue(df.format(fake_distance));
@@ -195,6 +196,7 @@ void draw() {
   double thickness =Double.parseDouble(thick);
   String len =cp5.get(Textfield.class,"length").getText();
   double vertical_length =Double.parseDouble(len);
+  //println(vertical_length+" "+fake_distance);
   //double stress = (fake_distance-MIN_DOWN)/vertical_length;
   double strain;
   if(fake_distance>0)
