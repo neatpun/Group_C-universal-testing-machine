@@ -45,6 +45,22 @@ boolean arduino_enable = false;
 Table table;
 TableRow newRow;
 //VARIABLES--
+
+
+// INPUT DATA 
+  String wid;
+  double breadth;
+  String thick;
+  double thickness;
+  String len ;
+  double vertical_length ;
+  //double stress = (fake_distance-MIN_DOWN)/vertical_length;
+double area;
+
+  double stress;//needs to updated in draw
+  double strain;//needs to updated in draw
+  //INPUT DATA DONE
+  
 import controlP5.*;
 import java.util.*;
 
@@ -146,20 +162,14 @@ void draw() {
   cp5.get(Textfield.class,"distance").setValue(df.format(fake_distance));
   cp5.get(Textfield.class,"PANEL_cycle").setValue(df.format(current_cycle/2.0));
 
-  String wid=cp5.get(Textfield.class,"width").getText();
-  double breadth=Double.parseDouble(wid);
-  String thick =cp5.get(Textfield.class,"thickness").getText();
-  double thickness =Double.parseDouble(thick);
-  String len =cp5.get(Textfield.class,"length").getText();
-  double vertical_length =Double.parseDouble(len);
-  //double stress = (fake_distance-MIN_DOWN)/vertical_length;
-  double strain;
+
   if(fake_distance>0)
   strain = (fake_distance)/vertical_length;
   else
   strain = 0;
-  double area= breadth*thickness*0.00001;//converting into metre square
-  double stress=loadcell_value/area;
+
+  stress=loadcell_value/area;
+  
   cp5.get(Textfield.class,"strain").setValue(df.format(strain));
   cp5.get(Textfield.class,"load").setValue(df.format(loadcell_value));
   cp5.get(Textfield.class,"stress").setValue(df.format(stress));
@@ -188,21 +198,14 @@ void draw() {
   cp5.get(Textfield.class,"distance").setValue(df.format(fake_distance));
   cp5.get(Textfield.class,"PANEL_cycle").setValue(df.format(current_cycle/2.0));
 
-  String wid=cp5.get(Textfield.class,"width").getText();
-  double breadth=Double.parseDouble(wid);
-  String thick =cp5.get(Textfield.class,"thickness").getText();
-  double thickness =Double.parseDouble(thick);
-  String len =cp5.get(Textfield.class,"length").getText();
-  double vertical_length =Double.parseDouble(len);
-  //println(vertical_length+" "+fake_distance);
-  //double stress = (fake_distance-MIN_DOWN)/vertical_length;
-  double strain;
+
   if(fake_distance>0)
   strain = (fake_distance)/vertical_length;
   else
   strain = 0;
-  double area= breadth*thickness*0.00001;//converting into metre square
-  double stress=loadcell_value/area;
+
+  stress=loadcell_value/area;
+  
   cp5.get(Textfield.class,"strain").setValue(df.format(strain));
   cp5.get(Textfield.class,"load").setValue(df.format(loadcell_value));
   cp5.get(Textfield.class,"stress").setValue(df.format(stress));
@@ -292,6 +295,16 @@ public void fix_input() {
   lock_all();
 
   cycles_needed=2*Integer.parseInt(cp5.get(Textfield.class,"no_of_cycles").getText());
+  
+  
+  wid=cp5.get(Textfield.class,"width").getText();
+  breadth=Double.parseDouble(wid);
+  thick =cp5.get(Textfield.class,"thickness").getText();
+  thickness =Double.parseDouble(thick);
+  len =cp5.get(Textfield.class,"length").getText();
+  vertical_length =Double.parseDouble(len);
+  area= breadth*thickness*0.00001;//converting into metre square
+
 
 
 
