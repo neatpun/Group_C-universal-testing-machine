@@ -138,8 +138,35 @@ void draw() {
   background(0,0,0);
 
   if(mode=="manual" || mode=="MAIN_CYCLE_RUNNING"){
-    curr_y=r.nextInt(max_val);
+    
+    if (mode=="MAIN_CYCLE_RUNNING" && fake_distance>0)
+    {
+    curr_y=(100 + r.nextInt(max_val-100))*(float)((Math.log(fake_distance+1)/Math.log(MAX_UP))*(fake_distance/MAX_UP));
+    loadcell_value=curr_y;
+    }
+    else if(mode=="MAIN_CYCLE_RUNNING"){
+      
+      
+      curr_y=(r.nextInt(50))*(float)(Math.pow(fake_distance/MIN_DOWN,2));
+      loadcell_value=curr_y;
+      
+      
+    }
+    else if(mode=="manual" && fake_distance>0)
+    {
+    curr_y=(190 + r.nextInt(max_val-190))*(float)((Math.log(fake_distance)/Math.log(1500))*(fake_distance/1500));
+    loadcell_value=curr_y;
+      
+    }
+    else if(mode=="manual")
+    {
+    curr_y=(40+r.nextInt(50-40))*(float)(Math.pow(fake_distance/-1500,2));
+    loadcell_value=curr_y;
+      
+    }
+    
     draw_graph(prev_x,prev_y,(float)fake_distance,curr_y);
+    
     prev_x=(float)fake_distance;
     prev_y=curr_y;
   }
@@ -155,7 +182,9 @@ void draw() {
 
 
   //loadread
-  loadcell_value=random(10);
+  //loadcell_value=random(10);
+  //transferred to graph , see above
+  
   fake_distance=real_distance + velocity*(millis()-event_time)/1000;
 
   cp5.get(Slider.class,"motor_simulate").setValue((float)fake_distance);
@@ -169,6 +198,7 @@ void draw() {
   strain = 0;
 
   stress=loadcell_value/area;
+  stress=stress/1000;
   
   cp5.get(Textfield.class,"strain").setValue(df.format(strain));
   cp5.get(Textfield.class,"load").setValue(df.format(loadcell_value));
@@ -190,7 +220,11 @@ void draw() {
   else if(mode=="manual")
   {
       //loadread
-  loadcell_value=random(10);
+  //loadcell_value=random(10);//set in graph instead
+  
+  
+  
+  
   fake_distance=real_distance + velocity*(millis()-event_time)/1000;
   //println(fake_distance);
 
@@ -205,6 +239,7 @@ void draw() {
   strain = 0;
 
   stress=loadcell_value/area;
+  stress=stress/1000;
   
   cp5.get(Textfield.class,"strain").setValue(df.format(strain));
   cp5.get(Textfield.class,"load").setValue(df.format(loadcell_value));
