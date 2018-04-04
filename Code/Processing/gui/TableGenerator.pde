@@ -5,6 +5,9 @@ public Table createTable() {
   table.addColumn("id");
   table.addColumn("distance");
   table.addColumn("loadcell_value");
+  
+  table.addColumn("stress");
+  table.addColumn("strain");
     
   table.addColumn("current_cycle");
   table.addColumn("current_direction");
@@ -25,6 +28,9 @@ public void setRowData(TableRow newRow) {
   
   newRow.setDouble("distance", fake_distance);
   newRow.setDouble("loadcell_value", loadcell_value);
+  
+  newRow.setDouble("stress", stress);
+  newRow.setDouble("strain", strain);
  
   //GRAPH the new value here maybe create and use prev variables to store previous value
   
