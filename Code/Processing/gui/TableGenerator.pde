@@ -36,6 +36,6 @@ public void setRowData(TableRow newRow) {
   
   newRow.setDouble("current_cycle", current_cycle/2.0);
   newRow.setString("current_direction", current_direction);
-  newRow.setInt("current_time", millis());
+  newRow.setDouble("current_time", (millis()-starting_time)/(double)1000.0);
   
 }  

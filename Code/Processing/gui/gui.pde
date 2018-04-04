@@ -44,6 +44,9 @@ boolean arduino_enable = false;
 
 Table table;
 TableRow newRow;
+
+
+int starting_time=0;
 //VARIABLES--
 
 
@@ -419,7 +422,7 @@ hide_controls();
 
 public void up()
 {
-if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual";
+if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual";starting_time=event_time;
 
   if(arduino_enable) {
     arduino.analogWrite(10, speed_slider);//ENABLE
@@ -493,7 +496,7 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
 
 public void down()
 {
-if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual";
+if (mode.equals("manual_begin")  ) {event_time=millis(); mode="manual";starting_time=event_time;
 
   if(arduino_enable) {
     arduino.analogWrite(10, speed_slider);//ENABLE
@@ -548,7 +551,7 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
 
 public void up3()
 {
-if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle";
+if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle";starting_time=event_time;
   if(arduino_enable) {
     arduino.analogWrite(10, speed_slider);//ENABLE
   }
@@ -605,7 +608,7 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
 
 public void down3()
 {
-if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle";
+if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle";starting_time=event_time;
   if(arduino_enable) {
     arduino.analogWrite(10, speed_slider);
   }
