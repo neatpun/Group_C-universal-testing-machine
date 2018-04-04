@@ -349,6 +349,8 @@ public void fix_input() {
 }
 public void reset()
 {
+  createTable();
+  
   prev_x=0;
   prev_y=0;
   mode = "initial";
@@ -551,7 +553,7 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
 
 public void up3()
 {
-if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle";starting_time=event_time;
+if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle";
   if(arduino_enable) {
     arduino.analogWrite(10, speed_slider);//ENABLE
   }
@@ -608,7 +610,7 @@ cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )
 
 public void down3()
 {
-if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle";starting_time=event_time;
+if (mode.equals("3pointcycle_begin")  ) {event_time=millis(); mode="3pointcycle";
   if(arduino_enable) {
     arduino.analogWrite(10, speed_slider);
   }
@@ -817,6 +819,8 @@ public void run3()
 
   if(mode=="MAIN_CYCLE_BEGIN")
   {
+    
+    
 
 
       //distance right now is MIN_DOWN
@@ -840,6 +844,8 @@ velocity=speed_slider;
   mode="MAIN_CYCLE_RUNNING";
 cp5.get(Textlabel.class,"debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
 + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
+
+starting_time=event_time;
 
 
   }
