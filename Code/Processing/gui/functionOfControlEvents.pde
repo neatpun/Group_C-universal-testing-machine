@@ -10,11 +10,11 @@ void export_table() {
    //printArray(filenames);
 
   String name = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
-
+  pg.save("data/"+name+"_manual/"+name+".png");
 
 
   println("THIS IS THE NAME OF THE FILE BEING EXPORTED "+name);
-  saveTable(table, "data/new "+name+".csv");
+  saveTable(table, "data/"+name+"_manual/"+name+".csv");
 
 }
 

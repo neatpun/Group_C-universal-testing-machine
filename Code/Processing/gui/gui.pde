@@ -277,7 +277,7 @@ void choose_mode(int n) {
     cp5.get(Textarea.class, "tutorial").setText("In manual mode , when you click 'UP' the motor moves in one direction , when you click 'PAUSE' it stops and when you click 'DOWN' it moves in opposite direction"
       );
   }
-  //  else if(n==1)
+   else if(n==1)
   //  {cp5.getController("run").show();
   //cp5.getController("pause_cycles").show();
   //cp5.getController("cycle_length").show();
@@ -297,6 +297,7 @@ void choose_mode(int n) {
     cp5.getController("natural_point").hide();
     cp5.getController("uppermost_point").hide();
     cp5.getController("lowermost_point").hide();
+    cp5.getController("export_table").hide();
 
     //cp5.getController("lowermost_point").lock();
     //cp5.getController("natural_point").unlock();
@@ -334,6 +335,7 @@ public void reset()
   mode = "initial";
   unlock_all();
   hide_controls();
+  cp5.getController("export_table").show();
   cp5.get(ScrollableList.class, "choose_mode").show();
   cp5.get(ScrollableList.class, "choose_mode").open();
   cp5.get(ScrollableList.class, "choose_mode").setCaptionLabel("choose_mode");
