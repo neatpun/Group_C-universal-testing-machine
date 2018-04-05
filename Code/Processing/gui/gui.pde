@@ -45,6 +45,8 @@ boolean arduino_enable = false;
 Table table;
 TableRow newRow;
 
+String name_of_folder;
+
 
 int starting_time=0;
 //VARIABLES--
@@ -258,6 +260,8 @@ void draw() {
 //CONTROL EVENTS
 
 void choose_mode(int n) {
+  
+  
   cp5.getController("enable_arduino").hide();
 
   fix_input();
@@ -268,6 +272,7 @@ void choose_mode(int n) {
   cp5.get(ScrollableList.class, "choose_mode").setColorValue(0xff000000);
   if (n==0)
   {
+    name_of_folder="MANUAL " + new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date());
     cp5.getController("up").show();
     cp5.getController("pause").show();
     cp5.getController("down").show();
@@ -285,6 +290,7 @@ void choose_mode(int n) {
 
   //} else if (n==1)//2
   {
+    name_of_folder="CYCLE "+ new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date());
     cp5.getController("up3").show();
     cp5.getController("pause3").show();
     cp5.getController("down3").show();
@@ -297,7 +303,8 @@ void choose_mode(int n) {
     cp5.getController("natural_point").hide();
     cp5.getController("uppermost_point").hide();
     cp5.getController("lowermost_point").hide();
-    cp5.getController("export_table").hide();
+    
+    //cp5.getController("export_table").hide();
 
     //cp5.getController("lowermost_point").lock();
     //cp5.getController("natural_point").unlock();
@@ -328,6 +335,8 @@ public void fix_input() {
 }
 public void reset()
 {
+  name_of_folder="UNDEFINED "+new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date());
+  
   createTable();
 
   prev_x=0;
@@ -335,7 +344,9 @@ public void reset()
   mode = "initial";
   unlock_all();
   hide_controls();
-  cp5.getController("export_table").show();
+  
+  //cp5.getController("export_table").show();
+  
   cp5.get(ScrollableList.class, "choose_mode").show();
   cp5.get(ScrollableList.class, "choose_mode").open();
   cp5.get(ScrollableList.class, "choose_mode").setCaptionLabel("choose_mode");
@@ -738,8 +749,11 @@ public void cycle_control()
         arduino.digitalWrite(7, 0);//ENABLE
       }
 
-      String name = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
-      saveTable(table, "data/ "+name+"cycle_data"+".csv");
+
+        //String name = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
+  //String name = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date());
+  
+      saveTable(table, "data/"+name_of_folder+"/final_cycle_data"+".csv");
 
       cp5.get(Textlabel.class, "debug").setText("Cycles are finished. File 'new.csv' has been exported to 'data/new.csv'"
         );
@@ -971,8 +985,8 @@ void draw_graph(float prev_x, float prev_y, float curr_x, float curr_y) {
 // save and reset graph
 
 void save_reset(int cycle) {
-  String name = new SimpleDateFormat("yyyy-MM-dd HH-mm").format(new Date());
-  pg.save("data/"+name+"cycle_"+(float)cycle/2+".png");
+  //String name = new SimpleDateFormat("yyyy-MM-dd HH-mm").format(new Date());
+  pg.save("data/"+name_of_folder+"/cycle_"+(float)cycle/2+".png");
   pg = createGraphics(round(width*0.75), round(height*2/3));//pg = createGraphics(600, 400); //graph
 
   pg.beginDraw();
@@ -980,5 +994,4 @@ void save_reset(int cycle) {
   create_graph_outline();
   pg.stroke(30);
   pg.endDraw();    // end graph
-}
 }

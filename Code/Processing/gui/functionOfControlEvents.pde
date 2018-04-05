@@ -4,30 +4,35 @@ import java.text.SimpleDateFormat;
 import static javax.swing.JOptionPane.*;
 
 void export_table() {
-  String path = sketchPath();
+  //String path = sketchPath();
   //println(path);
-  String[] filenames = listFileNames(path+"/data");
+  //String[] filenames = listFileNames(path+"/data");
    //printArray(filenames);
 
-  String name = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
-  pg.save("data/"+name+"_manual/"+name+".png");
+  //String name = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
+  //String name = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date());
+  String name = new SimpleDateFormat("HH-mm-ss").format(new Date());
+  
+  if (mode.contains("manual") || mode.contains("MANUAL")){
+  
+  pg.save("data/"+name_of_folder+"/"+name+".png");}
 
 
   println("THIS IS THE NAME OF THE FILE BEING EXPORTED "+name);
-  saveTable(table, "data/"+name+"_manual/"+name+".csv");
+  saveTable(table, "data/"+name_of_folder+"/"+name+".csv");
 
 }
 
-String[] listFileNames(String dir) {
-  File file = new File(dir);
-  if (file.isDirectory()) {
-    String names[] = file.list();
-    return names;
-  } else {
-    // If it's not a directory
-    return null;
-  }
-}
+//String[] listFileNames(String dir) {
+//  File file = new File(dir);
+//  if (file.isDirectory()) {
+//    String names[] = file.list();
+//    return names;
+//  } else {
+//    // If it's not a directory
+//    return null;
+//  }
+//}
 
 void enable_arduino() {
 
