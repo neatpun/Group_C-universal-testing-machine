@@ -9,7 +9,7 @@ void export_table() {
   String[] filenames = listFileNames(path+"/data");
    //printArray(filenames);
 
-  String name = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date());
+  String name = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
 
 
 
