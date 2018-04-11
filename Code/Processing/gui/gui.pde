@@ -49,6 +49,15 @@ String name_of_folder;
 
 
 int starting_time=0;
+
+
+
+ 
+
+
+float[] readings = new float[10]; // For loadcell value smoothing
+int readIndex=0;
+float total=0;
 //VARIABLES--
 
 
@@ -134,6 +143,8 @@ void setup() {
 
 
   table = createTable();
+  
+
 }
 
 
@@ -346,6 +357,14 @@ public void fix_input() {
   len =cp5.get(Textfield.class, "length").getText();
   vertical_length =Double.parseDouble(len);
   area= breadth*thickness*0.00001;//converting into metre square
+  
+  
+  
+  
+    readings = new float[10]; // For loadcell value smoothing
+readIndex=0;
+ total=0;
+ 
 }
 public void reset()
 {
@@ -1012,8 +1031,38 @@ void save_reset(int cycle) {
 
 float loadcell_data(float prev) {
   float x;
+
+  
   try {
-    x=arduino.analogRead(0);
+   //x=arduino.analogRead(0);//single reading
+    
+    
+    
+    
+      // subtract the last reading:
+  total = total - readings[readIndex];
+  // read from the sensor:
+  readings[readIndex] = arduino.analogRead(0);
+  // add the reading to the total:
+  total = total + readings[readIndex];
+  // advance to the next position in the array:
+  readIndex = readIndex + 1;
+
+  // if we're at the end of the array...
+  if (readIndex >= 10) {
+    // ...wrap around to the beginning:
+    readIndex = 0;
+  }
+
+  // calculate the average:
+  x = total / 10;
+  
+  
+  
+  
+  
+  
+  
     x=map(x, 0, 900, 0, 200);
     println(x);
   }
