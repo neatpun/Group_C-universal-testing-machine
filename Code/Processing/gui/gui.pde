@@ -802,16 +802,18 @@ public void cycle_control()
 
       event_time=millis();
       current_direction="up";
+      
+      pause_cycles3();//becasue graph saving is slow
 
 
       velocity=speed_slider;
-
       current_cycle++;
       save_reset(current_cycle);
       println(current_cycle);
-
       cp5.get(Textlabel.class, "debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
         + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time + " current_cycle:"+ Double.toString(current_cycle/2) );
+        
+      run3(); //becasue graph saving is slow
     } else if ((fake_distance> 0.95*MAX_UP)  && (current_direction=="up"))
     {
 
@@ -825,6 +827,9 @@ public void cycle_control()
 
       event_time=millis();
       current_direction="down";
+      
+      
+      pause_cycles3();//becasue graph saving is slow
 
 
       velocity=-speed_slider;
@@ -832,6 +837,8 @@ public void cycle_control()
       save_reset(current_cycle);
       cp5.get(Textlabel.class, "debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
         + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time + " current_cycle:"+ Double.toString(current_cycle/2) );
+        
+     run3(); //becasue graph saving is slow
     }
   }
 }
