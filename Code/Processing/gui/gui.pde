@@ -58,6 +58,13 @@ int starting_time=0;
 float[] readings = new float[10]; // For loadcell value smoothing
 int readIndex=0;
 float total=0;
+
+
+
+
+//float distance_calibration=1.42;
+
+double velocity_calibration=1.0;
 //VARIABLES--
 
 
@@ -490,7 +497,7 @@ public void up()
   current_direction="up";
 
 
-  velocity=speed_slider;
+  velocity=speed_slider*velocity_calibration;
   cp5.get(Textlabel.class, "debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
     + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
 }
@@ -566,7 +573,7 @@ public void down()
   current_direction="down";
 
 
-  velocity=-speed_slider;
+  velocity=-speed_slider*velocity_calibration;
   cp5.get(Textlabel.class, "debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
     + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
 }
@@ -606,7 +613,7 @@ public void up3()
   current_direction="up";
 
 
-  velocity=speed_slider;
+  velocity=speed_slider*velocity_calibration;
   cp5.get(Textlabel.class, "debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
     + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
 }
@@ -665,7 +672,7 @@ public void down3()
   current_direction="down";
 
 
-  velocity=-speed_slider;
+  velocity=-speed_slider*velocity_calibration;
   cp5.get(Textlabel.class, "debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
     + " dir:"+ current_direction + " vel:"+ Double.toString(velocity) + " event_time:" + event_time);
 }
@@ -806,7 +813,7 @@ public void cycle_control()
       pause_cycles3();//becasue graph saving is slow
 
 
-      velocity=speed_slider;
+      velocity=speed_slider*velocity_calibration;
       current_cycle++;
       save_reset(current_cycle);
       println(current_cycle);
@@ -832,7 +839,7 @@ public void cycle_control()
       pause_cycles3();//becasue graph saving is slow
 
 
-      velocity=-speed_slider;
+      velocity=-speed_slider*velocity_calibration;
       current_cycle++;
       save_reset(current_cycle);
       cp5.get(Textlabel.class, "debug").setText("dist:"+Double.toString(real_distance )+ " mode:" + mode
@@ -866,7 +873,7 @@ public void run3()
     current_direction="up";
     current_cycle=0;
 
-    velocity=speed_slider;
+    velocity=speed_slider*velocity_calibration;
 
 
 
@@ -893,7 +900,7 @@ public void run3()
       current_direction="up";
 
 
-      velocity=speed_slider;
+      velocity=speed_slider*velocity_calibration;
 
 
 
@@ -916,7 +923,7 @@ public void run3()
       current_direction="down";
 
 
-      velocity=-speed_slider;
+      velocity=-speed_slider*velocity_calibration;
 
 
       mode="MAIN_CYCLE_RUNNING";

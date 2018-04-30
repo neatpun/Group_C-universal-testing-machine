@@ -22,10 +22,10 @@ def make_sure_path_exists(path):
 
 make_sure_path_exists(localtime)
 
-di=pd.read_csv('abc.csv')
+di=pd.read_csv('motor.csv')
 di["current_time"]=di["current_time"].round(2)
 
-lv=pd.read_csv('lv.csv',names=["ltime","lvalue"])
+lv=pd.read_csv('load.csv',names=["ltime","lvalue"])
 lv=lv.iloc[7:]
 lv=lv.reset_index(drop=True)
 lv.ltime = lv.ltime.astype(float)
