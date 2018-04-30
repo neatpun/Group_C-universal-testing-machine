@@ -284,27 +284,27 @@ void add_inputs()
         .toUpperCase(false)
         .setFont(createFont("arial", 15))
         ;
-    cp5.addTextfield("initial_distance")
-        .setPosition(width*0.4,height*0.86833)//.setPosition(320, 520)
-        .setSize(round(width*0.09375),round(height/30))//.setSize(75, 20)
-        .setFont(createFont("arial", 15))
-        .setAutoClear(false)
-        .setCaptionLabel("Initial distance (stretch)")
-        .getCaptionLabel()
-        .toUpperCase(false)
-        .setFont(createFont("arial", 15))
+    //cp5.addTextfield("initial_distance")
+    //    .setPosition(width*0.4,height*0.86833)//.setPosition(320, 520)
+    //    .setSize(round(width*0.09375),round(height/30))//.setSize(75, 20)
+    //    .setFont(createFont("arial", 15))
+    //    .setAutoClear(false)
+    //    .setCaptionLabel("Initial distance (stretch)")
+    //    .getCaptionLabel()
+    //    .toUpperCase(false)
+    //    .setFont(createFont("arial", 15))
 
-        ;
+    //    ;
     cp5.get(Textfield.class, "width").setInputFilter(ControlP5.FLOAT);
     cp5.get(Textfield.class, "length").setInputFilter(ControlP5.FLOAT);
     cp5.get(Textfield.class, "thickness").setInputFilter(ControlP5.FLOAT);
     //cp5.get(Textfield.class,"speed").setInputFilter(ControlP5.FLOAT);
     cp5.get(Textfield.class, "no_of_cycles").setInputFilter(ControlP5.INTEGER);
-    cp5.get(Textfield.class, "initial_distance").setInputFilter(ControlP5.FLOAT);
+    //cp5.get(Textfield.class, "initial_distance").setInputFilter(ControlP5.FLOAT);
 
 
 
-    cp5.get(Textfield.class, "initial_distance").setValue(String.valueOf(0.0));
+    //cp5.get(Textfield.class, "initial_distance").setValue(String.valueOf(0.0));
     cp5.get(Textfield.class, "no_of_cycles").setValue(String.valueOf(10));
     cp5.get(Textfield.class, "width").setValue(String.valueOf(5));
     cp5.get(Textfield.class, "length").setValue(String.valueOf(20));

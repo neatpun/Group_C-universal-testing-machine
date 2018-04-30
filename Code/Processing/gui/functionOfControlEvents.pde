@@ -94,7 +94,7 @@ void lock_all()
     cp5.get(Textfield.class, "thickness").lock();
     cp5.get(Slider.class, "speed_slider").lock();
     cp5.get(Textfield.class, "no_of_cycles").lock();
-    cp5.get(Textfield.class, "initial_distance").lock();
+    //cp5.get(Textfield.class, "initial_distance").lock();
     cp5.getController("uppermost_point").lock();
     cp5.getController("lowermost_point").lock();
     cp5.getController("natural_point").lock();
@@ -106,7 +106,7 @@ void lock_all()
     cp5.get(Textfield.class, "thickness").setColorBackground(0xff1381d6);
     cp5.get(Slider.class, "speed_slider").setColorBackground(0xff1381d6);
     cp5.get(Textfield.class, "no_of_cycles").setColorBackground(0xff1381d6);
-    cp5.get(Textfield.class, "initial_distance").setColorBackground(0xff1381d6);
+    //cp5.get(Textfield.class, "initial_distance").setColorBackground(0xff1381d6);
     cp5.getController("uppermost_point").setColorBackground(0xff1381d6);
     cp5.getController("lowermost_point").setColorBackground(0xff1381d6);
     cp5.getController("natural_point").setColorBackground(0xff1381d6);
@@ -118,7 +118,7 @@ void lock_all()
     cp5.get(Textfield.class, "thickness").setColorValue(0xff000000);
     cp5.get(Slider.class, "speed_slider").setColorValue(0xff000000);
     cp5.get(Textfield.class, "no_of_cycles").setColorValue(0xff000000);
-    cp5.get(Textfield.class, "initial_distance").setColorValue(0xff000000);
+    //cp5.get(Textfield.class, "initial_distance").setColorValue(0xff000000);
     cp5.getController("uppermost_point").setColorBackground(0xff000000);
     cp5.getController("lowermost_point").setColorBackground(0xff000000);
     cp5.getController("natural_point").setColorBackground(0xff000000);
@@ -131,7 +131,7 @@ void unlock_all()
     cp5.get(Textfield.class, "thickness").unlock();
     cp5.get(Slider.class, "speed_slider").unlock();
     cp5.get(Textfield.class, "no_of_cycles").unlock();
-    cp5.get(Textfield.class, "initial_distance").unlock();
+    //cp5.get(Textfield.class, "initial_distance").unlock();
     cp5.getController("uppermost_point").unlock();
     cp5.getController("lowermost_point").unlock();
     cp5.getController("natural_point").unlock();
@@ -141,7 +141,7 @@ void unlock_all()
     cp5.get(Textfield.class, "thickness").setColorBackground(0xff002D5A);
     cp5.get(Slider.class, "speed_slider").setColorBackground(0xff002D5A);
     cp5.get(Textfield.class, "no_of_cycles").setColorBackground(0xff002D5A);
-    cp5.get(Textfield.class, "initial_distance").setColorBackground(0xff002D5A);
+    //cp5.get(Textfield.class, "initial_distance").setColorBackground(0xff002D5A);
     cp5.getController("uppermost_point").setColorBackground(0xff002D5A);
     cp5.getController("lowermost_point").setColorBackground(0xff002D5A);
     cp5.getController("natural_point").setColorBackground(0xff002D5A);
@@ -153,7 +153,7 @@ void unlock_all()
     cp5.get(Textfield.class, "thickness").setColorValue(0xffffffff);
     cp5.get(Slider.class, "speed_slider").setColorValue(0xffffffff);
     cp5.get(Textfield.class, "no_of_cycles").setColorValue(0xffffffff);
-    cp5.get(Textfield.class, "initial_distance").setColorValue(0xffffffff);
+    //cp5.get(Textfield.class, "initial_distance").setColorValue(0xffffffff);
     cp5.getController("uppermost_point").setColorValue(0xffffffff);
     cp5.getController("lowermost_point").setColorValue(0xffffffff);
     cp5.getController("natural_point").setColorValue(0xffffffff);
