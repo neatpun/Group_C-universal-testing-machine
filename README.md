@@ -12,6 +12,7 @@ See [this](https://github.com/neatpun/Group_C-universal-testing-machine/blob/mas
 
 ## Installation instructions
 For 64 bit windows, download this [release](https://github.com/neatpun/Group_C-universal-testing-machine/releases/tag/v3).
+
 For other platforms:
 
  1. Get [Processing](https://processing.org/download/) 
@@ -23,11 +24,14 @@ For other platforms:
 ## Configuration Instructions
 ### 2.1 Before you start...
 This software will facilitate communication between Universal Testing Machine (the electrical components include Arduino, Load Cell and Gear Motor) and the PC.
+
 So first of all, make sure that the UTM itself is ready:
-● Check that the load cell is in place and connected to amplifier
-● Check that the gear motor is in place and connected to motor controller
-● Check that both the amplifier and motor controller are connected to the Arduino
-After ensuring this, connect the Arduino to PC using an USB cable.
+
+● Check that the load cell is in place and connected to amplifier  
+● Check that the gear motor is in place and connected to motor controller  
+● Check that both the amplifier and motor controller are connected to the Arduino  
+
+After ensuring this, connect the Arduino to PC using an USB cable.  
 Then, simply double click on the exe file to start the software.
 ### 2.2 A note about simulation mode
 If you don’t have the UTM or Arduino with you, it is still possible to use the software. The software has a built in simulation mode, that simulates motor position using a slider and generates load cell values that approximate the expected real life behavior of load cell.   
