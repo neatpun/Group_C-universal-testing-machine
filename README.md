@@ -10,12 +10,12 @@ You can see the [Presentation](https://github.com/neatpun/Group_C-universal-test
 See [this](https://github.com/neatpun/Group_C-universal-testing-machine/blob/master/Presentation%20%26%20demo%20videos/UTM%20cycle%20control%20demo.mp4) video.
 
 ## Installation instructions
-For 64 bit windows, download this [release](https://github.com/neatpun/Group_C-universal-testing-machine/releases/tag/v3).
-For other platforms:
-Get [Processing](https://processing.org/download/)
-Download the 'Code' folder.
-Inside the 'Processing' subfolder, open gui.pde with Processing.
-Now you can run it as well as export it (File->Export application).
+For 64 bit windows, download this [release](https://github.com/neatpun/Group_C-universal-testing-machine/releases/tag/v3).  
+For other platforms:  
+Get [Processing](https://processing.org/download/)  
+Download the 'Code' folder.  
+Inside the 'Processing' subfolder, open gui.pde with Processing.  
+Now you can run it as well as export it (File->Export application).  
 
 Please see the [**User Manual**](https://github.com/neatpun/Group_C-universal-testing-machine/tree/master/User%20Manual) for usage instructions.
 
